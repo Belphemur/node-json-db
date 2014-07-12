@@ -5,6 +5,7 @@ var util = require('util');
 
 var testFile1 = "test_file1";
 var testFile2 = "test_file2";
+var faulty = "test/faulty.json";
 describe('JsonDB', function () {
     describe('Initialisation', function () {
         var db = new JsonDB(testFile1, true);
@@ -21,6 +22,20 @@ describe('JsonDB', function () {
 
         it('should set en empty root', function () {
             assert.equal("{}", JSON.stringify(db.getData("/")));
+        })
+
+        it('should return a loading error', function () {
+            db = new JsonDB(faulty, true);
+            assert.throws(function () {
+                db.getData("/");
+            });
+
+        })
+         it('should return a save error', function () {
+            assert.throws(function () {
+                db.save();
+            });
+
         })
 
     })
@@ -67,6 +82,19 @@ describe('JsonDB', function () {
         it('should throw an Error when merging Object with Array', function () {
             assert.throws(function () {
                 db.push("/test/test", {myTest: "test"}, false);
+            })
+        })
+
+        it('should throw an Error when merging Array with Object', function () {
+            assert.throws(function () {
+                db.push("/test", ['test'], false);
+            })
+        })
+
+
+        it('should throw an Error when asking for empty datapath', function () {
+            assert.throws(function () {
+                db.getData("");
             })
         })
 
