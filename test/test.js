@@ -31,7 +31,7 @@ describe('JsonDB', function () {
             });
 
         })
-         it('should return a save error', function () {
+        it('should return a save error', function () {
             assert.throws(function () {
                 db.save();
             });
@@ -79,6 +79,11 @@ describe('JsonDB', function () {
             assert.equal(JSON.stringify(db.getData("/test/test")), '[\"overriden\",\"test2\"]');
         })
 
+        it('should create the tree to reach datapath', function () {
+            var data = ['test2'];
+            db.push("/my/tree/is/awesome", data, false);
+            assert.equal(JSON.stringify(db.getData("/my/tree/is/awesome")), '[\"test2\"]');
+        })
         it('should throw an Error when merging Object with Array', function () {
             assert.throws(function () {
                 db.push("/test/test", {myTest: "test"}, false);

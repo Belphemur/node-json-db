@@ -28,7 +28,6 @@ util.inherits(JsonDB, events.EventEmitter);
 JsonDB.prototype.processDataPath = function (dataPath) {
     if (dataPath === undefined || !dataPath.trim()) {
         this.emit('error', new Error("The Data Path can't be empty"));
-        return;
     }
     if (dataPath == "/") {
         return [];
@@ -84,20 +83,20 @@ JsonDB.prototype.push = function (dataPath, data, override) {
     var dbData = this.getParentData(dataPath, true);
     if (!dbData.data) {
         this.emit('error', new Error("Data not found"))
-        return;
     }
     var toSet = data;
     if (!override) {
         if (Array.isArray(data)) {
-            if (!Array.isArray(dbData.getData())) {
+            var storedData = dbData.getData();
+            if (storedData === undefined) {
+                storedData = [];
+            } else if (!Array.isArray(storedData)) {
                 this.emit('error', new Error("Can't merge another type of data with an Array"));
-                return;
             }
-            toSet = dbData.getData().concat(data);
+            toSet = storedData.concat(data);
         } else if (data === Object(data)) {
             if (Array.isArray(dbData.getData())) {
                 this.emit('error', new Error("Can't merge an Array with an Object"));
-                return;
             }
             toSet = JsonUtils.mergeObject(dbData.getData(), data);
         }
