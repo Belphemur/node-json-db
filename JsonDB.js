@@ -28,6 +28,7 @@ util.inherits(JsonDB, events.EventEmitter);
 JsonDB.prototype.processDataPath = function (dataPath) {
     if (dataPath === undefined || !dataPath.trim()) {
         this.emit('error', new Error("The Data Path can't be empty"));
+        return;
     }
     if (dataPath == "/") {
         return [];
@@ -49,6 +50,7 @@ JsonDB.prototype.getParentData = function (dataPath, create) {
 JsonDB.prototype.getData = function (dataPath) {
     var path = this.processDataPath(dataPath);
     if (path === undefined) {
+        return;
     }
     return this._getData(path);
 }
@@ -72,6 +74,7 @@ JsonDB.prototype._getData = function (dataPath, create) {
             } else {
                 var error = new Error("Can't find dataPath: " + dataPath.join("/") + ". Stopped at " + property);
                 this.emit('error', error);
+                return;
             }
         }
     }
@@ -81,8 +84,9 @@ JsonDB.prototype._getData = function (dataPath, create) {
 JsonDB.prototype.push = function (dataPath, data, override) {
     override = override === undefined ? true : override;
     var dbData = this.getParentData(dataPath, true);
-    if (!dbData.data) {
-        this.emit('error', new Error("Data not found"))
+    if (!dbData) {
+        this.emit('error', new Error("Data not found"));
+        return;
     }
     var toSet = data;
     if (!override) {
@@ -92,11 +96,13 @@ JsonDB.prototype.push = function (dataPath, data, override) {
                 storedData = [];
             } else if (!Array.isArray(storedData)) {
                 this.emit('error', new Error("Can't merge another type of data with an Array"));
+                return;
             }
             toSet = storedData.concat(data);
         } else if (data === Object(data)) {
             if (Array.isArray(dbData.getData())) {
                 this.emit('error', new Error("Can't merge an Array with an Object"));
+                return;
             }
             toSet = JsonUtils.mergeObject(dbData.getData(), data);
         }
@@ -109,7 +115,7 @@ JsonDB.prototype.push = function (dataPath, data, override) {
 }
 JsonDB.prototype.delete = function (dataPath) {
     var dbData = this.getParentData(dataPath, true);
-    if (!dbData.data) {
+    if (!dbData) {
         return;
     }
     dbData.delete();
@@ -134,6 +140,7 @@ JsonDB.prototype.save = function (force) {
     force = force || false;
     if (!force && !this.loaded) {
         this.emit('error', new Error("DataBase not loaded. Can't write"));
+        return;
     }
     var data = "";
     try {
