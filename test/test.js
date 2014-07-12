@@ -42,8 +42,8 @@ describe('JsonDB', function () {
             var object = {test: {test: ['Okay']}};
             db.push("/", object);
             var data = db.getData("/");
-            assert(object, data);
-            var object = {test: {test: ['Perfect'], okay: "test"}}
+            assert.strictEqual(data, object);
+            object = {test: {test: ['Perfect'], okay: "test"}}
             db.push("/", object, false);
             assert.equal(JSON.stringify(db.getData("/")), '{\"test\":{\"test\":[\"Okay\",\"Perfect\"],\"okay\":\"test\"}}');
         })
