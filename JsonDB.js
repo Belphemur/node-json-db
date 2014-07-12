@@ -70,7 +70,7 @@ JsonDB.prototype._getData = function (dataPath, create) {
                 data[property] = {};
                 data = data[property];
             } else {
-                var error = new Error("Can't find dataPath: " + dataPath + ". Stopped at " + property);
+                var error = new Error("Can't find dataPath: " + dataPath.join("/") + ". Stopped at " + property);
                 this.emit('error', error);
             }
         }
