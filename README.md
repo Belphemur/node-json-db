@@ -40,6 +40,8 @@ See [test](https://github.com/Belphemur/node-json-db/tree/master/test) for more 
 
 ```javascript
 var JsonDB = require('node-json-db');
+//The second argument is used to tell the DB to save after each push
+//If you put false, you'll have to call the save() method.
 var db = new JsonDB("myDataBase", true);
 
 //Pushing the data into the database
@@ -78,6 +80,9 @@ var data = db.getData("/test1");
 
 //Deleting data
 db.delete("/test1");
+
+//Save the data (usefull if you disable the saveOnPush)
+db.save();
 ```
 
 
