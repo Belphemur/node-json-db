@@ -1,0 +1,27 @@
+{
+    "name": "node-json-db",
+    "version": "0.0.1",
+    "description": "Database using JSON file as storage for Node.JS",
+    "main": "./JsonDB.js",
+    "scripts": {
+        "test": "mocha test/test.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Belphemur/node-json-db.git"
+    },
+    "keywords": [
+        "database",
+        "json",
+        "db"
+    ],
+    "author": "Antoine Aflalo <antoineaf+npm@admincmd.com>",
+    "license": "GPLv3",
+    "bugs": {
+        "url": "https://github.com/Belphemur/node-json-db/issues"
+    },
+    "homepage": "https://github.com/Belphemur/node-json-db",
+    "devDependencies": {
+        "mocha": "1.17.0"
+    }
+}
