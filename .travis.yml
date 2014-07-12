@@ -11,3 +11,5 @@ before_script:
   - npm install grunt-cli
   - npm install -g istanbul
   - npm install coveralls
+  - npm install grunt-simple-mocha
+  - npm install grunt-contrib-jshint
