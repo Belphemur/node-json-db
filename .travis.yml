@@ -7,6 +7,6 @@ node_js:
 script:
   - istanbul cover ./node_modules/.bin/grunt --report lcovonly && istanbul report text && cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf coverage
 before_script:
-  - npm install grunt
+  - npm install grunt-cli
   - npm install -g istanbul
   - npm install coveralls
