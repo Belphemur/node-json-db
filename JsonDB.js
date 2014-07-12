@@ -6,7 +6,6 @@ var DBParentData = require("./lib/DBParentData");
 
 var JsonDB = function (filename, saveOnPush) {
 
-    events.EventEmitter.call(this);
     this.filename = filename;
 
     if (!JsonUtils.strEndWith(filename, ".json")) {
@@ -24,11 +23,9 @@ var JsonDB = function (filename, saveOnPush) {
 
     return this;
 };
-util.inherits(JsonDB, events.EventEmitter);
 JsonDB.prototype.processDataPath = function (dataPath) {
     if (dataPath === undefined || !dataPath.trim()) {
-        this.emit('error', new Error("The Data Path can't be empty"));
-        return;
+        throw new Error("The Data Path can't be empty");
     }
     if (dataPath == "/") {
         return [];
@@ -72,9 +69,7 @@ JsonDB.prototype._getData = function (dataPath, create) {
                 data[property] = {};
                 data = data[property];
             } else {
-                var error = new Error("Can't find dataPath: " + dataPath.join("/") + ". Stopped at " + property);
-                this.emit('error', error);
-                return;
+                throw new Error("Can't find dataPath: " + dataPath.join("/") + ". Stopped at " + property);
             }
         }
     }
@@ -85,8 +80,7 @@ JsonDB.prototype.push = function (dataPath, data, override) {
     override = override === undefined ? true : override;
     var dbData = this.getParentData(dataPath, true);
     if (!dbData) {
-        this.emit('error', new Error("Data not found"));
-        return;
+        throw new Error("Data not found");
     }
     var toSet = data;
     if (!override) {
@@ -95,14 +89,12 @@ JsonDB.prototype.push = function (dataPath, data, override) {
             if (storedData === undefined) {
                 storedData = [];
             } else if (!Array.isArray(storedData)) {
-                this.emit('error', new Error("Can't merge another type of data with an Array"));
-                return;
+                throw new Error("Can't merge another type of data with an Array");
             }
             toSet = storedData.concat(data);
         } else if (data === Object(data)) {
             if (Array.isArray(dbData.getData())) {
-                this.emit('error', new Error("Can't merge an Array with an Object"));
-                return;
+                throw  new Error("Can't merge an Array with an Object");
             }
             toSet = JsonUtils.mergeObject(dbData.getData(), data);
         }
@@ -133,14 +125,13 @@ JsonDB.prototype.load = function () {
     } catch (err) {
         var error = new Error("Can't Load Database: " + err);
         error.inner = err;
-        this.emit('error', error);
+        throw error;
     }
 }
 JsonDB.prototype.save = function (force) {
     force = force || false;
     if (!force && !this.loaded) {
-        this.emit('error', new Error("DataBase not loaded. Can't write"));
-        return;
+        throw new Error("DataBase not loaded. Can't write");
     }
     var data = "";
     try {
@@ -149,7 +140,7 @@ JsonDB.prototype.save = function (force) {
     } catch (err) {
         var error = new Error("Can't save the database: " + err);
         error.inner = err;
-        this.emit('error', error);
+        throw error;
     }
 
 }

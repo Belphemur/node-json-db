@@ -11,10 +11,6 @@ npm install node-json-db --save
 ```
 ## Inner Working
 
-###Events
-JsonDB trigger the event **error** in case of error like the DataBase couldn't be loaded or the DataPath used for getting 
-the data don't exist.
-
 ###Data
 The module store the data using JavaScript Object directly into a JSON file. You can easily traverse the data to reach 
 directly the interesting property using the DataPath. The principle of DataPath is the same as XMLPath.

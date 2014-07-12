@@ -9,9 +9,7 @@ var faulty = "test/faulty.json";
 describe('JsonDB', function () {
     describe('Initialisation', function () {
         var db = new JsonDB(testFile1, true);
-        db.on('error', function (error) {
-            throw error;
-        });
+
         it('should create the JSON File', function (done) {
             fs.exists(testFile1 + ".json", function (exists) {
                 assert(exists, "File should exits");
