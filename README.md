@@ -67,6 +67,10 @@ This give you this results :
    "new":"cool"
 }
 */
+//You can't merge primitive.
+//If you do this:
+db.push("/test2/my/test/",10,false);
+//the data will be overriden
 
 //Get the data from the root
 var data = db.getData("/");
@@ -74,11 +78,46 @@ var data = db.getData("/");
 //From a particular DataPath
 var data = db.getData("/test1");
 
+//If you try to get some data from a DataPath that doesn't exists
+//You'll get an Error
+try {
+var data = db.getData("/test1/test/dont/work");
+} catch(error) {
+//The error will tell you where the DataPath stopped. In this case test1
+//Since /test1/test does't exist.
+    console.error(error);
+}
+
 //Deleting data
 db.delete("/test1");
 
 //Save the data (usefull if you disable the saveOnPush)
 db.save();
 ```
+### Exception/Error
+####"The Data Path can't be empty"
+The Database expect to minimum receive the root **/** as DataPath.
+
+####"Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property
+When the full hierarchy of the DataPath given is not present in the Database.
+It tells you until where it's valid. This error can happen when using *getData*
+and *delete*
+
+####"Can't merge another type of data with an Array"
+If you chose to not override the data (merging) when pushing and the new data is an array
+but the current data isn't an array (an Object by example).
+
+####"Can't merge an Array with an Object"
+Same idea as the previous message. You have an array as current data and ask to 
+merge it with an Object.
+
+####"Can't Load Database: " + err
+JsonDB can't load the database for "err" reason.
+You can find the nested error in **error.inner**
+
+####"Can't save the database: " + err
+JsonDB can't save the database for "err" reason.
+You can find the nested error in **error.inner**
+
 
 
