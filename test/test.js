@@ -10,6 +10,25 @@ var testFile1 = "test_file1";
 var testFile2 = "test_file2";
 var faulty = "test/faulty.json";
 describe('JsonDB', function () {
+    describe('Exception/Error', function () {
+        it('should create create a DataError', function () {
+            var error = new DataError("Test", 5);
+            expect(error).to.have.property("message", "Test");
+            expect(error).to.have.property("id", 5);
+            expect(error).to.have.property("inner");
+            expect(error.toString()).to.eql("DataError: Test");
+        })
+
+        it('should create create a DatabaseError', function () {
+            var nested = new Error("don't work");
+            var error = new DatabaseError("Test", 5, nested);
+            expect(error).to.have.property("message", "Test");
+            expect(error).to.have.property("id", 5);
+            expect(error).to.have.property("inner", nested);
+            expect(error.toString()).to.eql("DatabaseError: Test:\nError: don't work");
+        })
+
+    });
     describe('Initialisation', function () {
         var db = new JsonDB(testFile1, true);
 
