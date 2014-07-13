@@ -27,7 +27,7 @@ var JsonDB = function (filename, saveOnPush) {
 };
 JsonDB.prototype.processDataPath = function (dataPath) {
     if (dataPath === undefined || !dataPath.trim()) {
-        throw new DataError("The Data Path can't be empty");
+        throw new DataError("The Data Path can't be empty", 6);
     }
     if (dataPath == "/") {
         return [];
@@ -65,7 +65,7 @@ JsonDB.prototype._getData = function (dataPath, create) {
                 data[property] = {};
                 data = data[property];
             } else {
-                throw new DataError("Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property);
+                throw new DataError("Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property, 5);
             }
         }
     }
@@ -85,12 +85,12 @@ JsonDB.prototype.push = function (dataPath, data, override) {
             if (storedData === undefined) {
                 storedData = [];
             } else if (!Array.isArray(storedData)) {
-                throw new DataError("Can't merge another type of data with an Array");
+                throw new DataError("Can't merge another type of data with an Array", 3);
             }
             toSet = storedData.concat(data);
         } else if (data === Object(data)) {
             if (Array.isArray(dbData.getData())) {
-                throw  new DataError("Can't merge an Array with an Object");
+                throw  new DataError("Can't merge an Array with an Object", 4);
             }
             toSet = JsonUtils.mergeObject(dbData.getData(), data);
         }
@@ -119,7 +119,7 @@ JsonDB.prototype.load = function () {
         this.loaded = true;
         util.log("[JsonDB] DataBase " + this.filename + " loaded.");
     } catch (err) {
-        var error = new DatabaseError("Can't Load Database",err);
+        var error = new DatabaseError("Can't Load Database", 1, err);
         error.inner = err;
         throw error;
     }
@@ -127,14 +127,14 @@ JsonDB.prototype.load = function () {
 JsonDB.prototype.save = function (force) {
     force = force || false;
     if (!force && !this.loaded) {
-        throw new DatabaseError("DataBase not loaded. Can't write");
+        throw new DatabaseError("DataBase not loaded. Can't write", 7);
     }
     var data = "";
     try {
         data = JSON.stringify(this.data);
         FS.writeFileSync(this.filename, data, 'utf8');
     } catch (err) {
-        var error = new DatabaseError("Can't save the database", err);
+        var error = new DatabaseError("Can't save the database", 2, err);
         error.inner = err;
         throw error;
     }
