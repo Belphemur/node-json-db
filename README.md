@@ -91,33 +91,43 @@ var data = db.getData("/test1/test/dont/work");
 //Deleting data
 db.delete("/test1");
 
-//Save the data (usefull if you disable the saveOnPush)
+//Save the data (useful if you disable the saveOnPush)
 db.save();
 ```
 ### Exception/Error
-####"The Data Path can't be empty"
+JsonDB use 2 type of Error/Exception :
+
+| Error         |                   Explanation                                    |
+| ------------- |:----------------------------------------------------------------:|
+| DataError     | When the error is linked to the Data Given                       | 
+| DatabaseError | Linked to a problem with the loading or saving of the Database.  |
+
+####"The Data Path can't be empty" *(DataError)*
 The Database expect to minimum receive the root **/** as DataPath.
 
-####"Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property
+####"Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property *(DataError)*
 When the full hierarchy of the DataPath given is not present in the Database.
 It tells you until where it's valid. This error can happen when using *getData*
 and *delete*
 
-####"Can't merge another type of data with an Array"
+####"Can't merge another type of data with an Array" *(DataError)*
 If you chose to not override the data (merging) when pushing and the new data is an array
 but the current data isn't an array (an Object by example).
 
-####"Can't merge an Array with an Object"
+####"Can't merge an Array with an Object" *(DataError)*
 Same idea as the previous message. You have an array as current data and ask to 
 merge it with an Object.
 
-####"Can't Load Database: " + err
+####"Can't Load Database: " + err *(DatabaseError)*
 JsonDB can't load the database for "err" reason.
 You can find the nested error in **error.inner**
 
-####"Can't save the database: " + err
+####"Can't save the database: " + err *(DatabaseError)*
 JsonDB can't save the database for "err" reason.
 You can find the nested error in **error.inner**
+
+####"DataBase not loaded. Can't write" *(DatabaseError)*
+Since the database hasn't been loaded correctly, the module won't let you save the data to avoid erasing your database.
 
 
 
