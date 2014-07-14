@@ -52,7 +52,7 @@ JsonDB.prototype._getData = function (dataPath, create) {
     this.load();
 
     create = create || false;
-    if (dataPath.length == 0) {
+    if (dataPath.length === 0) {
         return this.data;
     }
     var data = this.data;
