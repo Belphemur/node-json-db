@@ -52,6 +52,14 @@ module.exports = function(grunt) {
                         src: [ 'lib/*.js' ]
                     }
                 },
+                module: {
+                    files: {
+                        src: [
+                            'Gruntfile.js',
+                            'JsonDB.js'
+                        ]
+                    }
+                },                
                 tests: {
                     files: {
                         src: ['test/*.js']
@@ -67,7 +75,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-simple-mocha');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     
-    grunt.registerTask('default', ['jshint:tests','simplemocha']);
-    grunt.registerTask('all', ['jshint:lib','default']);
+    grunt.registerTask('default', ['jshint:lib','jshint:module','simplemocha']);
+    grunt.registerTask('all', ['jshint:tests','default']);
     
 };
