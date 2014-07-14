@@ -55,7 +55,6 @@ module.exports = function(grunt) {
                 module: {
                     files: {
                         src: [
-                            'Gruntfile.js',
                             'JsonDB.js'
                         ]
                     }
