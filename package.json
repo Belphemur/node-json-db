@@ -1,6 +1,6 @@
 {
     "name": "node-json-db",
-    "version": "0.2.6",
+    "version": "0.2.7",
     "description": "Database using JSON file as storage for Node.JS",
     "main": "./JsonDB.js",
     "scripts": {
@@ -16,7 +16,7 @@
         "db"
     ],
     "author": "Antoine Aflalo <antoineaf+npm@admincmd.com>",
-    "license": "GPLv3",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/Belphemur/node-json-db/issues"
     },
