@@ -111,6 +111,11 @@
         dbData.delete();
     }
 
+    JsonDB.prototype.reload = function() {
+        this.loaded = false;
+        return this.load();
+    };
+
     JsonDB.prototype.load = function () {
         if (this.loaded) {
             return;
