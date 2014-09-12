@@ -1,6 +1,6 @@
 {
     "name": "node-json-db",
-    "version": "0.2.8",
+    "version": "0.3.0",
     "description": "Database using JSON file as storage for Node.JS",
     "main": "./JsonDB.js",
     "scripts": {
@@ -21,6 +21,9 @@
         "url": "https://github.com/Belphemur/node-json-db/issues"
     },
     "homepage": "https://github.com/Belphemur/node-json-db",
+    "dependencies": {
+        "mkdirp": "0.5.x"
+    },
     "devDependencies": {
         "mocha": ">=1.17.0",
         "expect.js": ">=0.3.1"

@@ -7,6 +7,8 @@
     var DBParentData = require("./lib/DBParentData");
     var DatabaseError = require("./lib/Errors").DatabaseError;
     var DataError = require("./lib/Errors").DataError;
+    var mkdirp = require('mkdirp');
+    var path = require('path');
 
     var JsonDB = function (filename, saveOnPush) {
 
@@ -19,9 +21,16 @@
         this.loaded = false;
         this.data = {};
         if (!FS.existsSync(this.filename)) {
-            self.save(true);
-            self.loaded = true;
-            util.log("[JsonDB] DataBase " + self.filename + " created.");
+            var dirname = path.dirname(this.filename);
+            mkdirp(dirname, function (err) {
+                if (err) {
+                    throw err;
+                }
+                self.save(true);
+                self.loaded = true;
+                util.log("[JsonDB] DataBase " + self.filename + " created.");
+            });
+
         }
         this.saveOnPush = saveOnPush;
 
@@ -111,7 +120,7 @@
         dbData.delete();
     }
 
-    JsonDB.prototype.reload = function() {
+    JsonDB.prototype.reload = function () {
         this.loaded = false;
         return this.load();
     };
