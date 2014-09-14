@@ -7,7 +7,7 @@ var fs = require('fs');
 var util = require('util');
 
 var testFile1 = "test_file1";
-var testFile2 = "test_file2";
+var testFile2 = "dirCreation/test_file2";
 var faulty = "test/faulty.json";
 describe('JsonDB', function () {
     describe('Exception/Error', function () {
@@ -140,12 +140,19 @@ describe('JsonDB', function () {
 
         })
 
-
+        it('should reload the file', function () {
+            var data = JSON.stringify({test: "Okay", perfect: 1});
+            fs.writeFileSync(testFile2 + ".json", data, 'utf8');
+            db.reload();
+            expect(db.getData("/test")).to.be("Okay");
+            expect(db.getData("/perfect")).to.be(1);
+        })
     });
     describe('Cleanup', function () {
         it('should remove the test files', function () {
             fs.unlinkSync(testFile1 + ".json");
             fs.unlinkSync(testFile2 + ".json");
+            fs.rmdirSync("dirCreation");
         });
     });
 
