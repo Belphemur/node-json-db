@@ -36,7 +36,7 @@
 
         return this;
     };
-    JsonDB.prototype.processDataPath = function (dataPath) {
+    JsonDB.prototype._processDataPath = function (dataPath) {
         if (dataPath === undefined || !dataPath.trim()) {
             throw new DataError("The Data Path can't be empty", 6);
         }
@@ -46,18 +46,22 @@
         var path = dataPath.split("/");
         path.shift();
         return path;
-    }
+    };
 
-    JsonDB.prototype.getParentData = function (dataPath, create) {
-        var path = this.processDataPath(dataPath);
+    JsonDB.prototype._getParentData = function (dataPath, create) {
+        var path = this._processDataPath(dataPath);
         var last = path.pop();
         return new DBParentData(last, this._getData(path, create), this);
-    }
-
+    };
+    /**
+     * Get the deta sotred in the data base
+     * @param dataPath path leading to the data
+     * @returns {*}
+     */
     JsonDB.prototype.getData = function (dataPath) {
-        var path = this.processDataPath(dataPath);
+        var path = this._processDataPath(dataPath);
         return this._getData(path);
-    }
+    };
 
     JsonDB.prototype._getData = function (dataPath, create) {
         this.load();
@@ -82,10 +86,16 @@
         }
         return data;
 
-    }
+    };
+    /**
+     * Pushing data into the database
+     * @param dataPath path leading to the data
+     * @param data data to push
+     * @param override overriding or not the data, if not, it will merge them
+     */
     JsonDB.prototype.push = function (dataPath, data, override) {
         override = override === undefined ? true : override;
-        var dbData = this.getParentData(dataPath, true);
+        var dbData = this._getParentData(dataPath, true);
         if (!dbData) {
             throw new Error("Data not found");
         }
@@ -111,20 +121,30 @@
         if (this.saveOnPush) {
             this.save();
         }
-    }
+    };
+    /**
+     * Delete the data
+     * @param dataPath path leading to the data
+     */
     JsonDB.prototype.delete = function (dataPath) {
-        var dbData = this.getParentData(dataPath, true);
+        var dbData = this._getParentData(dataPath, true);
         if (!dbData) {
             return;
         }
         dbData.delete();
-    }
-
+    };
+    /**
+     * Reload the database from the file
+     * @returns {*}
+     */
     JsonDB.prototype.reload = function () {
         this.loaded = false;
         return this.load();
     };
-
+    /**
+     * Manually load the database
+     * It is automatically called when the first getData is done
+     */
     JsonDB.prototype.load = function () {
         if (this.loaded) {
             return;
@@ -139,7 +159,12 @@
             error.inner = err;
             throw error;
         }
-    }
+    };
+    /**
+     * Manually save the database
+     * By default you can't save the database if it's not loaded
+     * @param force force the save of the database
+     */
     JsonDB.prototype.save = function (force) {
         force = force || false;
         if (!force && !this.loaded) {
@@ -155,7 +180,7 @@
             throw error;
         }
 
-    }
+    };
 
     exports = module.exports = JsonDB;
 })();

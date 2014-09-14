@@ -93,6 +93,11 @@ db.delete("/test1");
 
 //Save the data (useful if you disable the saveOnPush)
 db.save();
+
+//In case you have a exterior change to the databse file and want to reload it
+//use this method
+db.reload();
+
 ```
 ### Exception/Error
 JsonDB use 2 type of Error/Exception :
