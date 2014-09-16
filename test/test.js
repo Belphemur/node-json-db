@@ -30,7 +30,7 @@ describe('JsonDB', function () {
 
     });
     describe('Initialisation', function () {
-        var db = new JsonDB(testFile1, true);
+        var db = new JsonDB(testFile1, true, true);
 
         it('should create the JSON File', function (done) {
             fs.exists(testFile1 + ".json", function (exists) {

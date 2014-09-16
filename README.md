@@ -38,7 +38,8 @@ See [test](https://github.com/Belphemur/node-json-db/tree/master/test) for more 
 var JsonDB = require('node-json-db');
 //The second argument is used to tell the DB to save after each push
 //If you put false, you'll have to call the save() method.
-var db = new JsonDB("myDataBase", true);
+//The third argument is to ask JsonDB to save the database in an human readable format. (default false)
+var db = new JsonDB("myDataBase", true, false);
 
 //Pushing the data into the database
 //With the wanted DataPath

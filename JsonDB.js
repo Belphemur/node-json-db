@@ -10,7 +10,7 @@
     var mkdirp = require('mkdirp');
     var path = require('path');
 
-    var JsonDB = function (filename, saveOnPush) {
+    var JsonDB = function (filename, saveOnPush, humanReadable) {
 
         this.filename = filename;
 
@@ -32,7 +32,13 @@
             });
 
         }
-        this.saveOnPush = saveOnPush;
+        this.saveOnPush = saveOnPush || true;
+        if (humanReadable) {
+            this.humanReadable = humanReadable;
+        }
+        else {
+            this.humanReadable = false;
+        }
 
         return this;
     };
@@ -172,7 +178,12 @@
         }
         var data = "";
         try {
-            data = JSON.stringify(this.data);
+            if (this.humanReadable) {
+                data = JSON.stringify(this.data, null, 4);
+            }
+            else {
+                data = JSON.stringify(this.data);
+            }
             FS.writeFileSync(this.filename, data, 'utf8');
         } catch (err) {
             var error = new DatabaseError("Can't save the database", 2, err);
