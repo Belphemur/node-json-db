@@ -193,5 +193,5 @@
 
     };
 
-    exports = module.exports = JsonDB;
+    module.exports = JsonDB;
 })();

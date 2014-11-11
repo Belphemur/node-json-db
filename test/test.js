@@ -4,11 +4,11 @@ var DatabaseError = require("../lib/Errors").DatabaseError;
 var DataError = require("../lib/Errors").DataError;
 
 var fs = require('fs');
-var util = require('util');
 
 var testFile1 = "test_file1";
 var testFile2 = "dirCreation/test_file2";
 var faulty = "test/faulty.json";
+var testFile3 = "test_file3";
 describe('JsonDB', function () {
     describe('Exception/Error', function () {
         it('should create create a DataError', function () {
@@ -148,10 +148,28 @@ describe('JsonDB', function () {
             expect(db.getData("/perfect")).to.be(1);
         })
     });
+
+    describe('Human Readable', function () {
+        var db = new JsonDB(testFile3, true, true);
+        it('should save the data in an human readable format', function (done) {
+            var object = {test: {readable: "test"}};
+            db.push("/", object);
+            fs.readFile(testFile3 + ".json","utf8", function (err, data) {
+                if (err) {
+                    done(err);
+                    return;
+                }
+                expect(data).to.be(JSON.stringify(object, null, 4));
+                done();
+            });
+        })
+
+    });
     describe('Cleanup', function () {
         it('should remove the test files', function () {
             fs.unlinkSync(testFile1 + ".json");
             fs.unlinkSync(testFile2 + ".json");
+            fs.unlinkSync(testFile3 + ".json");
             fs.rmdirSync("dirCreation");
         });
     });
