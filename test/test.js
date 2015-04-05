@@ -9,6 +9,7 @@ var testFile1 = "test_file1";
 var testFile2 = "dirCreation/test_file2";
 var faulty = "test/faulty.json";
 var testFile3 = "test_file3";
+var testFile4 = "array_file";
 describe('JsonDB', function () {
     describe('Exception/Error', function () {
         it('should create create a DataError', function () {
@@ -154,7 +155,7 @@ describe('JsonDB', function () {
         it('should save the data in an human readable format', function (done) {
             var object = {test: {readable: "test"}};
             db.push("/", object);
-            fs.readFile(testFile3 + ".json","utf8", function (err, data) {
+            fs.readFile(testFile3 + ".json", "utf8", function (err, data) {
                 if (err) {
                     done(err);
                     return;
@@ -165,11 +166,87 @@ describe('JsonDB', function () {
         })
 
     });
+    describe('Array Support', function () {
+        var db = new JsonDB(testFile4, true);
+        it('should create an array with a string at index 0', function () {
+            db.push('/arraytest/myarray[0]', "test", true);
+            var myarray = db.getData('/arraytest/myarray');
+            expect(myarray).to.be.an('array');
+            expect(myarray[0]).to.be('test');
+        });
+        it('should add an object at index 1', function () {
+            var obj = {property: "perfect"};
+            db.push('/arraytest/myarray[1]', obj, true);
+            var myarray = db.getData('/arraytest/myarray');
+            expect(myarray).to.be.an('array');
+            expect(myarray[1]).to.be(obj);
+        });
+
+        it('should create a nested array with an object at index 0', function () {
+            var data = {test: "works"};
+            db.push('/arraytest/nested[0]/obj', data, true);
+            var obj = db.getData('/arraytest/nested[0]');
+            expect(obj).to.be.an('object');
+            expect(obj).to.have.property('obj', data);
+        });
+
+        it('should access the object at index 1', function () {
+            var obj = db.getData('/arraytest/myarray[1]');
+            expect(obj).to.be.an('object');
+            expect(obj).to.have.property('property', 'perfect');
+
+        });
+        it('should access the object property at index 1', function () {
+            var property = db.getData('/arraytest/myarray[1]/property');
+            expect(property).to.be.a('string');
+            expect(property).to.be('perfect');
+        });
+        it('should delete the object at index 1', function () {
+            db.delete('/arraytest/myarray[1]');
+            expect(function (args) {
+                db.getData(args);
+            }).withArgs("/arraytest/myarray[1]").to.throwException(function (e) {
+                    expect(e).to.be.a(DataError);
+                    expect(e).to.have.property('id', 10);
+                });
+        });
+
+        it('should throw an error when trying to set an object as an array', function () {
+            db.push('/arraytest/fakearray', {fake: "fake"}, true);
+            expect(function (args) {
+                db.push(args, {test: 'test'}, true);
+            }).withArgs("/arraytest/fakearray[1]").to.throwException(function (e) {
+                    expect(e).to.be.a(DataError);
+                    expect(e).to.have.property('id', 11);
+                });
+        });
+
+        it('should throw an error when trying to access an object as an array', function () {
+            db.push('/arraytest/fakearray', {fake: "fake"}, true);
+            expect(function (args) {
+                db.getData(args);
+            }).withArgs("/arraytest/fakearray[1]").to.throwException(function (e) {
+                    expect(e).to.be.a(DataError);
+                    expect(e).to.have.property('id', 11);
+                });
+        });
+        it('should throw an error when trying to set an object as an array (2)', function () {
+            db.push('/arraytest/fakearray', {fake: "fake"}, true);
+            expect(function (args) {
+                db.push(args, {test: 'test'}, true);
+            }).withArgs("/arraytest/fakearray[1]/fake").to.throwException(function (e) {
+                    expect(e).to.be.a(DataError);
+                    expect(e).to.have.property('id', 11);
+                });
+        });
+
+    });
     describe('Cleanup', function () {
         it('should remove the test files', function () {
             fs.unlinkSync(testFile1 + ".json");
             fs.unlinkSync(testFile2 + ".json");
             fs.unlinkSync(testFile3 + ".json");
+            fs.unlinkSync(testFile4 + ".json");
             fs.rmdirSync("dirCreation");
         });
     });
