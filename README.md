@@ -100,6 +100,27 @@ db.save();
 db.reload();
 
 ```
+
+###Array Support
+You can also access the information stored into arrays and manipulate them.
+```javascript
+var JsonDB = require('node-json-db');
+//The second argument is used to tell the DB to save after each push
+//If you put false, you'll have to call the save() method.
+//The third argument is to ask JsonDB to save the database in an human readable format. (default false)
+var db = new JsonDB("myDataBase", true, false);
+
+//This will create an array 'myarray' with the object '{obj:'test'}' at index 0
+db.push("/arraytest/myarray[0]", {obj:'test'}, true);
+
+//You can retrieve a property of an object included in an array
+//testString = 'test';
+var testString = db.getData("/arraytest/myarray[0]/obj");
+
+//Doing this will delete the object stored at the index 0 of the array.
+//Keep in mind this won't delete the array even if it's empty.
+db.delete(("/arraytest/myarray[0]");
+```
 ### Exception/Error
 JsonDB use 2 type of Error/Exception :
 
@@ -123,6 +144,12 @@ but the current data isn't an array (an Object by example).
 ####"Can't merge an Array with an Object" *(DataError)*
 Same idea as the previous message. You have an array as current data and ask to 
 merge it with an Object.
+
+####"DataPath: /" + dataPath.join("/") + ". " + property + " is not an array." *(DataError)*
+When trying to access an object as an array.
+
+####"DataPath: /" + dataPath.join("/") + ". Can't find index " + arrayInfo.index + " in array " + property *(DataError)*
+When trying to access a non-existent index in the array.
 
 ####"Can't Load Database: " + err *(DatabaseError)*
 JsonDB can't load the database for "err" reason.
