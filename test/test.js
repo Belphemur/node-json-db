@@ -201,11 +201,32 @@ describe('JsonDB', function () {
             expect(property).to.be.a('string');
             expect(property).to.be('perfect');
         });
+
+        it('should throw an error when accessing non-present index', function () {
+            var obj = {property: "perfect"};
+            db.push('/arraytest/arrayTesting[0]', obj, true);
+            expect(function (args) {
+                db.getData(args);
+            }).withArgs("/arraytest/arrayTesting[1]").to.throwException(function (e) {
+                    expect(e).to.be.a(DataError);
+                    expect(e).to.have.property('id', 10);
+                });
+        });
+
         it('should delete the object at index 1', function () {
             db.delete('/arraytest/myarray[1]');
             expect(function (args) {
                 db.getData(args);
             }).withArgs("/arraytest/myarray[1]").to.throwException(function (e) {
+                    expect(e).to.be.a(DataError);
+                    expect(e).to.have.property('id', 10);
+                });
+        });
+
+        it('should throw an error when deleting non-present index', function () {
+            expect(function (args) {
+                db.delete(args);
+            }).withArgs("/arraytest/myarray[10]").to.throwException(function (e) {
                     expect(e).to.be.a(DataError);
                     expect(e).to.have.property('id', 10);
                 });
