@@ -101,11 +101,16 @@
                     throw new DataError("Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property, 5);
                 }
             }
+
             var arrayInfo = processArray();
-            if(arrayInfo) {
+            if (arrayInfo) {
                 property = arrayInfo.property;
                 findData();
-                data = data[arrayInfo.index];
+                if (data.hasOwnProperty(arrayInfo.index)) {
+                    data = data[arrayInfo.index];
+                } else {
+                    throw new DataError("DataPath: /" + dataPath.join("/") + ". Can't find index " + arrayInfo.index + " in array " + property, 10);
+                }
             } else {
                 findData();
             }
