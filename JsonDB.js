@@ -9,6 +9,7 @@
     var DataError = require("./lib/Errors").DataError;
     var mkdirp = require('mkdirp');
     var path = require('path');
+    var arrayIndexRegex = /(.+)\[(\d+)\]/;
 
     var JsonDB = function (filename, saveOnPush, humanReadable) {
 
@@ -76,18 +77,40 @@
         create = create || false;
 
         function recursiveProcessDataPath(data, index) {
+
             var property = dataPath[index];
 
-            if (data.hasOwnProperty(property)) {
-                data = data[property];
-            } else if (create) {
-                data[property] = {};
-                data = data[property];
-            } else {
-                throw new DataError("Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property, 5);
+            function processArray() {
+                var match = arrayIndexRegex.exec(property);
+                var result = undefined;
+                if (match != null) {
+                    result = {};
+                    result.property = match[1];
+                    result.index = match[2];
+                }
+                return result;
             }
 
-            if(dataPath.length == ++index) {
+            function findData() {
+                if (data.hasOwnProperty(property)) {
+                    data = data[property];
+                } else if (create) {
+                    data[property] = {};
+                    data = data[property];
+                } else {
+                    throw new DataError("Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property, 5);
+                }
+            }
+            var arrayInfo = processArray();
+            if(arrayInfo) {
+                property = arrayInfo.property;
+                findData();
+                data = data[arrayInfo.index];
+            } else {
+                findData();
+            }
+
+            if (dataPath.length == ++index) {
                 return data;
             }
             return recursiveProcessDataPath(data, index);
