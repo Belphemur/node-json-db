@@ -80,6 +80,10 @@
 
             var property = dataPath[index];
 
+            /**
+             * Check if the property want to access an Array
+             * @returns {undefined}
+             */
             function processArray() {
                 var match = arrayIndexRegex.exec(property);
                 var result = undefined;
@@ -91,11 +95,19 @@
                 return result;
             }
 
-            function findData() {
+            /**
+             * Find the wanted Data or create it.
+             */
+            function findData(isArray) {
+                isArray = isArray || false;
                 if (data.hasOwnProperty(property)) {
                     data = data[property];
                 } else if (create) {
-                    data[property] = {};
+                    if (isArray) {
+                        data[property] = [];
+                    } else {
+                        data[property] = {};
+                    }
                     data = data[property];
                 } else {
                     throw new DataError("Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property, 5);
@@ -105,8 +117,14 @@
             var arrayInfo = processArray();
             if (arrayInfo) {
                 property = arrayInfo.property;
-                findData();
+                findData(true);
+                if (!Array.isArray(data)) {
+                    throw new DataError("DataPath: /" + dataPath.join("/") + ". " + property + " is not an array.", 11);
+                }
                 if (data.hasOwnProperty(arrayInfo.index)) {
+                    data = data[arrayInfo.index];
+                } else if (create) {
+                    data[arrayInfo.index] = {};
                     data = data[arrayInfo.index];
                 } else {
                     throw new DataError("DataPath: /" + dataPath.join("/") + ". Can't find index " + arrayInfo.index + " in array " + property, 10);
