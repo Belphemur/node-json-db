@@ -25,7 +25,11 @@
         "mkdirp": "0.5.x"
     },
     "devDependencies": {
-        "mocha": ">=1.17.0",
-        "expect.js": ">=0.3.1"
+        "mocha": "1.17.x",
+        "expect.js": "0.3.x",
+        "grunt": "0.4.x",
+        "grunt-cli": "0.1.x",
+        "grunt-contrib-jshint" : "0.11.x",
+        "grunt-simple-mocha" : "0.4.x"
     }
 }
