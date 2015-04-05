@@ -9,7 +9,6 @@
     var DataError = require("./lib/Errors").DataError;
     var mkdirp = require('mkdirp');
     var path = require('path');
-    var arrayIndexRegex = /(.+)\[(\d+)\]/;
 
     var JsonDB = function (filename, saveOnPush, humanReadable) {
 
@@ -80,20 +79,6 @@
 
             var property = dataPath[index];
 
-            /**
-             * Check if the property want to access an Array
-             * @returns {undefined}
-             */
-            function processArray() {
-                var match = arrayIndexRegex.exec(property);
-                var result = undefined;
-                if (match != null) {
-                    result = {};
-                    result.property = match[1];
-                    result.index = match[2];
-                }
-                return result;
-            }
 
             /**
              * Find the wanted Data or create it.
@@ -114,7 +99,7 @@
                 }
             }
 
-            var arrayInfo = processArray();
+            var arrayInfo = JsonUtils.processArray(property);
             if (arrayInfo) {
                 property = arrayInfo.property;
                 findData(true);
