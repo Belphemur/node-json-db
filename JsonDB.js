@@ -60,7 +60,7 @@
         return new DBParentData(last, this._getData(path, create), this);
     };
     /**
-     * Get the deta sotred in the data base
+     * Get the deta stored in the data base
      * @param dataPath path leading to the data
      * @returns {*}
      */
@@ -70,27 +70,34 @@
     };
 
     JsonDB.prototype._getData = function (dataPath, create) {
+
         this.load();
 
         create = create || false;
+
+        function recursiveProcessDataPath(data, index) {
+            var property = dataPath[index];
+
+            if (data.hasOwnProperty(property)) {
+                data = data[property];
+            } else if (create) {
+                data[property] = {};
+                data = data[property];
+            } else {
+                throw new DataError("Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property, 5);
+            }
+
+            if(dataPath.length == ++index) {
+                return data;
+            }
+            return recursiveProcessDataPath(data, index);
+        }
+
         if (dataPath.length === 0) {
             return this.data;
         }
-        var data = this.data;
-        for (var i in dataPath) {
-            if (dataPath.hasOwnProperty(i)) {
-                var property = dataPath[i];
-                if (data.hasOwnProperty(property)) {
-                    data = data[property];
-                } else if (create) {
-                    data[property] = {};
-                    data = data[property];
-                } else {
-                    throw new DataError("Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property, 5);
-                }
-            }
-        }
-        return data;
+
+        return recursiveProcessDataPath(this.data, 0);
 
     };
     /**
