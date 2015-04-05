@@ -57,7 +57,7 @@
     JsonDB.prototype._getParentData = function (dataPath, create) {
         var path = this._processDataPath(dataPath);
         var last = path.pop();
-        return new DBParentData(last, this._getData(path, create), this);
+        return new DBParentData(last, this._getData(path, create), this, dataPath);
     };
     /**
      * Get the deta stored in the data base
