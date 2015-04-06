@@ -261,6 +261,15 @@ describe('JsonDB', function () {
                 });
         });
 
+        it('should merge nested arrays', function () {
+            db.push('/merging/array[0]', ['test']);
+            db.push('/merging/array[0]', ['secondTest'], false);
+            var data = db.getData('/merging/array[0]');
+            expect(data).to.be.an('array');
+            expect(data).to.contain('test');
+            expect(data).to.contain('secondTest');
+        });
+
     });
     describe('Cleanup', function () {
         it('should remove the test files', function () {
