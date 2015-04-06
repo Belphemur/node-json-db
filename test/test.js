@@ -5,11 +5,11 @@ var DataError = require("../lib/Errors").DataError;
 
 var fs = require('fs');
 
-var testFile1 = "test_file1";
-var testFile2 = "dirCreation/test_file2";
+var testFile1 = "test/test_file1";
+var testFile2 = "test/dirCreation/test_file2";
 var faulty = "test/faulty.json";
-var testFile3 = "test_file3";
-var testFile4 = "array_file";
+var testFile3 = "test/test_file3";
+var testFile4 = "test/array_file";
 describe('JsonDB', function () {
     describe('Exception/Error', function () {
         it('should create create a DataError', function () {
@@ -268,7 +268,7 @@ describe('JsonDB', function () {
             fs.unlinkSync(testFile2 + ".json");
             fs.unlinkSync(testFile3 + ".json");
             fs.unlinkSync(testFile4 + ".json");
-            fs.rmdirSync("dirCreation");
+            fs.rmdirSync("test/dirCreation");
         });
     });
 
