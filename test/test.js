@@ -174,6 +174,21 @@ describe('JsonDB', function () {
             expect(myarray).to.be.an('array');
             expect(myarray[0]).to.be('test');
         });
+
+        it('should create an array with a string at index TEST', function () {
+            db.push('/arraytest/myarray[TEST]', "works", true);
+            var myarray = db.getData('/arraytest/myarray');
+            expect(myarray).to.be.an('array');
+            expect(myarray['TEST']).to.be('works');
+        });
+
+        it('should create an array with a string at index "TEST test"', function () {
+            db.push('/arraytest/myarray[TEST test]', "workingTest", true);
+            var myarray = db.getData('/arraytest/myarray');
+            expect(myarray).to.be.an('array');
+            expect(myarray['TEST test']).to.be('workingTest');
+        });
+
         it('should add an object at index 1', function () {
             var obj = {property: "perfect"};
             db.push('/arraytest/myarray[1]', obj, true);
