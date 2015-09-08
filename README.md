@@ -11,11 +11,11 @@ npm install node-json-db --save
 ```
 ## Inner Working
 
-###Data
+### Data
 The module store the data using JavaScript Object directly into a JSON file. You can easily traverse the data to reach 
 directly the interesting property using the DataPath. The principle of DataPath is the same as XMLPath.
 
-###Example
+### Example
 ```javascript
 {
     test: {
@@ -101,7 +101,7 @@ db.reload();
 
 ```
 
-###Array Support
+### Array Support
 You can also access the information stored into arrays and manipulate them.
 ```javascript
 var JsonDB = require('node-json-db');
@@ -133,37 +133,37 @@ JsonDB use 2 type of Error/Exception :
 | DataError     | When the error is linked to the Data Given                       | 
 | DatabaseError | Linked to a problem with the loading or saving of the Database.  |
 
-####"The Data Path can't be empty" *(DataError)*
+#### "The Data Path can't be empty" *(DataError)*
 The Database expect to minimum receive the root **/** as DataPath.
 
-####"Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property *(DataError)*
+#### "Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property *(DataError)*
 When the full hierarchy of the DataPath given is not present in the Database.
 It tells you until where it's valid. This error can happen when using *getData*
 and *delete*
 
-####"Can't merge another type of data with an Array" *(DataError)*
+#### "Can't merge another type of data with an Array" *(DataError)*
 If you chose to not override the data (merging) when pushing and the new data is an array
 but the current data isn't an array (an Object by example).
 
-####"Can't merge an Array with an Object" *(DataError)*
+#### "Can't merge an Array with an Object" *(DataError)*
 Same idea as the previous message. You have an array as current data and ask to 
 merge it with an Object.
 
-####"DataPath: /" + dataPath.join("/") + ". " + property + " is not an array." *(DataError)*
+#### "DataPath: /" + dataPath.join("/") + ". " + property + " is not an array." *(DataError)*
 When trying to access an object as an array.
 
-####"DataPath: /" + dataPath.join("/") + ". Can't find index " + arrayInfo.index + " in array " + property *(DataError)*
+#### "DataPath: /" + dataPath.join("/") + ". Can't find index " + arrayInfo.index + " in array " + property *(DataError)*
 When trying to access a non-existent index in the array.
 
-####"Can't Load Database: " + err *(DatabaseError)*
+#### "Can't Load Database: " + err *(DatabaseError)*
 JsonDB can't load the database for "err" reason.
 You can find the nested error in **error.inner**
 
-####"Can't save the database: " + err *(DatabaseError)*
+#### "Can't save the database: " + err *(DatabaseError)*
 JsonDB can't save the database for "err" reason.
 You can find the nested error in **error.inner**
 
-####"DataBase not loaded. Can't write" *(DatabaseError)*
+#### "DataBase not loaded. Can't write" *(DatabaseError)*
 Since the database hasn't been loaded correctly, the module won't let you save the data to avoid erasing your database.
 
 
