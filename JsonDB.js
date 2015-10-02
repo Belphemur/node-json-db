@@ -69,6 +69,7 @@
         this.load();
 
         create = create || false;
+        dataPath = JsonUtils.removeTrailingSlash(dataPath);
 
         function recursiveProcessDataPath(data, index) {
 
@@ -126,6 +127,7 @@
         return recursiveProcessDataPath(this.data, 0);
 
     };
+
     /**
      * Pushing data into the database
      * @param dataPath path leading to the data
@@ -134,6 +136,8 @@
      */
     JsonDB.prototype.push = function (dataPath, data, override) {
         override = override === undefined ? true : override;
+
+        dataPath = JsonUtils.removeTrailingSlash(dataPath);
         var dbData = this._getParentData(dataPath, true);
         if (!dbData) {
             throw new Error("Data not found");
@@ -166,6 +170,7 @@
      * @param dataPath path leading to the data
      */
     JsonDB.prototype.delete = function (dataPath) {
+        dataPath = JsonUtils.removeTrailingSlash(dataPath);
         var dbData = this._getParentData(dataPath, true);
         if (!dbData) {
             return;

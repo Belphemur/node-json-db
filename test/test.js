@@ -104,6 +104,21 @@ describe('JsonDB', function () {
             db.push("/test/test", object);
             expect(db.getData("/test/test")).to.be(object);
         })
+        it('should remove trailing Slash when pushing/getting data (/)', function () {
+            var object = {test: {test: "test"}};
+            db.push("/testing/", object);
+            expect(db.getData("/testing")).to.be(object);
+        })
+
+        it('should remove trailing Slash when deleting data (/)', function () {
+            db.delete("/testing/");
+            expect(function (args) {
+                db.getData(args);
+            }).withArgs("/testing/").to.throwException(function (e) {
+                    expect(e).to.be.a(DataError);
+            });
+        })
+
         it('should merge the data at datapath', function () {
             var object = ['test2'];
             db.push("/test/test", object, false);
