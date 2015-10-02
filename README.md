@@ -47,7 +47,7 @@ var db = new JsonDB("myDataBase", true, false);
 db.push("/test1","super test");
 
 //It also create automatically the hierarchy when pushing new data for a DataPath that doesn't exists
-db.push("/test2/my/test/",5);
+db.push("/test2/my/test",5);
 
 //You can also push directly objects
 db.push("/test3", {test:"test", json: {test:["test"]}});
