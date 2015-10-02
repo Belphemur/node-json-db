@@ -10,6 +10,7 @@ var testFile2 = "test/dirCreation/test_file2";
 var faulty = "test/faulty.json";
 var testFile3 = "test/test_file3";
 var testFile4 = "test/array_file";
+var testFile5 = "test/test_file_empty";
 describe('JsonDB', function () {
     describe('Exception/Error', function () {
         it('should create create a DataError', function () {
@@ -35,6 +36,15 @@ describe('JsonDB', function () {
 
         it('should create the JSON File', function (done) {
             fs.exists(testFile1 + ".json", function (exists) {
+                expect(exists).to.be.ok();
+                done();
+            });
+
+        })
+
+        it('should create the JSON File when called directly', function (done) {
+            var jsondb = new JsonDB(testFile5, true, false);
+            fs.exists(testFile5 + ".json", function (exists) {
                 expect(exists).to.be.ok();
                 done();
             });
@@ -292,6 +302,7 @@ describe('JsonDB', function () {
             fs.unlinkSync(testFile2 + ".json");
             fs.unlinkSync(testFile3 + ".json");
             fs.unlinkSync(testFile4 + ".json");
+            fs.unlinkSync(testFile5 + ".json");
             fs.rmdirSync("test/dirCreation");
         });
     });

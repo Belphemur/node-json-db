@@ -22,15 +22,10 @@
         this.data = {};
         if (!FS.existsSync(this.filename)) {
             var dirname = path.dirname(this.filename);
-            mkdirp(dirname, function (err) {
-                if (err) {
-                    throw err;
-                }
-                self.save(true);
-                self.loaded = true;
-                util.log("[JsonDB] DataBase " + self.filename + " created.");
-            });
-
+            mkdirp.sync(dirname);
+            self.save(true);
+            self.loaded = true;
+            util.log("[JsonDB] DataBase " + self.filename + " created.");
         }
         this.saveOnPush = saveOnPush || true;
         if (humanReadable) {
