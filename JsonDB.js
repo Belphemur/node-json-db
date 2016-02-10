@@ -27,7 +27,7 @@
             self.loaded = true;
             util.log("[JsonDB] DataBase " + self.filename + " created.");
         }
-        this.saveOnPush = saveOnPush || true;
+        this.saveOnPush = ( typeof( saveOnPush ) == "boolean" ) ? saveOnPush : true;
         if (humanReadable) {
             this.humanReadable = humanReadable;
         }
