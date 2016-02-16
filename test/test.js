@@ -310,6 +310,18 @@ describe('JsonDB', function () {
             expect(data).to.contain('secondTest');
         });
 
+        it('should remove the index of an array, not set it to null', function () {
+            db.push('/deleteTest/array[0]', 'test');
+            db.push('/deleteTest/array[1]', 'test2');
+            db.delete('/deleteTest/array[1]');
+            db.save(true);
+            var json = JSON.parse(fs.readFileSync(testFile4+'.json'));
+            expect(json.deleteTest).to.be.an('object');
+            expect(json.deleteTest.array).to.be.an('array');
+            expect(json.deleteTest.array[0]).to.be('test');
+            expect(json.deleteTest.array[1]).to.be(undefined);
+        });
+
     });
     describe('Cleanup', function () {
         it('should remove the test files', function () {
