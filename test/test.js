@@ -331,6 +331,15 @@ describe('JsonDB', function () {
             expect(index1).to.be(1);
         });
 
+        it('should throw an error when deleting a append command', function () {
+            expect(function (args) {
+                db.delete(args);
+            }).withArgs("/arraytest/appendArray[]").to.throwException(function (e) {
+                expect(e).to.be.a(DataError);
+                expect(e).to.have.property('id', 10);
+            });
+        });
+
     });
     describe('Cleanup', function () {
         it('should remove the test files', function () {
