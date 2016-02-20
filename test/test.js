@@ -322,6 +322,15 @@ describe('JsonDB', function () {
             expect(json.deleteTest.array[1]).to.be(undefined);
         });
 
+        it('should append a value to the existing array', function () {
+            db.push('/arraytest/appendArray', [0], true);
+            db.push('/arraytest/appendArray[]', 1, true);
+            var array = db.getData('/arraytest/appendArray');
+            expect(array).to.be.an('array');
+            var index1 = db.getData('/arraytest/appendArray[1]');
+            expect(index1).to.be(1);
+        });
+
     });
     describe('Cleanup', function () {
         it('should remove the test files', function () {
