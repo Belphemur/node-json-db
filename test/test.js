@@ -298,7 +298,7 @@ describe('JsonDB', function () {
             }).withArgs("/arraytest/fakearray[1]/fake").to.throwException(function (e) {
                     expect(e).to.be.a(DataError);
                     expect(e).to.have.property('id', 11);
-                });
+            });
         });
 
         it('should merge nested arrays', function () {
@@ -337,6 +337,26 @@ describe('JsonDB', function () {
             }).withArgs("/arraytest/appendArray[]").to.throwException(function (e) {
                 expect(e).to.be.a(DataError);
                 expect(e).to.have.property('id', 10);
+            });
+        });
+
+        it('should append a value to the existing array and create property', function () {
+            db.push('/arraytest/appendArray2', [0], true);
+            db.push('/arraytest/appendArray2[]/test', 1, true);
+            var array = db.getData('/arraytest/appendArray2');
+            expect(array).to.be.an('array');
+            console.log(array);
+            var index1 = db.getData('/arraytest/appendArray2[1]/test');
+            expect(index1).to.be(1);
+        });
+
+        it('should throw an error when trying to append to a non array)', function () {
+            db.push('/arraytest/fakearray', {fake: "fake"}, true);
+            expect(function (args) {
+                db.push(args, {test: 'test'}, true);
+            }).withArgs("/arraytest/fakearray[]/fake").to.throwException(function (e) {
+                expect(e).to.be.a(DataError);
+                expect(e).to.have.property('id', 11);
             });
         });
 
