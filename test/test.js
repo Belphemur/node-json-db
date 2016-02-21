@@ -345,7 +345,6 @@ describe('JsonDB', function () {
             db.push('/arraytest/appendArray2[]/test', 1, true);
             var array = db.getData('/arraytest/appendArray2');
             expect(array).to.be.an('array');
-            console.log(array);
             var index1 = db.getData('/arraytest/appendArray2[1]/test');
             expect(index1).to.be(1);
         });
