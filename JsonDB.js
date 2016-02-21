@@ -105,8 +105,14 @@
                 if (data.hasOwnProperty(arrayInfo.index)) {
                     data = data[arrayInfo.index];
                 } else if (create) {
-                    data[arrayInfo.index] = {};
-                    data = data[arrayInfo.index];
+                    if (arrayInfo.append) {
+                        data.push({});
+                        data = data[data.length - 1];
+                    }
+                    else {
+                        data[arrayInfo.index] = {};
+                        data = data[arrayInfo.index];
+                    }
                 } else {
                     throw new DataError("DataPath: /" + dataPath.join("/") + ". Can't find index " + arrayInfo.index + " in array " + property, 10);
                 }
