@@ -125,6 +125,18 @@ var testString = db.getData("/arraytest/myarray[0]/obj");
 //Keep in mind this won't delete the array even if it's empty.
 db.delete(("/arraytest/myarray[0]");
 ```
+
+#### Appending in Array
+```javascript
+//You can also easily append new item to an existing array
+//This set the next index with {obj: 'test'}
+db.push("/arraytest/myarray[]", {obj:'test'}, true);
+
+
+//The append feature can be used in conjuction with properties
+//This will set the next index as an object {myTest: 'test'}
+db.push("/arraytest/myarray[]/myTest", 'test', true);
+```
 ### Exception/Error
 JsonDB use 2 type of Error/Exception :
 
