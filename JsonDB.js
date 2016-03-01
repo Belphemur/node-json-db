@@ -25,7 +25,6 @@
             mkdirp.sync(dirname);
             self.save(true);
             self.loaded = true;
-            util.log("[JsonDB] DataBase " + self.filename + " created.");
         }
         this.saveOnPush = ( typeof( saveOnPush ) == "boolean" ) ? saveOnPush : true;
         if (humanReadable) {
@@ -203,7 +202,6 @@
             var data = FS.readFileSync(this.filename, 'utf8');
             this.data = JSON.parse(data);
             this.loaded = true;
-            util.log("[JsonDB] DataBase " + this.filename + " loaded.");
         } catch (err) {
             var error = new DatabaseError("Can't Load Database", 1, err);
             error.inner = err;
