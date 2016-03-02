@@ -2,7 +2,6 @@
     "use strict";
     var FS = require('fs');
     var events = require('events');
-    var util = require('util');
     var JsonUtils = require("./lib/utils");
     var DBParentData = require("./lib/DBParentData");
     var DatabaseError = require("./lib/Errors").DatabaseError;
