@@ -26,7 +26,7 @@ directly the interesting property using the DataPath. The principle of DataPath 
     }
 }
 ```
-If you want to fet the value of array, the DataPath is **/test/data1/array**
+If you want to fetch the value of array, the DataPath is **/test/data1/array**
 To reach the value of data2 : **/test/data2**
 You can of course get also the full object **test** : **/test**
 Or even the root : **/**
