@@ -358,6 +358,25 @@ describe('JsonDB', function () {
                 expect(e).to.have.property('id', 11);
             });
         });
+        describe('last item', function () {
+            it('should return the last key when using -1)', function () {
+                db.push('/arraylast/myarray', [1, 2, 3], true);
+                var lastItem = db.getData('/arraylast/myarray[-1]');
+                expect(lastItem).to.be(3);
+            });
+            it('should replace the last item when using -1)', function () {
+                db.push('/arraylast/a1', [1, 2, 3], true);
+                db.push('/arraylast/a1[-1]', 5);
+                var lastItem = db.getData('/arraylast/a1[-1]');
+                expect(lastItem).to.be(5);
+            });
+            it('should delete the last item when using -1)', function () {
+                db.push('/arraylast/a2', [1, 2, 3], true);
+                db.delete('/arraylast/a2[-1]');
+                var lastItem = db.getData('/arraylast/a2[-1]');
+                expect(lastItem).to.be(2);
+            });
+        });
 
     });
     describe('Cleanup', function () {
