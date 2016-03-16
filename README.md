@@ -137,6 +137,24 @@ db.push("/arraytest/myarray[]", {obj:'test'}, true);
 //This will set the next index as an object {myTest: 'test'}
 db.push("/arraytest/myarray[]/myTest", 'test', true);
 ```
+
+#### Last Item in Array
+```javascript
+// Add basic array
+db.push("/arraytest/lastItemArray", [1, 2, 3], true);
+
+//You can easily get the last item of the array with the index -1
+//This will return 3
+db.get("/arraytest/lastItemArray[-1]");
+
+
+//You can delete the last item of an array with -1
+//This will remove the integer "3" from the array
+db.delete("/arraytest/lastItemArray[-1]");
+
+//This will return 2 since 3 just got removed
+db.get("/arraytest/lastItemArray[-1]");
+```
 ### Exception/Error
 #### Type
 
