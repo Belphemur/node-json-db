@@ -349,7 +349,7 @@ describe('JsonDB', function () {
             expect(index1).to.be(1);
         });
 
-        it('should throw an error when trying to append to a non array)', function () {
+        it('should throw an error when trying to append to a non array', function () {
             db.push('/arraytest/fakearray', {fake: "fake"}, true);
             expect(function (args) {
                 db.push(args, {test: 'test'}, true);
@@ -359,18 +359,18 @@ describe('JsonDB', function () {
             });
         });
         describe('last item', function () {
-            it('should return the last key when using -1)', function () {
+            it('should return the last key when using -1', function () {
                 db.push('/arraylast/myarray', [1, 2, 3], true);
                 var lastItem = db.getData('/arraylast/myarray[-1]');
                 expect(lastItem).to.be(3);
             });
-            it('should replace the last item when using -1)', function () {
+            it('should replace the last item when using -1', function () {
                 db.push('/arraylast/a1', [1, 2, 3], true);
                 db.push('/arraylast/a1[-1]', 5);
                 var lastItem = db.getData('/arraylast/a1[-1]');
                 expect(lastItem).to.be(5);
             });
-            it('should delete the last item when using -1)', function () {
+            it('should delete the last item when using -1', function () {
                 db.push('/arraylast/a2', [1, 2, 3], true);
                 db.delete('/arraylast/a2[-1]');
                 var lastItem = db.getData('/arraylast/a2[-1]');
