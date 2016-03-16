@@ -359,6 +359,24 @@ describe('JsonDB', function () {
             });
         });
         describe('last item', function () {
+
+            it('should throw an exception when array is empty when using -1', function () {
+                db.push('/arraylast/myarrayempty', [], true);
+                expect(function (args) {
+                    db.getData(args);
+                }).withArgs('/arraylast/myarrayempty[-1]').to.throwException(function (e) {
+                    expect(e).to.be.a(DataError);
+                    expect(e).to.have.property('id', 10);
+                });
+            });
+
+            it('should set the fist item when using -1 on empty array', function () {
+                db.push('/arraylast/emptyArray', [], true);
+                db.push('/arraylast/emptyArray[-1]', 3);
+                var lastItem = db.getData('/arraylast/emptyArray[0]');
+                expect(lastItem).to.be(3);
+            });
+
             it('should return the last key when using -1', function () {
                 db.push('/arraylast/myarray', [1, 2, 3], true);
                 var lastItem = db.getData('/arraylast/myarray[-1]');
