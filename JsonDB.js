@@ -100,16 +100,17 @@
                 if (!Array.isArray(data)) {
                     throw new DataError("DataPath: /" + dataPath.join("/") + ". " + property + " is not an array.", 11);
                 }
-                if (data.hasOwnProperty(arrayInfo.index)) {
-                    data = data[arrayInfo.index];
+                var arrayIndex = arrayInfo.getIndex(data, true);
+                if (data.hasOwnProperty(arrayIndex)) {
+                    data = data[arrayIndex];
                 } else if (create) {
                     if (arrayInfo.append) {
                         data.push({});
                         data = data[data.length - 1];
                     }
                     else {
-                        data[arrayInfo.index] = {};
-                        data = data[arrayInfo.index];
+                        data[arrayIndex] = {};
+                        data = data[arrayIndex];
                     }
                 } else {
                     throw new DataError("DataPath: /" + dataPath.join("/") + ". Can't find index " + arrayInfo.index + " in array " + property, 10);
