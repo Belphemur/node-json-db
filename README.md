@@ -145,7 +145,7 @@ db.push("/arraytest/lastItemArray", [1, 2, 3], true);
 
 //You can easily get the last item of the array with the index -1
 //This will return 3
-db.get("/arraytest/lastItemArray[-1]");
+db.getData("/arraytest/lastItemArray[-1]");
 
 
 //You can delete the last item of an array with -1
@@ -153,7 +153,7 @@ db.get("/arraytest/lastItemArray[-1]");
 db.delete("/arraytest/lastItemArray[-1]");
 
 //This will return 2 since 3 just got removed
-db.get("/arraytest/lastItemArray[-1]");
+db.getData("/arraytest/lastItemArray[-1]");
 ```
 ### Exception/Error
 #### Type
