@@ -113,10 +113,6 @@ var db = new JsonDB("myDataBase", true, false);
 //This will create an array 'myarray' with the object '{obj:'test'}' at index 0
 db.push("/arraytest/myarray[0]", {obj:'test'}, true);
 
-//The index can be also non-numerical
-//This will create an array 'myarray' with the object '{obj:'test'}' with key test
-db.push("/arraytest/myarray[test]", {obj:'test'}, true);
-
 //You can retrieve a property of an object included in an array
 //testString = 'test';
 var testString = db.getData("/arraytest/myarray[0]/obj");
