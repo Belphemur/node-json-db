@@ -200,18 +200,13 @@ describe('JsonDB', function () {
             expect(myarray[0]).to.be('test');
         });
 
-        it('should create an array with a string at index TEST', function () {
-            db.push('/arraytest/myarray[TEST]', "works", true);
-            var myarray = db.getData('/arraytest/myarray');
-            expect(myarray).to.be.an('array');
-            expect(myarray['TEST']).to.be('works');
-        });
-
-        it('should create an array with a string at index "TEST test"', function () {
-            db.push('/arraytest/myarray[TEST test]', "workingTest", true);
-            var myarray = db.getData('/arraytest/myarray');
-            expect(myarray).to.be.an('array');
-            expect(myarray['TEST test']).to.be('workingTest');
+        it('should throw an Error when using an array with a string at index TEST', function () {
+            expect(function (args) {
+                db.push('/arraytest/myarray[TEST]', "works", true);
+            }).withArgs("/arraytest/arrayTesting[1]").to.throwException(function (e) {
+                expect(e).to.be.a(DataError);
+                expect(e).to.have.property('id', 200);
+            });
         });
 
         it('should add an object at index 1', function () {
