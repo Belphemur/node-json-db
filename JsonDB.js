@@ -9,6 +9,14 @@
     var mkdirp = require('mkdirp');
     var path = require('path');
 
+    /**
+     * Create the JSON database
+     * @param filename where to save the data base
+     * @param saveOnPush saving on modification of the data
+     * @param humanReadable is the json file humand readable 
+     * @returns {JsonDB}
+     * @constructor
+     */
     var JsonDB = function (filename, saveOnPush, humanReadable) {
 
         this.filename = filename;
@@ -181,6 +189,10 @@
             return;
         }
         dbData.delete();
+        
+        if (this.saveOnPush) {
+            this.save();
+        }
     };
     /**
      * Reload the database from the file
