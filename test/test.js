@@ -11,6 +11,7 @@ var faulty = "test/faulty.json";
 var testFile3 = "test/test_file3";
 var testFile4 = "test/array_file";
 var testFile5 = "test/test_file_empty";
+var testFile6 = "test/test_delete";
 describe('JsonDB', function () {
     describe('Exception/Error', function () {
         it('should create create a DataError', function () {
@@ -392,6 +393,34 @@ describe('JsonDB', function () {
         });
 
     });
+    
+    describe('Delete Info', function(){
+        var db = new JsonDB(testFile6, true);
+
+        it('should delete the data and save the file if saveOnPush is set', function (done) {
+            var object = {test: {readable: "test"}};
+            db.push("/", object);
+            fs.readFile(testFile6 + ".json", "utf8", function (err, data) {
+                if (err) {
+                    done(err);
+                    return;
+                }
+                expect(data).to.be(JSON.stringify(object));
+                db.delete('/test');
+                fs.readFile(testFile6 + ".json", "utf8", function (err, data) {
+                    if (err) {
+                        done(err);
+                        return;
+                    }
+                    expect(data).to.be(JSON.stringify({}));
+                    done();
+                });
+            });
+
+
+        });
+    });
+
     describe('Cleanup', function () {
         it('should remove the test files', function () {
             fs.unlinkSync(testFile1 + ".json");
@@ -399,6 +428,7 @@ describe('JsonDB', function () {
             fs.unlinkSync(testFile3 + ".json");
             fs.unlinkSync(testFile4 + ".json");
             fs.unlinkSync(testFile5 + ".json");
+            fs.unlinkSync(testFile6 + ".json");
             fs.rmdirSync("test/dirCreation");
         });
     });
