@@ -126,6 +126,7 @@ describe('JsonDB', function () {
             expect(JSON.stringify(db.getData("/test/test"))).to.eql('[\"overriden\",\"test2\"]');
         })
 
+
         it('should create the tree to reach datapath', function () {
             var object = ['test2'];
             db.push("/my/tree/is/awesome", object, false);
@@ -135,8 +136,16 @@ describe('JsonDB', function () {
             expect(function (path, data, override) {
                 db.push(path, data, override);
             }).withArgs("/test/test", {myTest: "test"}, false).to.throwException(function (e) {
-                    expect(e).to.be.a(DataError);
-                });
+                expect(e).to.be.a(DataError);
+            });
+        })
+
+        it('should override a null variable when merging', function () {
+            var replacement = {a:'test'};
+            db.push('/null', {a:null}, false);
+            db.push('/null', replacement, false);
+            var data = db.getData('/null');
+            expect(data['a']).to.be(replacement['a']);
         })
 
         it('should throw an Error when merging Array with Object', function () {
