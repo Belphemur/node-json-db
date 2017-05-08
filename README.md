@@ -36,25 +36,31 @@ See [test](https://github.com/Belphemur/node-json-db/tree/master/test) for more 
 
 ```javascript
 var JsonDB = require('node-json-db');
-//The second argument is used to tell the DB to save after each push
-//If you put false, you'll have to call the save() method.
-//The third argument is to ask JsonDB to save the database in an human readable format. (default false)
+// The second argument is used to tell the DB to save after each push
+// If you put false, you'll have to call the save() method.
+// The third argument is to ask JsonDB to save the database in an human readable format. (default false)
 var db = new JsonDB("myDataBase", true, false);
 
-//Pushing the data into the database
-//With the wanted DataPath
-//By default the push will override the old value
+// Pushing the data into the database
+// With the wanted DataPath
+// By default the push will override the old value
 db.push("/test1","super test");
 
-//It also create automatically the hierarchy when pushing new data for a DataPath that doesn't exists
+// It also create automatically the hierarchy when pushing new data for a DataPath that doesn't exists
 db.push("/test2/my/test",5);
 
-//You can also push directly objects
+// You can also push directly objects
 db.push("/test3", {test:"test", json: {test:["test"]}});
 
-//If you don't want to override the data but to merge them
-//The merge is recursive and work with Object and Array.
-db.push("/test3", {new:"cool", json: {important : 5}}, false);
+// If you don't want to override the data but to merge them
+// The merge is recursive and work with Object and Array.
+db.push("/test3", {
+    new:"cool",
+    json: {
+        important : 5
+    }
+}, false);
+
 /*
 This give you this results :
 {
@@ -68,35 +74,37 @@ This give you this results :
    "new":"cool"
 }
 */
-//You can't merge primitive.
-//If you do this:
-db.push("/test2/my/test/",10,false);
-//the data will be overriden
 
-//Get the data from the root
+// You can't merge primitive.
+// If you do this:
+db.push("/test2/my/test/",10,false);
+
+// The data will be overriden
+
+// Get the data from the root
 var data = db.getData("/");
 
-//From a particular DataPath
+// From a particular DataPath
 var data = db.getData("/test1");
 
-//If you try to get some data from a DataPath that doesn't exists
-//You'll get an Error
+// If you try to get some data from a DataPath that doesn't exists
+// You'll get an Error
 try {
-var data = db.getData("/test1/test/dont/work");
+    var data = db.getData("/test1/test/dont/work");
 } catch(error) {
-//The error will tell you where the DataPath stopped. In this case test1
-//Since /test1/test does't exist.
+    // The error will tell you where the DataPath stopped. In this case test1
+    // Since /test1/test does't exist.
     console.error(error);
-}
+};
 
-//Deleting data
+// Deleting data
 db.delete("/test1");
 
-//Save the data (useful if you disable the saveOnPush)
+// Save the data (useful if you disable the saveOnPush)
 db.save();
 
-//In case you have a exterior change to the databse file and want to reload it
-//use this method
+// In case you have a exterior change to the databse file and want to reload it
+// use this method
 db.reload();
 
 ```
@@ -105,32 +113,36 @@ db.reload();
 You can also access the information stored into arrays and manipulate them.
 ```javascript
 var JsonDB = require('node-json-db');
-//The second argument is used to tell the DB to save after each push
-//If you put false, you'll have to call the save() method.
-//The third argument is to ask JsonDB to save the database in an human readable format. (default false)
+// The second argument is used to tell the DB to save after each push
+// If you put false, you'll have to call the save() method.
+// The third argument is to ask JsonDB to save the database in an human readable format. (default false)
 var db = new JsonDB("myDataBase", true, false);
 
-//This will create an array 'myarray' with the object '{obj:'test'}' at index 0
-db.push("/arraytest/myarray[0]", {obj:'test'}, true);
+// This will create an array 'myarray' with the object '{obj:'test'}' at index 0
+db.push("/arraytest/myarray[0]", {
+    obj:'test'
+}, true);
 
-//You can retrieve a property of an object included in an array
-//testString = 'test';
+// You can retrieve a property of an object included in an array
+// testString = 'test';
 var testString = db.getData("/arraytest/myarray[0]/obj");
 
-//Doing this will delete the object stored at the index 0 of the array.
-//Keep in mind this won't delete the array even if it's empty.
+// Doing this will delete the object stored at the index 0 of the array.
+// Keep in mind this won't delete the array even if it's empty.
 db.delete(("/arraytest/myarray[0]");
 ```
 
 #### Appending in Array
 ```javascript
-//You can also easily append new item to an existing array
-//This set the next index with {obj: 'test'}
-db.push("/arraytest/myarray[]", {obj:'test'}, true);
+// You can also easily append new item to an existing array
+// This set the next index with {obj: 'test'}
+db.push("/arraytest/myarray[]", {
+    obj:'test'
+}, true);
 
 
-//The append feature can be used in conjuction with properties
-//This will set the next index as an object {myTest: 'test'}
+// The append feature can be used in conjuction with properties
+// This will set the next index as an object {myTest: 'test'}
 db.push("/arraytest/myarray[]/myTest", 'test', true);
 ```
 
@@ -139,16 +151,16 @@ db.push("/arraytest/myarray[]/myTest", 'test', true);
 // Add basic array
 db.push("/arraytest/lastItemArray", [1, 2, 3], true);
 
-//You can easily get the last item of the array with the index -1
-//This will return 3
+// You can easily get the last item of the array with the index -1
+// This will return 3
 db.getData("/arraytest/lastItemArray[-1]");
 
 
-//You can delete the last item of an array with -1
-//This will remove the integer "3" from the array
+// You can delete the last item of an array with -1
+// This will remove the integer "3" from the array
 db.delete("/arraytest/lastItemArray[-1]");
 
-//This will return 2 since 3 just got removed
+// This will return 2 since 3 just got removed
 db.getData("/arraytest/lastItemArray[-1]");
 ```
 ### Exception/Error
