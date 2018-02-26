@@ -4,7 +4,7 @@
     "description": "Database using JSON file as storage for Node.JS",
     "main": "./JsonDB.js",
     "scripts": {
-        "test": "mocha test/test.js"
+        "test": "mocha test/test_*.js"
     },
     "repository": {
         "type": "git",
@@ -25,11 +25,12 @@
         "mkdirp": "0.5.x"
     },
     "devDependencies": {
-        "mocha": "2.4.x",
+        "mocha": "5.x",
         "expect.js": "0.3.x",
-        "grunt": "0.4.x",
-        "grunt-cli": "0.1.x",
-        "grunt-contrib-jshint" : "0.11.x",
-        "grunt-simple-mocha" : "0.4.x"
+        "grunt": "1.x",
+        "grunt-cli": "1.x",
+        "grunt-contrib-jshint": "1.x",
+        "grunt-simple-mocha": "0.4.x",
+        "safe-regex": "~1.1.0"
     }
 }
