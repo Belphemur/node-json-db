@@ -186,4 +186,6 @@ db.getData("/arraytest/lastItemArray[-1]");
 |Can't save the database: XXX                           |DatabaseError  |JsonDB can't save the database for "err" reason. You can find the nested error in **error.inner**                                                                          | 
 |DataBase not loaded. Can't write                       |DatabaseError  |Since the database hasn't been loaded correctly, the module won't let you save the data to avoid erasing your database.                                                    | 
 
+# Thanks
 
+[James Davis](https://github.com/davisjam) for helping to fix a regular expression vulnerable to [catastrophic backtracking](https://docs.microsoft.com/en-us/dotnet/standard/base-types/backtracking-in-regular-expressions).
