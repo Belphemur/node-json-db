@@ -1,17 +1,18 @@
-var expect = require("expect.js");
-var JsonDB = require("../JsonDB.js");
-var DatabaseError = require("../lib/Errors").DatabaseError;
-var DataError = require("../lib/Errors").DataError;
+const expect = require("expect.js");
+const JsonDB = require("../JsonDB.js");
+const DatabaseError = require("../lib/Errors").DatabaseError;
+const DataError = require("../lib/Errors").DataError;
 
-var fs = require('fs');
+const fs = require('fs');
 
-var testFile1 = "test/test_file1";
-var testFile2 = "test/dirCreation/test_file2";
-var faulty = "test/faulty.json";
-var testFile3 = "test/test_file3";
-var testFile4 = "test/array_file";
-var testFile5 = "test/test_file_empty";
-var testFile6 = "test/test_delete";
+const testFile1 = "test/test_file1";
+const testFile2 = "test/dirCreation/test_file2";
+const faulty = "test/faulty.json";
+const testFile3 = "test/test_file3";
+const testFile4 = "test/array_file";
+const testFile5 = "test/test_file_empty";
+const testFile6 = "test/test_delete";
+
 describe('JsonDB', function () {
     describe('Exception/Error', function () {
         it('should create create a DataError', function () {

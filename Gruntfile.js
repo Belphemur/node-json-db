@@ -40,7 +40,8 @@ module.exports = function(grunt) {
                     "nonbsp": true,   // warn on unexpected whitespace breaking chars
                     "strict": true, // commented out for now as it causes 100s of warnings, but want to get there eventually
                     "loopfunc": true, // allow functions to be defined in loops
-                    "sub": true       // don't warn that foo['bar'] should be written as foo.bar
+                    "sub": true,       // don't warn that foo['bar'] should be written as foo.bar
+                    'esversion': 6
                 },
                 all: [
                     'Gruntfile.js',

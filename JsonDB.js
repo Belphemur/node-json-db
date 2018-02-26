@@ -1,13 +1,13 @@
 (function () {
     "use strict";
-    var FS = require('fs');
-    var events = require('events');
-    var JsonUtils = require("./lib/utils");
-    var DBParentData = require("./lib/DBParentData");
-    var DatabaseError = require("./lib/Errors").DatabaseError;
-    var DataError = require("./lib/Errors").DataError;
-    var mkdirp = require('mkdirp');
-    var path = require('path');
+    const FS = require('fs');
+    const events = require('events');
+    const JsonUtils = require("./lib/utils");
+    const DBParentData = require("./lib/DBParentData");
+    const DatabaseError = require("./lib/Errors").DatabaseError;
+    const DataError = require("./lib/Errors").DataError;
+    const mkdirp = require('mkdirp');
+    const path = require('path');
 
     /**
      * Create the JSON database
