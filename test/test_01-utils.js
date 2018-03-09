@@ -64,6 +64,11 @@ describe('Utils', function () {
             });
         });
 
+        it('should ignore an empty agument', function () {
+            var arrayInfo = Util.processArray(undefined);
+            expect(arrayInfo).to.be(null);
+        });
+
     });
 
 });
