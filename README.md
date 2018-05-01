@@ -1,12 +1,11 @@
 [![Build Status](https://secure.travis-ci.org/Belphemur/node-json-db.png?branch=master)](http://travis-ci.org/Belphemur/node-json-db) [![Coverage Status](https://img.shields.io/coveralls/Belphemur/node-json-db.svg)](https://coveralls.io/r/Belphemur/node-json-db?branch=master)
+[![Greenkeeper badge](https://badges.greenkeeper.io/Belphemur/node-json-db.svg)](https://greenkeeper.io/)
 
 [![NPM](https://nodei.co/npm/node-json-db.png?downloads=true&stars=true)](https://nodei.co/npm/node-json-db/)
 
 > A simple "database" that use JSON file for Node.JS.
 
 ## Installation
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/Belphemur/node-json-db.svg)](https://greenkeeper.io/)
 Add `node-json-db` to your existing Node.js project.
 ```bash
 npm install node-json-db --save
