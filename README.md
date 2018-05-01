@@ -5,6 +5,8 @@
 > A simple "database" that use JSON file for Node.JS.
 
 ## Installation
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Belphemur/node-json-db.svg)](https://greenkeeper.io/)
 Add `node-json-db` to your existing Node.js project.
 ```bash
 npm install node-json-db --save
