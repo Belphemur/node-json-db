@@ -3,6 +3,7 @@ node_js:
   - "4"
   - "8"
   - "9"
+  - "10"
 script:
   - istanbul cover ./node_modules/.bin/grunt --report lcovonly && istanbul report text && cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf coverage
 before_script:
