@@ -25,12 +25,13 @@
         "mkdirp": "0.5.x"
     },
     "devDependencies": {
-        "mocha": "5.x",
         "expect.js": "0.3.x",
         "grunt": "1.x",
         "grunt-cli": "1.x",
         "grunt-contrib-jshint": "1.x",
         "grunt-simple-mocha": "0.4.x",
-        "safe-regex": "~1.1.0"
+        "mocha": "5.x",
+        "safe-regex": "~1.1.0",
+        "typescript": "^3.0.1"
     }
 }
