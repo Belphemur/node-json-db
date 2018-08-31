@@ -23,4 +23,5 @@ export class DatabaseError extends NestedError {
 }
 
 export class DataError extends NestedError {
+
 }
