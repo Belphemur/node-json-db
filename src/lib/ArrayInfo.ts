@@ -29,7 +29,7 @@ export class ArrayInfo {
      * Check if the property want to access an Array
      * @param property
      */
-    public static processArray(property: string): ArrayInfo | null {
+    public static processArray(property?: string): ArrayInfo | null {
         if (typeof property === 'undefined') {
             return null
         }
