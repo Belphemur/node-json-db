@@ -39,7 +39,7 @@ export class ArrayInfo {
         }
 
         const arrayIndexRegex = arrayRegex()
-        var match = arrayIndexRegex.exec(property.trim())
+        const match = arrayIndexRegex.exec(property.trim())
         if (match != null) {
             return (regexCache[property] = new ArrayInfo(match[1], match[2]))
         }
