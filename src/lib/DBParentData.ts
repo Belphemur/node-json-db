@@ -1,15 +1,16 @@
 import {ArrayInfo} from "./ArrayInfo"
 import {DataError} from "./Errors"
 import {KeyValue} from "./Utils"
+import {JsonDB} from "../JsonDB"
 
 export class DBParentData {
     readonly parent?: string
     readonly data: KeyValue
-    readonly db: any
+    readonly db: JsonDB
     readonly dataPath: string
 
 
-    constructor(data: any, db: any, dataPath: string, parent?: string) {
+    constructor(data: any, db: JsonDB, dataPath: string, parent?: string) {
         this.parent = parent
         this.data = data
         this.db = db
@@ -53,7 +54,7 @@ export class DBParentData {
      */
     public setData(toSet: any): void {
         if (this.parent === undefined) {
-            this.db.data = toSet
+            this.db.resetData(toSet)
             return
         }
 
@@ -76,7 +77,7 @@ export class DBParentData {
      */
     public delete(): void {
         if (this.parent === undefined) {
-            this.db.data = {}
+            this.db.resetData({})
             return
         }
         const arrayInfo = this.checkArray(true)
