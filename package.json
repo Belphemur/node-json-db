@@ -13,7 +13,8 @@
     "keywords": [
         "database",
         "json",
-        "db"
+        "db",
+        "typescript"
     ],
     "author": "Antoine Aflalo <antoineaf+npm@admincmd.com>",
     "license": "MIT",
