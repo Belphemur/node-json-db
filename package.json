@@ -4,7 +4,8 @@
     "description": "Database using JSON file as storage for Node.JS",
     "main": "dist/node-json-db.es.js",
     "scripts": {
-        "test": "jest --coverage"
+        "test": "jest --coverage",
+        "build": "bili && tsc --emitDeclarationOnly "
     },
     "repository": {
         "type": "git",
