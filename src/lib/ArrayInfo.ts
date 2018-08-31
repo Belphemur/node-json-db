@@ -55,6 +55,11 @@ export class ArrayInfo {
         if (avoidProperty === undefined) {
             avoidProperty = false
         }
+
+        if (this.append) {
+            return -1
+        }
+
         const index = this.index
         if (index == -1) {
             const dataIterable = avoidProperty ? data : data[this.property]
@@ -98,6 +103,9 @@ export class ArrayInfo {
      * @param data
      */
     public delete(data: KeyValue): void {
+        if (this.append) {
+            throw new DataError("Can't delete an appended data", 10)
+        }
         const index = this.getIndex(data)
         data[this.property].splice(index, 1)
     }
