@@ -7,6 +7,7 @@ export abstract class NestedError extends Error {
         super(message)
         this.inner = inner
         this.id = id
+        this.name = this.constructor.name
     }
 
 
@@ -23,5 +24,4 @@ export class DatabaseError extends NestedError {
 }
 
 export class DataError extends NestedError {
-
 }
