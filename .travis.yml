@@ -11,4 +11,3 @@ script:
   - yarn test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 before_script:
   - yarn add --dev coveralls
-  - yarn install
