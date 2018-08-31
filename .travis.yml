@@ -1,11 +1,13 @@
 language: node_js
 node_js:
-  - "4"
   - "8"
   - "9"
   - "10"
+cache:
+  yarn: true
+  directories:
+  - node_modules
 script:
-  - istanbul cover ./node_modules/.bin/grunt --report lcovonly && istanbul report text && cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf coverage
+  - yarn test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 before_script:
-  - npm install -g istanbul
-  - npm install coveralls
+  - yarn add --dev coveralls
