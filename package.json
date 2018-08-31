@@ -2,9 +2,9 @@
     "name": "node-json-db",
     "version": "0.7.5",
     "description": "Database using JSON file as storage for Node.JS",
-    "main": "./JsonDB.js",
+    "main": "dist/node-json-db.es.js",
     "scripts": {
-        "test": "mocha test/test_*.js"
+        "test": "jest --coverage"
     },
     "repository": {
         "type": "git",
@@ -24,17 +24,19 @@
     "dependencies": {
         "mkdirp": "0.5.x"
     },
+    "files": [
+        "dist/",
+        "README.md",
+        "LICENSE"
+    ],
     "devDependencies": {
         "@types/jest": "^23.3.1",
         "@types/mkdirp": "^0.5.2",
         "@types/node": "^10.9.4",
         "@types/safe-regex": "^1.1.1",
-        "expect.js": "0.3.x",
-        "grunt": "1.x",
-        "grunt-cli": "1.x",
-        "grunt-contrib-jshint": "1.x",
-        "grunt-simple-mocha": "0.4.x",
+        "bili": "^3.1.2",
         "jest": "^23.5.0",
+        "rollup-plugin-typescript3": "^1.1.0",
         "safe-regex": "~1.1.0",
         "ts-jest": "^23.1.4",
         "typescript": "^3.0.1"
