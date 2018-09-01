@@ -1,4 +1,5 @@
 language: node_js
+sudo: true
 node_js:
 - "8"
 - "9"
@@ -20,7 +21,7 @@ jobs:
     after_success:
     - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
     before_script:
-    - yarn install --dev coveralls
+    - yarn add --dev coveralls
   - stage: deploy
     install: true
     before_install:
@@ -36,10 +37,3 @@ jobs:
       local-dir: docs
       on:
         branch: master
-
-
-
-script:
-  -
-before_script:
-  - yarn add --dev coveralls
