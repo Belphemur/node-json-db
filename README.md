@@ -8,8 +8,12 @@
 ## Installation
 Add `node-json-db` to your existing Node.js project.
 ```bash
-npm install node-json-db --save
+yarn add node-json-db
 ```
+
+## Documentation
+[Auto Generated](https://belphemur.github.io/node-json-db)
+
 ## Inner Working
 
 ### Data
