@@ -43,6 +43,7 @@
         "@types/mkdirp": "^0.5.2",
         "@types/node": "^10.9.4",
         "@types/safe-regex": "^1.1.1",
+        "babel-plugin-add-module-exports": "^0.2.1",
         "jest": "^23.5.0",
         "rollup-plugin-typescript3": "^1.1.0",
         "safe-regex": "~1.1.0",
