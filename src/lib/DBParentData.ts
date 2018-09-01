@@ -1,7 +1,7 @@
 import {ArrayInfo} from "./ArrayInfo"
 import {DataError} from "./Errors"
 import {KeyValue} from "./Utils"
-import {JsonDB} from "../JsonDB"
+import JsonDB from "../JsonDB"
 
 export class DBParentData {
     readonly parent?: string
