@@ -1,11 +1,11 @@
 {
     "name": "node-json-db",
-    "version": "0.7.5",
+    "version": "0.8.1",
     "description": "Database using JSON file as storage for Node.JS",
-    "main": "dist/node-json-db.es.js",
+    "main": "dist/JsonDB.js",
     "scripts": {
         "test": "jest --coverage",
-        "build": "bili && tsc --emitDeclarationOnly "
+        "build": "babel src --out-dir dist --extensions \".ts,.tsx\" && tsc --emitDeclarationOnly"
     },
     "repository": {
         "type": "git",
@@ -32,11 +32,16 @@
         "LICENSE"
     ],
     "devDependencies": {
+        "@babel/cli": "^7.0.0",
+        "@babel/core": "^7.0.0",
+        "@babel/plugin-proposal-class-properties": "^7.0.0",
+        "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+        "@babel/preset-env": "^7.0.0",
+        "@babel/preset-typescript": "^7.0.0",
         "@types/jest": "^23.3.1",
         "@types/mkdirp": "^0.5.2",
         "@types/node": "^10.9.4",
         "@types/safe-regex": "^1.1.1",
-        "bili": "^3.1.2",
         "jest": "^23.5.0",
         "rollup-plugin-typescript3": "^1.1.0",
         "safe-regex": "~1.1.0",

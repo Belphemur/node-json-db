@@ -8,7 +8,7 @@ import {ArrayInfo} from "./lib/ArrayInfo"
 
 type DataPath = Array<string>
 
-export class JsonDB {
+export default class JsonDB {
     readonly filename: string
     private loaded: boolean = false
     private data: KeyValue = {}
