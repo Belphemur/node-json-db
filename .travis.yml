@@ -28,7 +28,7 @@ jobs:
     before_install:
     - 'curl -H "Cache-Control: no-cache" https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash'
     before_script:
-    - cd src/ && fossa && cd ../
+    - cd src/ && fossa analyze && cd ../
     script:
     - yarn build:doc
     deploy:
