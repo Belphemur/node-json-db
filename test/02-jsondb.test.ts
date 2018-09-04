@@ -1,5 +1,5 @@
 import {DatabaseError, DataError} from "../src/lib/Errors"
-import {JsonDB} from "../src/JsonDB"
+import JsonDB from "../src/JsonDB"
 import * as fs from 'fs'
 
 const testFile1 = "test/test_file1"
