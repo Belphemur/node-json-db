@@ -37,13 +37,10 @@ jobs:
     after_script: skip
 
 
-before_install:
-- 'curl -H "Cache-Control: no-cache" https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash'
-install: true
 script:
 - yarn test
 after_success:
 - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 before_script:
-- cd src/ && fossa analyze && cd ../
-- yarn add --dev coveralls
+- yarn add --dev coveralls fossa-travisci-plugin
+- yarn fossa-test
