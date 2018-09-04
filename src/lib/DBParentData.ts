@@ -21,10 +21,7 @@ export class DBParentData {
      * Check if it's an array
      * @param deletion
      */
-    private checkArray(deletion?: boolean): ArrayInfo | null {
-        if (typeof deletion === undefined) {
-            deletion = false
-        }
+    private checkArray(deletion: boolean = false): ArrayInfo | null {
         const arrayInfo = ArrayInfo.processArray(this.parent)
         if (arrayInfo && (!arrayInfo.append || deletion) && !arrayInfo.isValid(this.data)) {
             throw new DataError("DataPath: /" + this.dataPath + ". Can't find index " + arrayInfo.index + " in array " + arrayInfo.property, 10)
