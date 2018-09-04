@@ -45,7 +45,6 @@
         "@types/safe-regex": "^1.1.1",
         "babel-plugin-add-module-exports": "^0.2.1",
         "jest": "^23.5.0",
-        "rollup-plugin-typescript3": "^1.1.0",
         "safe-regex": "~1.1.0",
         "ts-jest": "^23.1.4",
         "typedoc": "^0.12.0",
