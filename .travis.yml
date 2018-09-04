@@ -45,5 +45,5 @@ script:
 after_success:
 - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 before_script:
-- fossa analyze
+- fossa
 - yarn add --dev coveralls
