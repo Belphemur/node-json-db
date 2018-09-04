@@ -1,6 +1,6 @@
 {
   "name": "node-json-db",
-  "version": "0.8.1",
+  "version": "0.0.0-development",
   "description": "Database using JSON file as storage for Node.JS",
   "main": "dist/JsonDB.js",
   "scripts": {
@@ -8,11 +8,12 @@
     "build": "babel src --out-dir dist --extensions \".ts,.tsx\" && tsc --emitDeclarationOnly",
     "build:doc": "typedoc --out docs --target es6 --theme minimal --mode file src",
     "commitmsg": "validate-commit-msg",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Belphemur/node-json-db.git"
+    "url": "https://github.com/Belphemur/node-json-db.git"
   },
   "keywords": [
     "database",
@@ -79,6 +80,7 @@
     "ts-jest": "^23.1.4",
     "typedoc": "^0.12.0",
     "typescript": "^3.0.1",
-    "validate-commit-msg": "^2.14.0"
+    "validate-commit-msg": "^2.14.0",
+    "travis-deploy-once": "^5.0.7"
   }
 }
