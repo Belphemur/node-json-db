@@ -135,6 +135,22 @@ export default class JsonDB {
     }
 
     /**
+     * Check for existing datapath
+     * @param dataPath
+     */
+    public exists(dataPath: string): boolean {
+        try {
+            this.getData(dataPath)
+            return true
+        } catch (e) {
+            if (e instanceof DataError) {
+                return false
+            }
+            throw e
+        }
+    }
+
+    /**
      * Pushing data into the database
      * @param dataPath path leading to the data
      * @param data data to push
