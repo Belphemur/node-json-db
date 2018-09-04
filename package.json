@@ -77,10 +77,10 @@
     "last-release-git": "^0.0.3",
     "safe-regex": "~1.1.0",
     "semantic-release": "^15.9.12",
+    "travis-deploy-once": "^5.0.7",
     "ts-jest": "^23.1.4",
     "typedoc": "^0.12.0",
     "typescript": "^3.0.1",
-    "validate-commit-msg": "^2.14.0",
-    "travis-deploy-once": "^5.0.7"
+    "validate-commit-msg": "^2.14.0"
   }
 }
