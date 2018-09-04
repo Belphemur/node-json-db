@@ -1,53 +1,86 @@
 {
-    "name": "node-json-db",
-    "version": "0.8.1",
-    "description": "Database using JSON file as storage for Node.JS",
-    "main": "dist/JsonDB.js",
-    "scripts": {
-        "test": "jest --coverage",
-        "build": "babel src --out-dir dist --extensions \".ts,.tsx\" && tsc --emitDeclarationOnly",
-        "build:doc": "typedoc --out docs --target es6 --theme minimal --mode file src"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Belphemur/node-json-db.git"
-    },
-    "keywords": [
-        "database",
-        "json",
-        "db",
-        "typescript"
-    ],
-    "author": "Antoine Aflalo <antoineaf+npm@admincmd.com>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/Belphemur/node-json-db/issues"
-    },
-    "homepage": "https://github.com/Belphemur/node-json-db",
-    "dependencies": {
-        "mkdirp": "0.5.x"
-    },
-    "files": [
-        "dist/",
-        "README.md",
-        "LICENSE"
-    ],
-    "devDependencies": {
-        "@babel/cli": "^7.0.0",
-        "@babel/core": "^7.0.0",
-        "@babel/plugin-proposal-class-properties": "^7.0.0",
-        "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-        "@babel/preset-env": "^7.0.0",
-        "@babel/preset-typescript": "^7.0.0",
-        "@types/jest": "^23.3.1",
-        "@types/mkdirp": "^0.5.2",
-        "@types/node": "^10.9.4",
-        "@types/safe-regex": "^1.1.1",
-        "babel-plugin-add-module-exports": "^0.2.1",
-        "jest": "^23.5.0",
-        "safe-regex": "~1.1.0",
-        "ts-jest": "^23.1.4",
-        "typedoc": "^0.12.0",
-        "typescript": "^3.0.1"
+  "name": "node-json-db",
+  "version": "0.0.0-development",
+  "description": "Database using JSON file as storage for Node.JS",
+  "main": "dist/JsonDB.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "build": "babel src --out-dir dist --extensions \".ts,.tsx\" && tsc --emitDeclarationOnly",
+    "build:doc": "typedoc --out docs --target es6 --theme minimal --mode file src",
+    "commitmsg": "validate-commit-msg",
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Belphemur/node-json-db.git"
+  },
+  "keywords": [
+    "database",
+    "json",
+    "db",
+    "typescript"
+  ],
+  "author": "Antoine Aflalo <antoineaf+npm@admincmd.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Belphemur/node-json-db/issues"
+  },
+  "homepage": "https://github.com/Belphemur/node-json-db",
+  "dependencies": {
+    "mkdirp": "0.5.x"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "release": {
+    "getLastRelease": "last-release-git",
+    "verifyConditions": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github"
+    ],
+    "prepare": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ],
+    "publish": [
+      "@semantic-release/github",
+      "@semantic-release/npm"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-typescript": "^7.0.0",
+    "@semantic-release/changelog": "^3.0.0",
+    "@semantic-release/git": "^7.0.3",
+    "@types/jest": "^23.3.1",
+    "@types/mkdirp": "^0.5.2",
+    "@types/node": "^10.9.4",
+    "@types/safe-regex": "^1.1.1",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "cz-conventional-changelog": "^2.0.0",
+    "husky": "^0.14.3",
+    "jest": "^23.5.0",
+    "last-release-git": "^0.0.3",
+    "safe-regex": "~1.1.0",
+    "semantic-release": "^15.9.12",
+    "travis-deploy-once": "^5.0.7",
+    "ts-jest": "^23.1.4",
+    "typedoc": "^0.12.0",
+    "typescript": "^3.0.1",
+    "validate-commit-msg": "^2.14.0"
+  }
 }

@@ -89,6 +89,13 @@ describe('JsonDB', () => {
             db.push("/", object)
             expect(db.getData("/")).toBe(object)
         })
+
+        test('should have data at root', () => {
+            expect(db.exists('/test/test')).toBeTruthy()
+        })
+        test('should not have data at not related path', () => {
+            expect(db.exists('/test/test/nope')).toBeFalsy()
+        })
         test('should override the data at the root', () => {
             const object = {test: "test"}
             db.push("/", object)
@@ -531,6 +538,31 @@ describe('JsonDB', () => {
 
             }
         )
+    })
+    describe('Find Info', () => {
+        const db = new JsonDB(testFile6, true)
+
+        test('should be able to find the wanted info in object',
+            () => {
+                db.push('/find/id-0', {test: 'hello'})
+                db.push('/find/id-1', {test: 'hey'})
+                db.push('/find/id-2', {test: 'echo'})
+                const result = db.find<string>('/find', entry => entry.test === 'echo')
+                expect(result).toBeInstanceOf(Object)
+                expect(result).toHaveProperty('test', 'echo')
+            })
+        test('should be able to find the wanted info in array',
+            () => {
+                db.push('/find/data', [{test: 'echo'}, {test: 'hey'}, {test: 'hello'}])
+                const result = db.find<string>('/find/data', entry => entry.test === 'hello')
+                expect(result).toBeInstanceOf(Object)
+                expect(result).toHaveProperty('test', 'hello')
+            })
+        test('shouldn\'t be able to find a data in anything else than Object or Array',
+            () => {
+                db.push('/find/number', 1)
+                expect(() => db.find<string>('/find/number', entry => entry.test === 'hello')).toThrow(DataError)
+            })
     })
 
     describe('Cleanup', () => {
