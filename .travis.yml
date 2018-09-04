@@ -1,13 +1,40 @@
 language: node_js
+sudo: true
 node_js:
-  - "8"
-  - "9"
-  - "10"
+- "10"
+- "9"
+- "8"
+
 cache:
   yarn: true
   directories:
   - node_modules
-script:
-  - yarn test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-before_script:
-  - yarn add --dev coveralls
+
+stages:
+- test
+- name: deploy
+  if: branch = master && type = push
+jobs:
+  include:
+  - stage: test
+    script:
+    - yarn test
+    after_success:
+    - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+    before_script:
+    - yarn add --dev coveralls
+  - stage: deploy
+    install: true
+    before_install:
+    - 'curl -H "Cache-Control: no-cache" https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash'
+    before_script:
+    - cd src/ && fossa && cd ../
+    script:
+    - yarn build:doc
+    deploy:
+      provider: pages
+      skip-cleanup: true
+      github-token: "$GH_TOKEN"
+      local-dir: docs
+      on:
+        branch: master

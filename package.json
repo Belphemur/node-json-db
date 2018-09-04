@@ -1,15 +1,16 @@
 {
     "name": "node-json-db",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "description": "Database using JSON file as storage for Node.JS",
-    "main": "dist/node-json-db.cjs.js",
+    "main": "dist/JsonDB.js",
     "scripts": {
         "test": "jest --coverage",
-        "build": "bili && tsc --emitDeclarationOnly "
+        "build": "babel src --out-dir dist --extensions \".ts,.tsx\" && tsc --emitDeclarationOnly",
+        "build:doc": "typedoc --out docs --target es6 --theme minimal --mode file src"
     },
     "repository": {
         "type": "git",
-        "url": "git@github.com:Belphemur/node-json-db.git"
+        "url": "git+https://github.com/Belphemur/node-json-db.git"
     },
     "keywords": [
         "database",
@@ -32,15 +33,22 @@
         "LICENSE"
     ],
     "devDependencies": {
+        "@babel/cli": "^7.0.0",
+        "@babel/core": "^7.0.0",
+        "@babel/plugin-proposal-class-properties": "^7.0.0",
+        "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+        "@babel/preset-env": "^7.0.0",
+        "@babel/preset-typescript": "^7.0.0",
         "@types/jest": "^23.3.1",
         "@types/mkdirp": "^0.5.2",
         "@types/node": "^10.9.4",
         "@types/safe-regex": "^1.1.1",
-        "bili": "^3.1.2",
+        "babel-plugin-add-module-exports": "^0.2.1",
         "jest": "^23.5.0",
         "rollup-plugin-typescript3": "^1.1.0",
         "safe-regex": "~1.1.0",
         "ts-jest": "^23.1.4",
+        "typedoc": "^0.12.0",
         "typescript": "^3.0.1"
     }
 }
