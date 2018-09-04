@@ -89,6 +89,13 @@ describe('JsonDB', () => {
             db.push("/", object)
             expect(db.getData("/")).toBe(object)
         })
+
+        test('should have data at root', () => {
+            expect(db.exists('/test/test')).toBeTruthy()
+        })
+        test('should not have data at not related path', () => {
+            expect(db.exists('/test/test/nope')).toBeFalsy()
+        })
         test('should override the data at the root', () => {
             const object = {test: "test"}
             db.push("/", object)
