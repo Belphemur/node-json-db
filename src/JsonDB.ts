@@ -8,6 +8,9 @@ import {ArrayInfo} from "./lib/ArrayInfo"
 
 type DataPath = Array<string>
 
+
+export type FindCallback = (entry: any, index: number | string) => boolean
+
 export default class JsonDB {
     readonly filename: string
     private loaded: boolean = false
@@ -16,15 +19,21 @@ export default class JsonDB {
     readonly humanReadable: boolean
 
 
-    constructor(filename: string, saveOnPush?: boolean, humanReadable?: boolean) {
+    /**
+     * JSONDB Constructor
+     * @param filename where to save the "DB"
+     * @param saveOnPush save the database at each push command into the json file
+     * @param humanReadable the JSON file will be readable easily by a human
+     */
+    constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false) {
         this.filename = filename
 
         if (!filename.endsWith(".json")) {
             this.filename += ".json"
         }
 
-        this.saveOnPush = typeof(saveOnPush) == "boolean" ? saveOnPush : true
-        this.humanReadable = typeof(humanReadable) == "boolean" ? humanReadable : false
+        this.saveOnPush = saveOnPush
+        this.humanReadable = humanReadable
 
         if (!FS.existsSync(this.filename)) {
             const dirname = path.dirname(this.filename)
@@ -151,13 +160,35 @@ export default class JsonDB {
     }
 
     /**
+     * Find a specific entry in an array/object
+     * @param rootPath base dataPath from where to start searching
+     * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.
+     */
+    public find<T>(rootPath: string, callback: FindCallback): T | undefined {
+        const result = this.getData(rootPath)
+        if (Array.isArray(result)) {
+            return result.find(callback) as T
+        }
+        if (result instanceof Object) {
+            const entries = Object.entries(result)
+            const found = entries.find((entry: Array<any>) => {
+                return callback(entry[1], entry[0])
+            })
+            if (!found || found.length < 2) {
+                return undefined
+            }
+            return found[1] as T
+        }
+        throw new DataError("The entry at the path (" + rootPath + ") needs to be either an Object or an Array", 12)
+    }
+
+    /**
      * Pushing data into the database
      * @param dataPath path leading to the data
      * @param data data to push
      * @param override overriding or not the data, if not, it will merge them
      */
-    public push(dataPath: string, data: any, override?: boolean): void {
-        override = override === undefined ? true : override
+    public push(dataPath: string, data: any, override: boolean = true): void {
         const dbData = this.getParentData(dataPath, true)
         if (!dbData) {
             throw new Error("Data not found")
@@ -175,7 +206,7 @@ export default class JsonDB {
                 toSet = storedData.concat(data)
             } else if (data === Object(data)) {
                 if (Array.isArray(dbData.getData())) {
-                    throw  new DataError("Can't merge an Array with an Object", 4)
+                    throw new DataError("Can't merge an Array with an Object", 4)
                 }
                 toSet = merge(dbData.getData(), data)
             }
