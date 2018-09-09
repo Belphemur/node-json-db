@@ -60,10 +60,8 @@ export default class JsonDB {
         return path
     }
 
-    private retrieveData(dataPath: DataPath, create: boolean) {
+    private retrieveData(dataPath: DataPath, create: boolean = false) {
         this.load()
-
-        create = create || false
 
         const recursiveProcessDataPath = (data: any, index: number): any => {
 
@@ -73,8 +71,7 @@ export default class JsonDB {
             /**
              * Find the wanted Data or create it.
              */
-            function findData(isArray?: boolean) {
-                isArray = isArray || false
+            function findData(isArray: boolean = false) {
                 if (data.hasOwnProperty(property)) {
                     data = data[property]
                 } else if (create) {
