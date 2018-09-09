@@ -513,6 +513,12 @@ describe('JsonDB', () => {
     describe('Delete Info', () => {
         const db = new JsonDB(testFile6, true)
 
+        test('should delete data from memory', () => {
+            db.push('/test', ['data'])
+            db.delete('/test')
+            expect(db.exists('/test')).toBeFalsy()
+        })
+
         test(
             'should delete the data and save the file if saveOnPush is set',
             done => {
