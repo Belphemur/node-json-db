@@ -220,7 +220,7 @@ export default class JsonDB {
      * @param dataPath path leading to the data
      */
     public delete(dataPath: string): void {
-        var dbData = this.getParentData(dataPath, true)
+        const dbData = this.getParentData(dataPath, true)
         if (!dbData) {
             return
         }
