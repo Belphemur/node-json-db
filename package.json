@@ -72,7 +72,7 @@
     "@types/safe-regex": "^1.1.1",
     "babel-plugin-add-module-exports": "^0.3.3",
     "cz-conventional-changelog": "^2.0.0",
-    "husky": "^0.14.3",
+    "husky": "^1.0.0",
     "jest": "^23.5.0",
     "last-release-git": "^0.0.3",
     "safe-regex": "~1.1.0",
