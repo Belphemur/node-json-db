@@ -114,7 +114,7 @@ export class ArrayInfo {
      * Check if the ArrayInfo is valid for the given data
      * @param data
      */
-    public isValid(data: KeyValue): void {
+    public isValid(data: KeyValue): boolean {
         const index = this.getIndex(data)
         return data[this.property].hasOwnProperty(index)
     }
