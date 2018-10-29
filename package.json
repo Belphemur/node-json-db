@@ -75,7 +75,7 @@
     "husky": "^1.1.1",
     "jest": "^23.6.0",
     "last-release-git": "^0.0.3",
-    "safe-regex": "~1.1.0",
+    "safe-regex": "~2.0.0",
     "semantic-release": "^15.9.17",
     "travis-deploy-once": "^5.0.9",
     "ts-jest": "^23.10.4",
