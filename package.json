@@ -3,6 +3,7 @@
   "version": "0.9.1",
   "description": "Database using JSON file as storage for Node.JS",
   "main": "dist/JsonDB.js",
+  "types": "dist/types/JsonDB.d.ts",
   "scripts": {
     "test": "jest --coverage",
     "build": "babel src --out-dir dist --extensions \".ts,.tsx\" && tsc --emitDeclarationOnly",
