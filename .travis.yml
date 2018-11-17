@@ -38,12 +38,12 @@ jobs:
 
 
 before_install:
-- 'curl -H "Cache-Control: no-cache" https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash'
+- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then curl -H "Cache-Control: no-cache" https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash ; fi'
 install: true
 script:
 - yarn test
 after_success:
 - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 before_script:
-- fossa
+- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then fossa ; fi'
 - yarn add --dev coveralls
