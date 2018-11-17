@@ -69,7 +69,7 @@
     "@semantic-release/git": "^7.0.4",
     "@types/jest": "^23.3.5",
     "@types/mkdirp": "^0.5.2",
-    "@types/node": "^10.11.6",
+    "@types/node": "^10.12.9",
     "@types/safe-regex": "^1.1.1",
     "babel-plugin-add-module-exports": "^1.0.0",
     "cz-conventional-changelog": "^2.0.0",
