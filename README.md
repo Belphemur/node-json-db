@@ -115,6 +115,22 @@ db.reload();
 
 ```
 
+### TypeScript Support
+As of v0.8.0, [TypeScript](https://www.typescriptlang.org) types are 
+included in this package, so using `@types/node-json-db` is no longer required.
+
+```javascript
+import JsonDB from "node-json-db";
+
+const db = new JsonDB("myDataBase", true, false);
+```
+**IMPORTANT NOTE:** Ensure that you have the `esModuleInterop` 
+[compiler flag](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
+set to `true` in your `tsconfig.json`. This enables your TypeScript project to
+correctly load ES6 modules that have a default export.
+See [here](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#support-for-import-d-from-cjs-form-commonjs-modules-with---esmoduleinterop)
+for more background on this TypeScript option.
+
 ### Array Support
 You can also access the information stored into arrays and manipulate them.
 ```javascript
