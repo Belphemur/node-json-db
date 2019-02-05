@@ -67,7 +67,7 @@
     "@babel/preset-typescript": "^7.1.0",
     "@semantic-release/changelog": "^3.0.0",
     "@semantic-release/git": "^7.0.4",
-    "@types/jest": "^23.3.5",
+    "@types/jest": "^24.0.0",
     "@types/mkdirp": "^0.5.2",
     "@types/node": "^10.12.9",
     "@types/safe-regex": "^1.1.1",
