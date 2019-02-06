@@ -157,11 +157,11 @@ export default class JsonDB {
     }
 
     /**
-     * Find a specific entry in an array/object
+     * Find all specific entry in an array/object
      * @param rootPath base dataPath from where to start searching
      * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.
      */
-    public find<T>(rootPath: string, callback: FindCallback): T | undefined {
+    public findAll<T>(rootPath: string, callback: FindCallback): T | undefined {
         const result = this.getData(rootPath)
         if (Array.isArray(result)) {
             return result.find(callback) as T
@@ -174,9 +174,21 @@ export default class JsonDB {
             if (!found || found.length < 2) {
                 return undefined
             }
-            return found[1] as T
+            return found
         }
         throw new DataError("The entry at the path (" + rootPath + ") needs to be either an Object or an Array", 12)
+    }
+
+    /**
+     * Find a specific entry in an array/object
+     * @param rootPath base dataPath from where to start searching
+     * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.
+     */
+    public find<T>(rootPath: string, callback: FindCallback): T | undefined {
+        found = this.findAll(rootPath, callback)
+        if(found === undefined)
+            return undefined
+        return found[1]
     }
 
     /**
