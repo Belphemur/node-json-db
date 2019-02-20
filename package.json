@@ -1,6 +1,6 @@
 {
   "name": "node-json-db",
-  "version": "0.9.2",
+  "version": "0.10.0",
   "description": "Database using JSON file as storage for Node.JS",
   "main": "dist/JsonDB.js",
   "types": "dist/types/JsonDB.d.ts",
