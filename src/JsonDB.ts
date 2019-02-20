@@ -161,7 +161,34 @@ export default class JsonDB {
      * @param rootPath base dataPath from where to start searching
      * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.
      */
-    public findAll<T>(rootPath: string, callback: FindCallback): T | undefined {
+    public filter<T>(rootPath: string, callback: FindCallback): T[] | undefined {
+        const result = this.getData(rootPath)
+        if (Array.isArray(result)) {
+            return result.filter(callback) as T[]
+        }
+        if (result instanceof Object) {
+            const entries = Object.entries(result)
+            const found = entries.filter((entry: [string, any]) => {
+                return callback(entry[1], entry[0])
+            }) as [string, T][]
+
+            if (!found || found.length < 1) {
+                return undefined
+            }
+
+            return found.map((entry: [string, T]) => {
+               return entry[1]
+            })
+        }
+        throw new DataError("The entry at the path (" + rootPath + ") needs to be either an Object or an Array", 12)
+    }
+
+    /**
+     * Find a specific entry in an array/object
+     * @param rootPath base dataPath from where to start searching
+     * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.
+     */
+    public find<T>(rootPath: string, callback: FindCallback): T | undefined {
         const result = this.getData(rootPath)
         if (Array.isArray(result)) {
             return result.find(callback) as T
@@ -174,21 +201,9 @@ export default class JsonDB {
             if (!found || found.length < 2) {
                 return undefined
             }
-            return found
+            return found[1] as T
         }
         throw new DataError("The entry at the path (" + rootPath + ") needs to be either an Object or an Array", 12)
-    }
-
-    /**
-     * Find a specific entry in an array/object
-     * @param rootPath base dataPath from where to start searching
-     * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.
-     */
-    public find<T>(rootPath: string, callback: FindCallback): T | undefined {
-        found = this.findAll(rootPath, callback)
-        if(found === undefined)
-            return undefined
-        return found[1]
     }
 
     /**
