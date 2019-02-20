@@ -1,6 +1,7 @@
 language: node_js
 sudo: true
 node_js:
+- "11"
 - "10"
 - "9"
 - "8"
