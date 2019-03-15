@@ -1,6 +1,7 @@
 import {DatabaseError, DataError} from "../src/lib/Errors"
 import JsonDB from "../src/JsonDB"
 import * as fs from 'fs'
+import { Config } from "../src/lib/JsonDBConfig"
 
 const testFile1 = "test/test_file1"
 const testFile2 = "test/dirCreation/test_file2"
@@ -79,63 +80,74 @@ describe('JsonDB', () => {
             }
         )
 
+        test('should work with config object', done => {
+            fs.unlinkSync(testFile1 + ".json")
+            let testDb = new JsonDB(new Config(testFile1, true, true))
+            fs.access(testFile1 + ".json", fs.constants.R_OK, function (err) {
+                expect(err).toBeNull()
+                done()
+            })
+        })
+
     })
     describe('Data Management', () => {
 
-        let db = new JsonDB(testFile2, true)
+        const config = new Config(testFile2)
+        config.separator = '@'
+        let db = new JsonDB(config)
 
         test('should store the data at the root', () => {
             const object = {test: {test: "test"}}
-            db.push("/", object)
-            expect(db.getData("/")).toBe(object)
+            db.push("@", object)
+            expect(db.getData("@")).toBe(object)
         })
 
         test('should have data at root', () => {
-            expect(db.exists('/test/test')).toBeTruthy()
+            expect(db.exists('@test@test')).toBeTruthy()
         })
         test('should not have data at not related path', () => {
-            expect(db.exists('/test/test/nope')).toBeFalsy()
+            expect(db.exists('@test@test@nope')).toBeFalsy()
         })
         test('should override the data at the root', () => {
             const object = {test: "test"}
-            db.push("/", object)
-            expect(db.getData("/")).toBe(object)
+            db.push("@", object)
+            expect(db.getData("@")).toBe(object)
         })
         test('should merge the data at the root', () => {
             let object = {test: {test: ['Okay']}} as any
-            db.push("/", object)
-            const data = db.getData("/")
+            db.push("@", object)
+            const data = db.getData("@")
             expect(data).toBe(object)
             object = {test: {test: ['Perfect'], okay: "test"}} as any
-            db.push("/", object, false)
-            expect(JSON.stringify(db.getData("/"))).toEqual('{\"test\":{\"test\":[\"Okay\",\"Perfect\"],\"okay\":\"test\"}}')
+            db.push("@", object, false)
+            expect(JSON.stringify(db.getData("@"))).toEqual('{\"test\":{\"test\":[\"Okay\",\"Perfect\"],\"okay\":\"test\"}}')
         })
         test('should return right data for dataPath', () => {
-            db = new JsonDB(testFile2, true)
-            expect(JSON.stringify(db.getData("/test"))).toEqual('{\"test\":[\"Okay\",\"Perfect\"],\"okay\":\"test\"}')
+            const data = db.getData("@test")
+            expect(JSON.stringify(data)).toEqual('{\"test\":[\"Okay\",\"Perfect\"],\"okay\":\"test\"}')
         })
 
         test('should override only the data at dataPath', () => {
             const object = ['overriden']
-            db.push("/test/test", object)
-            expect(db.getData("/test/test")).toBe(object)
+            db.push("@test@test", object)
+            expect(db.getData("@test@test")).toBe(object)
         })
         test(
-            'should remove trailing Slash when pushing/getting data (/)',
+            'should remove trailing Slash when pushing@getting data (@)',
             () => {
                 const object = {test: {test: "test"}}
-                db.push("/testing/", object)
-                expect(db.getData("/testing")).toBe(object)
+                db.push("@testing@", object)
+                expect(db.getData("@testing")).toBe(object)
             }
         )
 
-        test('should remove trailing Slash when deleting data (/)', () => {
-            db.delete("/testing/")
+        test('should remove trailing Slash when deleting data (@)', () => {
+            db.delete("@testing@")
 
             try {
                 (function (args) {
                     db.getData(args)
-                })('/testing')
+                })('@testing')
 
                 throw Error('Function did not throw')
             } catch (e) {
@@ -145,21 +157,21 @@ describe('JsonDB', () => {
 
         test('should merge the data at dataPath', () => {
             const object = ['test2']
-            db.push("/test/test", object, false)
-            expect(JSON.stringify(db.getData("/test/test"))).toEqual('[\"overriden\",\"test2\"]')
+            db.push("@test@test", object, false)
+            expect(JSON.stringify(db.getData("@test@test"))).toEqual('[\"overriden\",\"test2\"]')
         })
 
 
         test('should create the tree to reach dataPath', () => {
             const object = ['test2']
-            db.push("/my/tree/is/awesome", object, false)
-            expect(JSON.stringify(db.getData("/my/tree/is/awesome"))).toEqual('[\"test2\"]')
+            db.push("@my@tree@is@awesome", object, false)
+            expect(JSON.stringify(db.getData("@my@tree@is@awesome"))).toEqual('[\"test2\"]')
         })
         test('should throw an Error when merging Object with Array', () => {
             try {
                 (function (path, data, override) {
                     db.push(path, data, override)
-                })("/test/test", {myTest: "test"}, false)
+                })("@test@test", {myTest: "test"}, false)
 
                 throw Error('Function did not throw')
             } catch (e) {
@@ -169,9 +181,9 @@ describe('JsonDB', () => {
 
         test('should override a null constiable when merging', () => {
             const replacement = {a: 'test'}
-            db.push('/null', {a: null}, false)
-            db.push('/null', replacement, false)
-            const data = db.getData('/null')
+            db.push('@null', {a: null}, false)
+            db.push('@null', replacement, false)
+            const data = db.getData('@null')
             expect(data['a']).toBe(replacement['a'])
         })
 
@@ -179,7 +191,7 @@ describe('JsonDB', () => {
             try {
                 (function (path, data, override) {
                     db.push(path, data, override)
-                })("/test", ['test'], false)
+                })("@test", ['test'], false)
 
                 throw Error('Function did not throw')
             } catch (e) {
@@ -201,12 +213,12 @@ describe('JsonDB', () => {
         })
 
         test('should delete the data', () => {
-            db.delete("/test/test")
+            db.delete("@test@test")
 
             try {
                 (function (args) {
                     db.getData(args)
-                })("/test/test")
+                })("@test@test")
 
                 throw Error('Function did not throw')
             } catch (e) {
@@ -218,8 +230,8 @@ describe('JsonDB', () => {
             const data = JSON.stringify({test: "Okay", perfect: 1})
             fs.writeFileSync(testFile2 + ".json", data, 'utf8')
             db.reload()
-            expect(db.getData("/test")).toBe("Okay")
-            expect(db.getData("/perfect")).toBe(1)
+            expect(db.getData("@test")).toBe("Okay")
+            expect(db.getData("@perfect")).toBe(1)
         })
     })
 
