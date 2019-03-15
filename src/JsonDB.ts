@@ -5,6 +5,7 @@ import * as mkdirp from "mkdirp"
 import {DatabaseError, DataError} from "./lib/Errors"
 import {DBParentData} from "./lib/DBParentData"
 import {ArrayInfo} from "./lib/ArrayInfo"
+import { Config, JsonDBConfig } from "./lib/JsonDBConfig"
 
 type DataPath = Array<string>
 
@@ -12,31 +13,28 @@ type DataPath = Array<string>
 export type FindCallback = (entry: any, index: number | string) => boolean
 
 export default class JsonDB {
-    readonly filename: string
     private loaded: boolean = false
     private data: KeyValue = {}
-    readonly saveOnPush: boolean = true
-    readonly humanReadable: boolean
+    private readonly config : JsonDBConfig
 
 
-    /**
-     * JSONDB Constructor
-     * @param filename where to save the "DB"
-     * @param saveOnPush save the database at each push command into the json file
-     * @param humanReadable the JSON file will be readable easily by a human
-     */
-    constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false) {
-        this.filename = filename
+  /**
+   * JSONDB Constructor
+   * @param filename where to save the "DB". Can also be used to give the whole configuration
+   * @param saveOnPush save the database at each push command into the json file
+   * @param humanReadable the JSON file will be readable easily by a human
+   * @param separator what to use as separator
+   */
+    constructor(filename: string | Config, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/') {
 
-        if (!filename.endsWith(".json")) {
-            this.filename += ".json"
+        if(filename instanceof Config) {
+          this.config = filename
+        } else {
+          this.config = new Config(filename, saveOnPush, humanReadable, separator)
         }
 
-        this.saveOnPush = saveOnPush
-        this.humanReadable = humanReadable
-
-        if (!FS.existsSync(this.filename)) {
-            const dirname = path.dirname(this.filename)
+        if (!FS.existsSync(this.config.filename)) {
+            const dirname = path.dirname(this.config.filename)
             mkdirp.sync(dirname)
             this.save(true)
             this.loaded = true
@@ -51,17 +49,19 @@ export default class JsonDB {
         if (dataPath === undefined || !dataPath.trim()) {
             throw new DataError("The Data Path can't be empty", 6)
         }
-        if (dataPath == "/") {
+        if (dataPath == this.config.separator) {
             return []
         }
         dataPath = removeTrailingSlash(dataPath)
-        const path = dataPath.split("/")
+        const path = dataPath.split(this.config.separator)
         path.shift()
         return path
     }
 
     private retrieveData(dataPath: DataPath, create: boolean = false) {
         this.load()
+
+        const thisDb = this
 
         const recursiveProcessDataPath = (data: any, index: number): any => {
 
@@ -82,7 +82,7 @@ export default class JsonDB {
                     }
                     data = data[property]
                 } else {
-                    throw new DataError("Can't find dataPath: /" + dataPath.join("/") + ". Stopped at " + property, 5)
+                    throw new DataError(`Can't find dataPath: ${thisDb.config.separator}${dataPath.join(thisDb.config.separator)}. Stopped at ${property}`, 5)
                 }
             }
 
@@ -91,7 +91,7 @@ export default class JsonDB {
                 property = arrayInfo.property
                 findData(true)
                 if (!Array.isArray(data)) {
-                    throw new DataError("DataPath: /" + dataPath.join("/") + ". " + property + " is not an array.", 11)
+                    throw new DataError(`DataPath: ${thisDb.config.separator}${dataPath.join(thisDb.config.separator)}. ${property} is not an array.`, 11)
                 }
                 const arrayIndex = arrayInfo.getIndex(data, true)
                 if (!arrayInfo.append && data.hasOwnProperty(arrayIndex)) {
@@ -106,7 +106,7 @@ export default class JsonDB {
                         data = data[arrayIndex]
                     }
                 } else {
-                    throw new DataError("DataPath: /" + dataPath.join("/") + ". Can't find index " + arrayInfo.index + " in array " + property, 10)
+                    throw new DataError(`DataPath: ${thisDb.config.separator}${dataPath.join(thisDb.config.separator)}. . Can't find index ${arrayInfo.index} in array ${property}`, 10)
                 }
             } else {
                 findData()
@@ -237,7 +237,7 @@ export default class JsonDB {
         }
         dbData.setData(toSet)
 
-        if (this.saveOnPush) {
+        if (this.config.saveOnPush) {
             this.save()
         }
     }
@@ -253,7 +253,7 @@ export default class JsonDB {
         }
         dbData.delete()
 
-        if (this.saveOnPush) {
+        if (this.config.saveOnPush) {
             this.save()
         }
     }
@@ -284,7 +284,7 @@ export default class JsonDB {
             return
         }
         try {
-            const data = FS.readFileSync(this.filename, 'utf8')
+            const data = FS.readFileSync(this.config.filename, 'utf8')
             this.data = JSON.parse(data)
             this.loaded = true
         } catch (err) {
@@ -303,17 +303,17 @@ export default class JsonDB {
         if (!force && !this.loaded) {
             throw new DatabaseError("DataBase not loaded. Can't write", 7)
         }
-        var data = ""
+        let data = ""
         try {
-            if (this.humanReadable) {
+            if (this.config.humanReadable) {
                 data = JSON.stringify(this.data, null, 4)
             }
             else {
                 data = JSON.stringify(this.data)
             }
-            FS.writeFileSync(this.filename, data, 'utf8')
+            FS.writeFileSync(this.config.filename, data, 'utf8')
         } catch (err) {
-            var error = new DatabaseError("Can't save the database", 2, err)
+            const error = new DatabaseError("Can't save the database", 2, err)
             throw error
         }
     }

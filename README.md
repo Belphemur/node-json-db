@@ -197,7 +197,7 @@ db.getData("/arraytest/lastItemArray[-1]");
 
 | Error                                                 | Type          |                   Explanation                                                                                                                                             |
 | ------------------------------------------------------|:-------------:|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|The Data Path can't be empty                           |DataError      |The Database expect to minimum receive the root **/** as DataPath.                                                                                                         | 
+|The Data Path can't be empty                           |DataError      |The Database expect to minimum receive the root **separator** as DataPath.                                                                                                         |
 |Can't find dataPath: /XXX. Stopped at YYY              |DataError      |When the full hierarchy of the DataPath given is not present in the Database. It tells you until where it's valid. This error can happen when using *getData* and *delete* | 
 |Can't merge another type of data with an Array         |DataError      |If you chose to not override the data (merging) when pushing and the new data is an array but the current data isn't an array (an Object by example).                      | 
 |Can't merge an Array with an Object                    |DataError      |Same idea as the previous message. You have an array as current data and ask to merge it with an Object.                                                                   | 
@@ -211,10 +211,10 @@ db.getData("/arraytest/lastItemArray[-1]");
 
 # Limitations
 
-## Object with '/' in key
- Object pushed with key containing the slash (/) character won't be reachable. See [#75](https://github.com/Belphemur/node-json-db/issues/75).
+## Object with `seperator` in key
+ Object pushed with key containing the `seperator` character won't be reachable. See [#75](https://github.com/Belphemur/node-json-db/issues/75).
 
- Please consider the slash (/) as a reserved character by node-json-db.
+ Please consider the `seperator` as a reserved character by node-json-db.
 
 
 # Thanks
