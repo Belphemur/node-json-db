@@ -41,11 +41,14 @@ See [test](https://github.com/Belphemur/node-json-db/tree/master/test) for more 
 
 
 ```javascript
-var JsonDB = require('node-json-db');
+import JsonDB from 'node-json-db';
+import { Config } from 'node-json-db/lib/JsonDBConfig';
+
 // The second argument is used to tell the DB to save after each push
 // If you put false, you'll have to call the save() method.
 // The third argument is to ask JsonDB to save the database in an human readable format. (default false)
-var db = new JsonDB("myDataBase", true, false);
+// The last argument is the separator. By default it's slash (/)
+var db = new JsonDB(new Config("myDataBase", true, false, '/');
 
 // Pushing the data into the database
 // With the wanted DataPath
@@ -120,9 +123,10 @@ As of v0.8.0, [TypeScript](https://www.typescriptlang.org) types are
 included in this package, so using `@types/node-json-db` is no longer required.
 
 ```javascript
-import JsonDB from "node-json-db";
+import JsonDB from 'node-json-db';
+import { Config } from 'node-json-db/lib/JsonDBConfig';
 
-const db = new JsonDB("myDataBase", true, false);
+const db = new JsonDB(new Config("myDataBase", true, false, '/');
 ```
 **IMPORTANT NOTE:** Ensure that you have the `esModuleInterop` 
 [compiler flag](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
