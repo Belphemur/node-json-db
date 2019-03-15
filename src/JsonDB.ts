@@ -1,4 +1,4 @@
-import {KeyValue, merge, removeTrailingSlash} from "./lib/Utils"
+import {KeyValue, merge, removeTrailingChar} from "./lib/Utils"
 import * as FS from 'fs'
 import * as path from "path"
 import * as mkdirp from "mkdirp"
@@ -52,7 +52,7 @@ export default class JsonDB {
         if (dataPath == this.config.separator) {
             return []
         }
-        dataPath = removeTrailingSlash(dataPath)
+        dataPath = removeTrailingChar(dataPath, this.config.separator)
         const path = dataPath.split(this.config.separator)
         path.shift()
         return path
