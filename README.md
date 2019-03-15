@@ -41,11 +41,14 @@ See [test](https://github.com/Belphemur/node-json-db/tree/master/test) for more 
 
 
 ```javascript
-var JsonDB = require('node-json-db');
+import JsonDB from 'node-json-db';
+import { Config } from 'node-json-db/lib/JsonDBConfig';
+
 // The second argument is used to tell the DB to save after each push
 // If you put false, you'll have to call the save() method.
 // The third argument is to ask JsonDB to save the database in an human readable format. (default false)
-var db = new JsonDB("myDataBase", true, false);
+// The last argument is the separator. By default it's slash (/)
+var db = new JsonDB(new Config("myDataBase", true, false, '/');
 
 // Pushing the data into the database
 // With the wanted DataPath
@@ -120,9 +123,10 @@ As of v0.8.0, [TypeScript](https://www.typescriptlang.org) types are
 included in this package, so using `@types/node-json-db` is no longer required.
 
 ```javascript
-import JsonDB from "node-json-db";
+import JsonDB from 'node-json-db';
+import { Config } from 'node-json-db/lib/JsonDBConfig';
 
-const db = new JsonDB("myDataBase", true, false);
+const db = new JsonDB(new Config("myDataBase", true, false, '/');
 ```
 **IMPORTANT NOTE:** Ensure that you have the `esModuleInterop` 
 [compiler flag](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
@@ -197,7 +201,7 @@ db.getData("/arraytest/lastItemArray[-1]");
 
 | Error                                                 | Type          |                   Explanation                                                                                                                                             |
 | ------------------------------------------------------|:-------------:|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|The Data Path can't be empty                           |DataError      |The Database expect to minimum receive the root **/** as DataPath.                                                                                                         | 
+|The Data Path can't be empty                           |DataError      |The Database expect to minimum receive the root **separator** as DataPath.                                                                                                         |
 |Can't find dataPath: /XXX. Stopped at YYY              |DataError      |When the full hierarchy of the DataPath given is not present in the Database. It tells you until where it's valid. This error can happen when using *getData* and *delete* | 
 |Can't merge another type of data with an Array         |DataError      |If you chose to not override the data (merging) when pushing and the new data is an array but the current data isn't an array (an Object by example).                      | 
 |Can't merge an Array with an Object                    |DataError      |Same idea as the previous message. You have an array as current data and ask to merge it with an Object.                                                                   | 
@@ -208,6 +212,14 @@ db.getData("/arraytest/lastItemArray[-1]");
 |Can't Load Database:  XXXX                             |DatabaseError  |JsonDB can't load the database for "err" reason. You can find the nested error in **error.inner**                                                                          |
 |Can't save the database: XXX                           |DatabaseError  |JsonDB can't save the database for "err" reason. You can find the nested error in **error.inner**                                                                          | 
 |DataBase not loaded. Can't write                       |DatabaseError  |Since the database hasn't been loaded correctly, the module won't let you save the data to avoid erasing your database.                                                    | 
+
+# Limitations
+
+## Object with `seperator` in key
+ Object pushed with key containing the `seperator` character won't be reachable. See [#75](https://github.com/Belphemur/node-json-db/issues/75).
+
+ Please consider the `seperator` as a reserved character by node-json-db.
+
 
 # Thanks
 
