@@ -32,8 +32,8 @@ export const merge = (...arrays: KeyValue[]): KeyValue => {
     return destination
 }
 
-export const removeTrailingSlash = (dataPath: string): string => {
-    if (dataPath.length > 1 && dataPath.endsWith('/')) {
+export const removeTrailingChar = (dataPath: string, trailing: string): string => {
+    if (dataPath.length > 1 && dataPath.endsWith(trailing)) {
         return dataPath.substring(0, dataPath.length - 1)
     }
     return dataPath
