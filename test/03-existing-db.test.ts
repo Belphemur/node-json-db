@@ -1,4 +1,4 @@
-import JsonDB from '../src/JsonDB'
+import { JsonDB } from '../src/JsonDB'
 
 describe('JsonDB', () => {
     const db = new JsonDB('test/game_file', true, true)
