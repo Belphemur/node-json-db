@@ -158,7 +158,7 @@ var testString = db.getData("/arraytest/myarray[0]/obj");
 
 // Doing this will delete the object stored at the index 0 of the array.
 // Keep in mind this won't delete the array even if it's empty.
-db.delete(("/arraytest/myarray[0]");
+db.delete("/arraytest/myarray[0]");
 ```
 
 #### Appending in Array
