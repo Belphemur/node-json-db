@@ -1,5 +1,5 @@
 import {DatabaseError, DataError} from "../src/lib/Errors"
-import JsonDB from "../src/JsonDB"
+import {JsonDB} from "../src/JsonDB"
 import * as fs from 'fs'
 import { Config } from "../src/lib/JsonDBConfig"
 

@@ -12,7 +12,7 @@ type DataPath = Array<string>
 
 export type FindCallback = (entry: any, index: number | string) => boolean
 
-export default class JsonDB {
+export class JsonDB {
     private loaded: boolean = false
     private data: KeyValue = {}
     private readonly config : JsonDBConfig
