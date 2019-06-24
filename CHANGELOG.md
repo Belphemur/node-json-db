@@ -1,3 +1,19 @@
+# [1.0.0](https://github.com/Belphemur/node-json-db/compare/v0.11.0...v1.0.0) (2019-06-24)
+
+
+### Features
+
+* **Packaging:** Use es6 module packaging ([f5cd8fd](https://github.com/Belphemur/node-json-db/commit/f5cd8fd))
+
+
+### BREAKING CHANGES
+
+* **Packaging:** The default export has been removed. You need to do a deconstruction import to load the library now.
+
+import JsonDB from 'node-json-db'
+becomes
+import {JsonDB} from 'node-json-db'
+
 # [0.11.0](https://github.com/Belphemur/node-json-db/compare/v0.10.0...v0.11.0) (2019-03-15)
 
 
