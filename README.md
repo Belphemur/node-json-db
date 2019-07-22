@@ -42,7 +42,7 @@ See [test](https://github.com/Belphemur/node-json-db/tree/master/test) for more 
 
 ```javascript
 import { JsonDB } from 'node-json-db';
-import { Config } from 'node-json-db/lib/JsonDBConfig';
+import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
 
 // The second argument is used to tell the DB to save after each push
 // If you put false, you'll have to call the save() method.
@@ -132,7 +132,7 @@ JsonDB isn't exported as default any more. You'll need to change how you load th
 This change is done to follow the right way to import module.
 ```javascript
 import { JsonDB } from 'node-json-db';
-import { Config } from 'node-json-db/lib/JsonDBConfig';
+import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
 
 const db = new JsonDB(new Config("myDataBase", true, false, '/'));
 ```
@@ -140,12 +140,13 @@ const db = new JsonDB(new Config("myDataBase", true, false, '/'));
 
 ### Array Support
 You can also access the information stored into arrays and manipulate them.
-```javascript
-var JsonDB = require('node-json-db');
+```typescript
+import { JsonDB } from 'node-json-db';
+import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
 // The second argument is used to tell the DB to save after each push
 // If you put false, you'll have to call the save() method.
 // The third argument is to ask JsonDB to save the database in an human readable format. (default false)
-var db = new JsonDB("myDataBase", true, false);
+const db = new JsonDB(new Config("myDataBase", true, false, '/'));
 
 // This will create an array 'myarray' with the object '{obj:'test'}' at index 0
 db.push("/arraytest/myarray[0]", {
