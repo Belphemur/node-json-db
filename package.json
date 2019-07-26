@@ -73,7 +73,7 @@
     "semantic-release": "^15.13.16",
     "travis-deploy-once": "^5.0.11",
     "ts-jest": "^24.0.2",
-    "typedoc": "^0.14.2",
+    "typedoc": "^0.15.0",
     "typescript": "^3.5.2",
     "validate-commit-msg": "^2.14.0"
   }
