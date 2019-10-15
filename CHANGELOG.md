@@ -1,3 +1,17 @@
+## [1.0.2](https://github.com/Belphemur/node-json-db/compare/v1.0.1...v1.0.2) (2019-10-15)
+
+
+### Bug Fixes
+
+* **Array:** Add support for dash in array name ([b271507](https://github.com/Belphemur/node-json-db/commit/b2715070023a07a29c2d66268b1f69d35cf9229d)), closes [#98](https://github.com/Belphemur/node-json-db/issues/98)
+
+## [1.0.1](https://github.com/Belphemur/node-json-db/compare/v1.0.0...v1.0.1) (2019-07-22)
+
+
+### Bug Fixes
+
+* **README:** Update documentation ([c7a631b](https://github.com/Belphemur/node-json-db/commit/c7a631b)), closes [#90](https://github.com/Belphemur/node-json-db/issues/90) [#85](https://github.com/Belphemur/node-json-db/issues/85)
+
 # [1.0.0](https://github.com/Belphemur/node-json-db/compare/v0.11.0...v1.0.0) (2019-06-24)
 
 
