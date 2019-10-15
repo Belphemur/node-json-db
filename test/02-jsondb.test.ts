@@ -260,6 +260,13 @@ describe('JsonDB', () => {
             expect(myarray[0]).toBe('test')
         })
 
+        test('should add array entry of array using dash (-) in name', () => {
+            db.push('/arraytest/my-array[0]', "test", true)
+            const myarray = db.getData('/arraytest/my-array')
+            expect(myarray).toBeInstanceOf(Array)
+            expect(myarray[0]).toBe('test')
+        })
+
         test(
             'should throw an Error when using an array with a string at index TEST',
             () => {
@@ -587,31 +594,31 @@ describe('JsonDB', () => {
         const db = new JsonDB(testFile6, true)
 
         test('should be able to filter object matching filter',
-          () => {
-              db.push('/filter/id-0', {test: 'hello'})
-              db.push('/filter/id-1', {test: 'hey'})
-              db.push('/filter/id-2', {test: 'echo'})
-              db.push('/filter/id-3', {test: 'hello'})
-              const result = db.filter<{test: string}>('/filter', entry => entry.test === 'hello')
-              expect(result).toBeInstanceOf(Array)
-              expect(result).toHaveLength(2)
-              expect(result![0]).toHaveProperty('test', 'hello')
-              expect(result![1]).toHaveProperty('test', 'hello')
-          })
+            () => {
+                db.push('/filter/id-0', {test: 'hello'})
+                db.push('/filter/id-1', {test: 'hey'})
+                db.push('/filter/id-2', {test: 'echo'})
+                db.push('/filter/id-3', {test: 'hello'})
+                const result = db.filter<{test: string}>('/filter', entry => entry.test === 'hello')
+                expect(result).toBeInstanceOf(Array)
+                expect(result).toHaveLength(2)
+                expect(result![0]).toHaveProperty('test', 'hello')
+                expect(result![1]).toHaveProperty('test', 'hello')
+            })
         test('should be able to filter the array matching filter',
-          () => {
-              db.push('/filter/data', [{test: 'echo'}, {test: 'hey'}, {test: 'hello'}, {test: 'echo'}])
-              const result = db.filter<{test: string}>('/filter/data', entry => entry.test === 'echo')
-              expect(result).toBeInstanceOf(Array)
-              expect(result).toHaveLength(2)
-              expect(result![0]).toHaveProperty('test', 'echo')
-              expect(result![1]).toHaveProperty('test', 'echo')
-          })
+            () => {
+                db.push('/filter/data', [{test: 'echo'}, {test: 'hey'}, {test: 'hello'}, {test: 'echo'}])
+                const result = db.filter<{test: string}>('/filter/data', entry => entry.test === 'echo')
+                expect(result).toBeInstanceOf(Array)
+                expect(result).toHaveLength(2)
+                expect(result![0]).toHaveProperty('test', 'echo')
+                expect(result![1]).toHaveProperty('test', 'echo')
+            })
         test('shouldn\'t be able to find a data in anything else than Object or Array',
-          () => {
-              db.push('/filter/number', 1)
-              expect(() => db.find<{test: string}>('/filter/number', entry => entry.test === 'hello')).toThrow(DataError)
-          })
+            () => {
+                db.push('/filter/number', 1)
+                expect(() => db.find<{test: string}>('/filter/number', entry => entry.test === 'hello')).toThrow(DataError)
+            })
     })
 
     describe('Cleanup', () => {
