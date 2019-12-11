@@ -481,6 +481,18 @@ describe('JsonDB', () => {
                 }
             }
         )
+        test('should add array entry of array starting with number in name', () => {
+            db.push('/arraytest/11_Dec[0]', "test", true)
+            const myarray = db.getData('/arraytest/11_Dec')
+            expect(myarray).toBeInstanceOf(Array)
+            expect(myarray[0]).toBe('test')
+        })
+        test('should add array entry of array containg a dot (.) in name', () => {
+            db.push('/arraytest/d.s_[0]', "test", true)
+            const myarray = db.getData('/arraytest/d.s_')
+            expect(myarray).toBeInstanceOf(Array)
+            expect(myarray[0]).toBe('test')
+        })
         describe('last item', () => {
 
             test(
