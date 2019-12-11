@@ -6,7 +6,7 @@ function isInt(value: any) {
         Number(value) == value && !isNaN(parseInt(value, 10))
 }
 
-export const arrayRegex = () => /^([a-zA-Z_$][0-9a-zA-Z_\-$]*)\[((?!(\]|\[)).*|)\]$/gm
+export const arrayRegex = () => /^([\.0-9a-zA-Z_$\-][0-9a-zA-Z_\-$\.]*)\[((?!(\]|\[)).*|)\]$/gm
 const regexCache = {} as KeyValue
 
 export class ArrayInfo {
