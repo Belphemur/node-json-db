@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/Belphemur/node-json-db/compare/v1.0.2...v1.0.3) (2019-12-11)
+
+
+### Bug Fixes
+
+* **Array:** Support dot and number in name ([d4ce40a](https://github.com/Belphemur/node-json-db/commit/d4ce40adaa3b0b51cbc57060ee77eccd317cd136)), closes [#95](https://github.com/Belphemur/node-json-db/issues/95)
+
 ## [1.0.2](https://github.com/Belphemur/node-json-db/compare/v1.0.1...v1.0.2) (2019-10-15)
 
 
