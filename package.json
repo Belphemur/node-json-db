@@ -60,8 +60,8 @@
   },
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.6",
+    "@types/jest": "^25.1.0",
     "@semantic-release/git": "^9.0.0",
-    "@types/jest": "^24.0.23",
     "@types/mkdirp": "^0.5.2",
     "@types/node": "^13.1.0",
     "@types/safe-regex": "^1.1.2",
