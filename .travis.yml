@@ -1,8 +1,8 @@
 language: node_js
 sudo: true
 node_js:
+- "14"
 - "12"
-- "11"
 - "10"
 
 cache:
