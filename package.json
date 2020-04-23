@@ -8,7 +8,6 @@
     "test": "jest --coverage",
     "build": "tsc",
     "build:doc": "typedoc --out docs --target es6 --theme minimal --mode file src",
-    "commitmsg": "validate-commit-msg",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once"
   },
@@ -76,5 +75,10 @@
     "typedoc": "^0.17.4",
     "typescript": "^3.8.3",
     "validate-commit-msg": "^2.14.0"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "validate-commit-msg"
+    }
   }
 }
