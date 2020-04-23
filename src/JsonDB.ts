@@ -85,7 +85,7 @@ export class JsonDB {
                     throw new DataError(`Can't find dataPath: ${thisDb.config.separator}${dataPath.join(thisDb.config.separator)}. Stopped at ${property}`, 5)
                 }
             }
-
+            
             const arrayInfo = ArrayInfo.processArray(property)
             if (arrayInfo) {
                 property = arrayInfo.property
@@ -154,6 +154,36 @@ export class JsonDB {
             }
             throw e
         }
+    }
+
+
+    /**
+     * Returns the number of element which constitutes the array
+     * @param dataPath 
+     */
+    public count(dataPath: string): number {
+        const result = this.getData(dataPath);
+        if (!Array.isArray(result)) {
+            throw new DataError(`DataPath: ${dataPath} is not an array.`, 11)
+        }
+        const path = this.processDataPath(dataPath);
+        const data = this.retrieveData(path, false);
+        return data.length;
+    }
+
+    /**
+     * Returns the index of the object that meets the criteria submitted.
+     * @param dataPath 
+     * @param id the value of the index
+     */
+    public getIndex(dataPath: string, value: string, item:string = 'id'): number {
+        const result = this.getData(dataPath);
+        if (!Array.isArray(result)) {
+            throw new DataError(`DataPath: ${dataPath} is not an array.`, 11)
+        }
+        const path = this.processDataPath(dataPath);
+        const data = this.retrieveData(path, false);
+        return data.map(function (element:any) {return element[item];}).indexOf(value);
     }
 
     /**
