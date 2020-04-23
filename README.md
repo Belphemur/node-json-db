@@ -174,6 +174,23 @@ db.push("/arraytest/myarray[]", {
 // The append feature can be used in conjuction with properties
 // This will set the next index as an object {myTest: 'test'}
 db.push("/arraytest/myarray[]/myTest", 'test', true);
+
+
+// You can have the number of element
+let numberOfElement = db.count("/arraytest/myarray");
+
+
+// You can have the current index of an object
+db.push("/arraytest/myarray", {id: 65464646155, name: "test"}, true);
+db.getIndex("/arraytest/myarray", 65464646155);
+// By default, the property is 'id'
+// You can add another property instead
+db.getIndex("/arraytest/myarray", "test", "name");
+
+
+// It's useful if you want to delete some object
+db.delete("/arraytest/myarray[" + db.getIndex("/arraytest/myarray", 65464646155) + "]");
+
 ```
 
 #### Last Item in Array
