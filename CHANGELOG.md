@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/Belphemur/node-json-db/compare/v1.0.3...v1.1.0) (2020-04-23)
+
+
+### Features
+
+* add some array utils ([8f9d2dd](https://github.com/Belphemur/node-json-db/commit/8f9d2dd01950d3441fa8badd98689caeadf16e9c))
+
 ## [1.0.3](https://github.com/Belphemur/node-json-db/compare/v1.0.2...v1.0.3) (2019-12-11)
 
 
