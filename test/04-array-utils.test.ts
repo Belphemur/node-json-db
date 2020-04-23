@@ -1,7 +1,8 @@
 import { JsonDB } from '../src/JsonDB'
+import * as fs from 'fs'
 
 describe('Array Utils', () => {
-    const db = new JsonDB('recipe', true, true)
+    const db = new JsonDB('test/recipe', true, true)
     describe('get number of item in an array', () => {
         test('should have the correct count of an array', () => {
             const recipe_1 = {id: 65464646155, name: "Cheesecake", category: "Dessert"};
@@ -47,5 +48,10 @@ describe('Array Utils', () => {
             expect(db.getIndex("/recipes", "12335373873", "test")).toBe(2);
         })
 
+    })
+    describe('Cleanup', () => {
+        test('should remove the test files', () => {
+            fs.unlinkSync("test/recipe.json")
+        })
     })
 })
