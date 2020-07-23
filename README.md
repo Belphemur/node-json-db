@@ -18,7 +18,7 @@ yarn add node-json-db
 ## Inner Working
 
 ### Data
-The module store the data using JavaScript Object directly into a JSON file. You can easily traverse the data to reach 
+The module stores the data using JavaScript Object directly into a JSON file. You can easily traverse the data to reach 
 directly the interesting property using the DataPath. The principle of DataPath is the same as XMLPath.
 
 ### Example
@@ -44,6 +44,7 @@ See [test](https://github.com/Belphemur/node-json-db/tree/master/test) for more 
 import { JsonDB } from 'node-json-db';
 import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
 
+// The first argument is the database filename. If no extension, '.json' is assumed and automatically added.
 // The second argument is used to tell the DB to save after each push
 // If you put false, you'll have to call the save() method.
 // The third argument is to ask JsonDB to save the database in an human readable format. (default false)
@@ -143,6 +144,8 @@ You can also access the information stored into arrays and manipulate them.
 ```typescript
 import { JsonDB } from 'node-json-db';
 import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
+
+// The first argument is the database filename. If no extension, '.json' is assumed and automatically added.
 // The second argument is used to tell the DB to save after each push
 // If you put false, you'll have to call the save() method.
 // The third argument is to ask JsonDB to save the database in an human readable format. (default false)
@@ -236,10 +239,10 @@ db.getData("/arraytest/lastItemArray[-1]");
 
 # Limitations
 
-## Object with `seperator` in key
- Object pushed with key containing the `seperator` character won't be reachable. See [#75](https://github.com/Belphemur/node-json-db/issues/75).
+## Object with `separator` in key
+ Object pushed with key containing the `separator` character won't be reachable. See [#75](https://github.com/Belphemur/node-json-db/issues/75).
 
- Please consider the `seperator` as a reserved character by node-json-db.
+ Please consider the `separator` as a reserved character by node-json-db.
 
 
 # Thanks
