@@ -1,3 +1,5 @@
+import * as path from "path";
+
 export interface JsonDBConfig {
   filename: string,
   saveOnPush: boolean,
@@ -15,7 +17,8 @@ export class Config implements JsonDBConfig {
   constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/') {
     this.filename = filename
 
-    if (!filename.endsWith(".json")) {
+    // Force json if no extension
+    if (path.extname(filename) === "") {
       this.filename += ".json"
     }
 
