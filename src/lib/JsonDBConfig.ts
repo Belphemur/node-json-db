@@ -1,21 +1,21 @@
 export interface JsonDBConfig {
-  filename: string,
+  filename: string | null,
   saveOnPush: boolean,
   humanReadable: boolean,
   separator: string
 }
 
 export class Config implements JsonDBConfig {
-  filename: string
+  filename: string | null
   humanReadable: boolean
   saveOnPush: boolean
   separator: string
 
 
-  constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/') {
+  constructor(filename: string | null, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/') {
     this.filename = filename
 
-    if (!filename.endsWith(".json")) {
+    if (filename !== null && !filename.endsWith(".json")) {
       this.filename += ".json"
     }
 

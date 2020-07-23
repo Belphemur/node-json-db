@@ -11,34 +11,37 @@ type DataPath = Array<string>
 
 
 export type FindCallback = (entry: any, index: number | string) => boolean
+export type SaveCallback = (data: KeyValue) => void
 
 export class JsonDB {
     private loaded: boolean = false
     private data: KeyValue = {}
     private readonly config : JsonDBConfig
+    private readonly saveCallback?: SaveCallback
 
 
   /**
-   * JSONDB Constructor
+   * JsonDB Constructor
    * @param filename where to save the "DB". Can also be used to give the whole configuration
    * @param saveOnPush save the database at each push command into the json file
    * @param humanReadable the JSON file will be readable easily by a human
    * @param separator what to use as separator
    */
-    constructor(filename: string | Config, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/') {
-
+    constructor(filename: string | Config | null, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/', saveCallback?: SaveCallback) {
         if(filename instanceof Config) {
           this.config = filename
         } else {
           this.config = new Config(filename, saveOnPush, humanReadable, separator)
         }
 
-        if (!FS.existsSync(this.config.filename)) {
+        if (this.config.filename !== null && !FS.existsSync(this.config.filename)) {
             const dirname = path.dirname(this.config.filename)
             mkdirp.sync(dirname)
             this.save(true)
             this.loaded = true
         }
+
+        this.saveCallback = saveCallback;
     }
 
     /**
@@ -132,11 +135,11 @@ export class JsonDB {
     }
 
     /**
-     * Get the wanted data
+     * Get the wanted data. No path will return the full data
      * @param dataPath
      */
-    public getData(dataPath: string): any {
-        const path = this.processDataPath(dataPath)
+    public getData(dataPath?: string): any {
+        const path = this.processDataPath(dataPath !== undefined ? dataPath : "/")
         return this.retrieveData(path, false)
     }
 
@@ -289,8 +292,8 @@ export class JsonDB {
     }
 
     /**
-     * Only use this if you know what you're doing.
-     * It reset the full data of the database.
+     * Only use this if you know what you're doing
+     * It resets the full data of the database
      * @param data
      */
     public resetData(data: any): void {
@@ -313,6 +316,13 @@ export class JsonDB {
         if (this.loaded) {
             return
         }
+
+        if (this.config.filename === null) {
+            this.data = {}
+            this.loaded = true
+            return
+        }
+
         try {
             const data = FS.readFileSync(this.config.filename, 'utf8')
             this.data = JSON.parse(data)
@@ -329,6 +339,15 @@ export class JsonDB {
      * @param force force the save of the database
      */
     public save(force?: boolean): void {
+        if (this.config.filename === null) {
+            if (this.saveCallback) {
+                this.saveCallback(this.data)
+                return
+            }
+            const error = new DatabaseError("Can't save the database. Undefined saveCallback", 2)
+            throw error
+        }
+
         force = force || false
         if (!force && !this.loaded) {
             throw new DatabaseError("DataBase not loaded. Can't write", 7)
