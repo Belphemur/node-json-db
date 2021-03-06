@@ -176,7 +176,7 @@ export class JsonDB {
      * @param dataPath 
      * @param id the value of the index
      */
-    public getIndex(dataPath: string, value: string, item:string = 'id'): number {
+    public getIndex(dataPath: string, value: (string | number), item:string = 'id'): number {
         const result = this.getData(dataPath);
         if (!Array.isArray(result)) {
             throw new DataError(`DataPath: ${dataPath} is not an array.`, 11)
