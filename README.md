@@ -178,22 +178,6 @@ db.push("/arraytest/myarray[]", {
 // This will set the next index as an object {myTest: 'test'}
 db.push("/arraytest/myarray[]/myTest", 'test', true);
 
-
-// You can have the number of element
-let numberOfElement = db.count("/arraytest/myarray");
-
-
-// You can have the current index of an object
-db.push("/arraytest/myarray", {id: 65464646155, name: "test"}, true);
-db.getIndex("/arraytest/myarray", 65464646155);
-// By default, the property is 'id'
-// You can add another property instead
-db.getIndex("/arraytest/myarray", "test", "name");
-
-
-// It's useful if you want to delete some object
-db.delete("/arraytest/myarray[" + db.getIndex("/arraytest/myarray", 65464646155) + "]");
-
 ```
 
 #### Last Item in Array
@@ -212,6 +196,28 @@ db.delete("/arraytest/lastItemArray[-1]");
 
 // This will return 2 since 3 just got removed
 db.getData("/arraytest/lastItemArray[-1]");
+```
+#### Count for Array
+```javascript
+//
+db.push("/arraytest/list", [{id: 65464646155, name: "test"}], true);
+
+// You can have the number of element, in this case  = 1
+let numberOfElement = db.count("/arraytest/list");
+```
+
+#### Get Index in Array
+```javascript
+
+// You can have the current index of an object
+db.push("/arraytest/myarray", {id: 65464646155, name: "test"}, true);
+db.getIndex("/arraytest/myarray", 65464646155);
+// By default, the property is 'id'
+// You can add another property instead
+db.getIndex("/arraytest/myarray", "test", "name");
+
+// It's useful if you want to delete some object
+db.delete("/arraytest/myarray[" + db.getIndex("/arraytest/myarray", 65464646155) + "]");
 ```
 ### Exception/Error
 #### Type
