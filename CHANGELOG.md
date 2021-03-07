@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/Belphemur/node-json-db/compare/v1.2.1...v1.3.0) (2021-03-07)
+
+
+### Features
+
+* **typing:** Add basic typing to the lib for TS ([5309e9e](https://github.com/Belphemur/node-json-db/commit/5309e9e633f25fa2590f693e0e50ebb30ea57578))
+
 ## [1.2.1](https://github.com/Belphemur/node-json-db/compare/v1.2.0...v1.2.1) (2021-03-07)
 
 
