@@ -1,3 +1,17 @@
+# [1.2.0](https://github.com/Belphemur/node-json-db/compare/v1.1.0...v1.2.0) (2021-03-07)
+
+
+### Bug Fixes
+
+* **Convention:** Fixed quotes ([dd4494c](https://github.com/Belphemur/node-json-db/commit/dd4494c321172037ff51af284911ea64279e1455))
+* **README:** Update documentation ([b0f8ad4](https://github.com/Belphemur/node-json-db/commit/b0f8ad48212a9e4b76362b42395d937ed970ba58))
+
+
+### Features
+
+* **filename:** Support non json file extensions ([e219124](https://github.com/Belphemur/node-json-db/commit/e2191246c50d9477a43c038975589a9d1da5a58d))
+* **getIndex:** Support Numerical id ([6a8ee73](https://github.com/Belphemur/node-json-db/commit/6a8ee7381345ab74b851ffe2092285b09ecce922))
+
 # [1.1.0](https://github.com/Belphemur/node-json-db/compare/v1.0.3...v1.1.0) (2020-04-23)
 
 
