@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/Belphemur/node-json-db/compare/v1.2.0...v1.2.1) (2021-03-07)
+
+
+### Bug Fixes
+
+* **getIndex:** Improve documentation ([9951c6d](https://github.com/Belphemur/node-json-db/commit/9951c6de7d09adaa66620584e592e1151ba60e5d))
+
 # [1.2.0](https://github.com/Belphemur/node-json-db/compare/v1.1.0...v1.2.0) (2021-03-07)
 
 
