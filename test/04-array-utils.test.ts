@@ -47,6 +47,18 @@ describe('Array Utils', () => {
             expect(db.getIndex("/recipes", "78687873783", "test")).toBe(1);
             expect(db.getIndex("/recipes", "12335373873", "test")).toBe(2);
         })
+        test('should get the index of the current value with anything but numerical', () => {
+            const recipe_1 = {test: 65464646155, name: "Cheesecake", category: "Dessert"};
+            const recipe_2 = {test: 78687873783, name: "Gratin", category: "Dish"};
+            const recipe_3 = {test: 12335373873, name: "Soupe", category: "Starter"};
+            db.push("/recipes[0]", recipe_1, true);
+            db.push("/recipes[1]", recipe_2, true);
+            db.push("/recipes[2]", recipe_3, true);
+
+            expect(db.getIndex("/recipes", 65464646155, "test")).toBe(0);
+            expect(db.getIndex("/recipes", 78687873783, "test")).toBe(1);
+            expect(db.getIndex("/recipes", 12335373873, "test")).toBe(2);
+        })
 
     })
     describe('Cleanup', () => {
