@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest --coverage",
     "build": "tsc",
-    "build:doc": "typedoc --out docs --target es6 --theme minimal --mode file src",
+    "build:doc": "typedoc",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once",
     "prepare": "husky install"
