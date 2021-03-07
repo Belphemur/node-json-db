@@ -133,11 +133,19 @@ export class JsonDB {
 
     /**
      * Get the wanted data
-     * @param dataPath
+     * @param dataPath path of the data to retrieve
      */
     public getData(dataPath: string): any {
         const path = this.processDataPath(dataPath)
         return this.retrieveData(path, false)
+    }
+
+    /**
+     * Same as getData only here it's directly typed to your object
+     * @param dataPath  path of the data to retrieve
+     */
+    public getObject<T>(dataPath: string): T {
+        return this.getData(dataPath);
     }
 
     /**
