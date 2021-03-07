@@ -11,6 +11,11 @@ const testFile4 = "test/array_file"
 const testFile5 = "test/test_file_empty"
 const testFile6 = "test/test_delete"
 
+
+interface Test {
+    Hello: string
+    World: number
+}
 describe('JsonDB', () => {
     describe('Exception/Error', () => {
         test('should create create a DataError', () => {
@@ -102,6 +107,12 @@ describe('JsonDB', () => {
             expect(db.getData("@")).toBe(object)
         })
 
+        test('should store the data with typing', () => {
+            const object = {Hello: "test", World: 0} as Test;
+            db.push("@/hello", object)
+            const result = db.getObject<Test>("@");
+            expect(result).toBe(object)
+        })
         test('should have data at root', () => {
             expect(db.exists('@test@test')).toBeTruthy()
         })
