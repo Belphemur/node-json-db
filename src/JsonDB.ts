@@ -173,17 +173,18 @@ export class JsonDB {
 
     /**
      * Returns the index of the object that meets the criteria submitted.
-     * @param dataPath 
-     * @param id the value of the index
+     * @param dataPath  base dataPath from where to start searching
+     * @param searchValue value to look for in the dataPath
+     * @param propertyName name of the property to look for searchValue
      */
-    public getIndex(dataPath: string, value: (string | number), item:string = 'id'): number {
+    public getIndex(dataPath: string, searchValue: (string | number), propertyName:string = 'id'): number {
         const result = this.getData(dataPath);
         if (!Array.isArray(result)) {
             throw new DataError(`DataPath: ${dataPath} is not an array.`, 11)
         }
         const path = this.processDataPath(dataPath);
         const data = this.retrieveData(path, false);
-        return data.map(function (element:any) {return element[item];}).indexOf(value);
+        return data.map(function (element:any) {return element[propertyName];}).indexOf(searchValue);
     }
 
     /**
