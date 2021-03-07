@@ -138,6 +138,26 @@ import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
 const db = new JsonDB(new Config("myDataBase", true, false, '/'));
 ```
 
+#### Typing
+With TypeScript, you have access to a new method: getObject<T> that will take care of typing your return object.
+```typescript
+import { JsonDB } from 'node-json-db';
+import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
+
+const db = new JsonDB(new Config("myDataBase", true, false, '/'));
+
+interface FooBar {
+    Hello: string
+    World: number
+}
+const object = {Hello: "World", World: 5} as FooBar;
+
+db.push("/test", object);
+
+//Will be typed as FooBar in your IDE
+const result = db.getObject<FooBar>("/test");
+```
+
 
 ### Array Support
 You can also access the information stored into arrays and manipulate them.
