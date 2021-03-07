@@ -110,7 +110,7 @@ describe('JsonDB', () => {
         test('should store the data with typing', () => {
             const object = {Hello: "test", World: 0} as Test;
             db.push("@/hello", object)
-            const result = db.getObject<Test>("@");
+            const result = db.getObject<Test>("@/hello");
             expect(result).toBe(object)
         })
         test('should have data at root', () => {
