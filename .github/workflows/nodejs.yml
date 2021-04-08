@@ -23,7 +23,7 @@ jobs:
           with:
             node-version: ${{ matrix.node }}
         - name: Install dependencies
-          run: yarn ci
+          run: yarn install --frozen-lockfile
         - name: Run tests
           run: yarn test 
   deploy-pages:
@@ -45,7 +45,7 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install semantic-release dependencies
-        run: yarn ci
+        run: yarn install --frozen-lockfile
       - name: Build package
         run: yarn build:doc
       - name: Deploy 🚀
@@ -73,7 +73,7 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install semantic-release dependencies
-        run: yarn ci
+        run: yarn install --frozen-lockfile
       - name: Build package
         run: yarn build
       - name: Release
