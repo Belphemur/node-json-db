@@ -2,9 +2,13 @@ name: NodeJs
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NPM_TOKEN: ${{secrets.NPM_TOKEN }}
+
 on:
   push:
+    branches: [ develop, master ]
   pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ develop, master ]
 jobs:
   build:
     runs-on: ubuntu-latest
