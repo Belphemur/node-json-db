@@ -22,7 +22,7 @@ jobs:
             path: '**/node_modules'
             key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         - name: Setup Node.js ${{ matrix.node }}
-          uses: actions/setup-node@v1
+          uses: actions/setup-node@v2
           with:
             node-version: ${{ matrix.node }}
         - name: Install dependencies
@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
       - name: Cache node modules
@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
       - name: Cache node modules
