@@ -180,7 +180,7 @@ export class JsonDB {
     }
 
     /**
-     * Returns the index of the object that meets the criteria submitted.
+     * Returns the index of the object that meets the criteria submitted. Returns -1, if no match is found.
      * @param dataPath  base dataPath from where to start searching
      * @param searchValue value to look for in the dataPath
      * @param propertyName name of the property to look for searchValue
