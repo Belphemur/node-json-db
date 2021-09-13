@@ -20,10 +20,10 @@ jobs:
         - name: Cache node modules
           uses: actions/cache@v2
           env:
-            cache-name: cache-node-modules
+            cache-name: cache-npm
           with:
             # npm cache files are stored in `~/.npm` on Linux/macOS
-            path: '**/node_modules'
+            path: '~/.cache/yarn/'
             key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         - name: Setup Node.js ${{ matrix.node }}
           uses: actions/setup-node@v2
@@ -50,10 +50,10 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v2
         env:
-          cache-name: cache-node-modules
+          cache-name: cache-npm
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: '**/node_modules'
+          path: '~/.cache/yarn/'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install semantic-release dependencies
         run: yarn install --frozen-lockfile
@@ -78,10 +78,10 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v2
         env:
-          cache-name: cache-node-modules
+          cache-name: cache-npm
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: '**/node_modules'
+          path: '~/.cache/yarn/'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install semantic-release dependencies
         run: yarn install --frozen-lockfile
