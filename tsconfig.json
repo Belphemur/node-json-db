@@ -10,6 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "useUnknownInCatchVariables": false,
     "outDir": "dist",
     "typeRoots": [
       "node_modules/@types"
