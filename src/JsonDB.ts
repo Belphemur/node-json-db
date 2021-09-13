@@ -5,7 +5,7 @@ import * as mkdirp from "mkdirp"
 import {DatabaseError, DataError} from "./lib/Errors"
 import {DBParentData} from "./lib/DBParentData"
 import {ArrayInfo} from "./lib/ArrayInfo"
-import { Config, JsonDBConfig } from "./lib/JsonDBConfig"
+import {Config, JsonDBConfig} from "./lib/JsonDBConfig"
 
 type DataPath = Array<string>
 
@@ -180,19 +180,32 @@ export class JsonDB {
     }
 
     /**
-     * Returns the index of the object that meets the criteria submitted.
+     * Returns the index of the object that meets the criteria submitted. Returns -1, if no match is found.
      * @param dataPath  base dataPath from where to start searching
      * @param searchValue value to look for in the dataPath
      * @param propertyName name of the property to look for searchValue
      */
     public getIndex(dataPath: string, searchValue: (string | number), propertyName:string = 'id'): number {
+        const data = this.getArrayData(dataPath);
+        return data.map(function (element:any) {return element[propertyName];}).indexOf(searchValue);
+    }
+
+    /**
+     * Return the index of the value inside the array. Returns -1, if no match is found.
+     * @param dataPath  base dataPath from where to start searching
+     * @param searchValue value to look for in the dataPath
+     */
+    public getIndexValue(dataPath: string, searchValue: (string | number)) : number {
+        return this.getArrayData(dataPath).indexOf(searchValue);
+    }
+
+    private getArrayData(dataPath: string) {
         const result = this.getData(dataPath);
         if (!Array.isArray(result)) {
             throw new DataError(`DataPath: ${dataPath} is not an array.`, 11)
         }
         const path = this.processDataPath(dataPath);
-        const data = this.retrieveData(path, false);
-        return data.map(function (element:any) {return element[propertyName];}).indexOf(searchValue);
+        return this.retrieveData(path, false);
     }
 
     /**

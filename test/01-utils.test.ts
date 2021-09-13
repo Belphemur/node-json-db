@@ -63,7 +63,7 @@ describe('Utils', () => {
                 throw Error('Function did not throw')
             } catch (e) {
                 expect(e).toBeInstanceOf(DataError)
-                expect(e.id).toBe(200)
+                expect((e as DataError).id).toBe(200)
             }
         })
 
