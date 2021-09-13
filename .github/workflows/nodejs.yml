@@ -2,27 +2,31 @@ name: NodeJs
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NPM_TOKEN: ${{secrets.NPM_TOKEN }}
+
 on:
   push:
+    branches: [ develop, master ]
   pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ develop, master ]
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '12', '14' ]
+        node: [ '12', '14', '16' ]
     steps:
         - uses: actions/checkout@v2
         - name: Cache node modules
           uses: actions/cache@v2
           env:
-            cache-name: cache-node-modules
+            cache-name: cache-npm
           with:
             # npm cache files are stored in `~/.npm` on Linux/macOS
-            path: '**/node_modules'
+            path: '~/.cache/yarn/'
             key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         - name: Setup Node.js ${{ matrix.node }}
-          uses: actions/setup-node@v1
+          uses: actions/setup-node@v2
           with:
             node-version: ${{ matrix.node }}
         - name: Install dependencies
@@ -30,7 +34,7 @@ jobs:
         - name: Run tests
           run: yarn test
         - name: Upload code coverage
-          uses: codecov/codecov-action@v1
+          uses: codecov/codecov-action@v2.1.0
           with:
             fail_ci_if_error: true # optional (default = false)
   deploy-pages:
@@ -40,23 +44,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
       - name: Cache node modules
         uses: actions/cache@v2
         env:
-          cache-name: cache-node-modules
+          cache-name: cache-npm
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: '**/node_modules'
+          path: '~/.cache/yarn/'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install semantic-release dependencies
         run: yarn install --frozen-lockfile
       - name: Build package
         run: yarn build:doc
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.1
+        uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: docs # The folder the action should deploy.
@@ -68,16 +72,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
       - name: Cache node modules
         uses: actions/cache@v2
         env:
-          cache-name: cache-node-modules
+          cache-name: cache-npm
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: '**/node_modules'
+          path: '~/.cache/yarn/'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install semantic-release dependencies
         run: yarn install --frozen-lockfile
