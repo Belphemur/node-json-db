@@ -60,6 +60,17 @@ describe('Array Utils', () => {
             expect(db.getIndex("/recipes", 12335373873, "test")).toBe(2);
         })
 
+        test('should get the index of an array with string', () => {
+
+            db.push("/indexValue[]", "abc", true);
+            db.push("/indexValue[]", "def", true);
+            db.push("/indexValue[]", "gh", true);
+
+            expect(db.getIndexValue("/indexValue", "abc")).toBe(0);
+            expect(db.getIndexValue("/indexValue", "def")).toBe(1);
+            expect(db.getIndexValue("/indexValue", "gh")).toBe(2);
+        })
+
     })
     describe('Cleanup', () => {
         test('should remove the test files', () => {
