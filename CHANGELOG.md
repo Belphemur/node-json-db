@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/Belphemur/node-json-db/compare/v1.3.0...v1.4.0) (2021-09-13)
+
+
+### Features
+
+* **GetIndexValue:** Get index of a value in an array ([d56de61](https://github.com/Belphemur/node-json-db/commit/d56de6142726654d2e577d22ce474ae60e0197ce)), closes [#191](https://github.com/Belphemur/node-json-db/issues/191)
+
 # [1.3.0](https://github.com/Belphemur/node-json-db/compare/v1.2.1...v1.3.0) (2021-03-07)
 
 
