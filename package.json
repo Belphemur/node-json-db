@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest --coverage",
     "build": "tsc",
-    "build:doc": "typedoc",
+    "build:doc": "typedoc --entryPointStrategy expand ./src",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once",
     "prepare": "husky install"
