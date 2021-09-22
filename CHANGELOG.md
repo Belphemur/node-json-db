@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/Belphemur/node-json-db/compare/v1.4.0...v1.4.1) (2021-09-22)
+
+
+### Bug Fixes
+
+* **Docs:** Be sure the doc contains Config ([d626568](https://github.com/Belphemur/node-json-db/commit/d62656816ac728b68eef96758b0605b29153b7e9))
+
 # [1.4.0](https://github.com/Belphemur/node-json-db/compare/v1.3.0...v1.4.0) (2021-09-13)
 
 
