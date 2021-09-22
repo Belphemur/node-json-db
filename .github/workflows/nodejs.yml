@@ -20,7 +20,7 @@ jobs:
     steps:
         - uses: actions/checkout@v2
         - name: Set yarn cache
-          run: yarn config set ${{env.YARN_CACHE}}
+          run: yarn config set cache-folder ${{env.YARN_CACHE}}
         - name: Cache node modules
           uses: actions/cache@v2
           env:
@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set yarn cache
-        run: yarn config set ${{env.YARN_CACHE}}
+        run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -76,7 +76,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set yarn cache
-        run: yarn config set ${{env.YARN_CACHE}}
+        run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
