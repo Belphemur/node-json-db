@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest --coverage",
     "build": "tsc",
-    "build:doc": "typedoc",
+    "build:doc": "typedoc --entryPointStrategy expand ./src",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once",
     "prepare": "husky install"
@@ -59,8 +59,8 @@
     ]
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^5.0.1",
-    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/changelog": "^6.0.0",
+    "@semantic-release/git": "^10.0.0",
     "@types/jest": "^27.0.0",
     "@types/mkdirp": "^1.0.1",
     "@types/node": "^16.0.0",
@@ -70,7 +70,7 @@
     "jest": "^27.2.0",
     "last-release-git": "^0.0.3",
     "safe-regex": "~2.1.1",
-    "semantic-release": "^17.4.1",
+    "semantic-release": "^18.0.0",
     "travis-deploy-once": "^5.0.11",
     "ts-jest": "^27.0.5",
     "typedoc": "^0.22.3",

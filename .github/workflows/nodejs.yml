@@ -2,6 +2,8 @@ name: NodeJs
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NPM_TOKEN: ${{secrets.NPM_TOKEN }}
+  NODEJS: 16
+  YARN_CACHE: "yarn-cache"
 
 on:
   push:
@@ -14,16 +16,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '12', '14', '16' ]
+        node: [ '14', '16' ]
     steps:
         - uses: actions/checkout@v2
+        - name: Set yarn cache
+          run: yarn config set cache-folder ${{env.YARN_CACHE}}
         - name: Cache node modules
           uses: actions/cache@v2
           env:
-            cache-name: cache-npm
+            cache-name: yarn
           with:
-            # npm cache files are stored in `~/.npm` on Linux/macOS
-            path: '~/.cache/yarn/'
+            path: ${{env.YARN_CACHE}}
             key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         - name: Setup Node.js ${{ matrix.node }}
           uses: actions/setup-node@v2
@@ -43,17 +46,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Set yarn cache
+        run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: ${{env.NODEJS}}
       - name: Cache node modules
         uses: actions/cache@v2
         env:
-          cache-name: cache-npm
+          cache-name: yarn
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: '~/.cache/yarn/'
+          path: ${{env.YARN_CACHE}}
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install semantic-release dependencies
         run: yarn install --frozen-lockfile
@@ -71,17 +75,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Set yarn cache
+        run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: ${{env.NODEJS}}
       - name: Cache node modules
         uses: actions/cache@v2
         env:
-          cache-name: cache-npm
+          cache-name: yarn
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: '~/.cache/yarn/'
+          path: ${{env.YARN_CACHE}}
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install semantic-release dependencies
         run: yarn install --frozen-lockfile
