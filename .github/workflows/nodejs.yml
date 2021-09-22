@@ -24,7 +24,7 @@ jobs:
         - name: Cache node modules
           uses: actions/cache@v2
           env:
-            cache-name: cache-npm
+            cache-name: yarn
           with:
             path: ${{env.YARN_CACHE}}
             key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
@@ -55,7 +55,7 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v2
         env:
-          cache-name: cache-npm
+          cache-name: yarn
         with:
           path: ${{env.YARN_CACHE}}
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
@@ -84,7 +84,7 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v2
         env:
-          cache-name: cache-npm
+          cache-name: yarn
         with:
           path: ${{env.YARN_CACHE}}
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
