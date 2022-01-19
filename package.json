@@ -70,7 +70,7 @@
     "jest": "^27.2.0",
     "last-release-git": "^0.0.3",
     "safe-regex": "~2.1.1",
-    "semantic-release": "^18.0.0",
+    "semantic-release": "^19.0.2",
     "travis-deploy-once": "^5.0.11",
     "ts-jest": "^27.0.5",
     "typedoc": "^0.22.3",
