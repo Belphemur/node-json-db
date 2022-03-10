@@ -24,13 +24,14 @@ export class JsonDB {
    * @param saveOnPush save the database at each push command into the json file
    * @param humanReadable the JSON file will be readable easily by a human
    * @param separator what to use as separator
+   * @param syncOnSave force sync of the database (call fsync())
    */
-    constructor(filename: string | Config, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/') {
+    constructor(filename: string | Config, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/', syncOnSave: boolean = false) {
 
         if(filename instanceof Config) {
           this.config = filename
         } else {
-          this.config = new Config(filename, saveOnPush, humanReadable, separator)
+          this.config = new Config(filename, saveOnPush, humanReadable, separator, syncOnSave)
         }
 
         if (!FS.existsSync(this.config.filename)) {
@@ -363,7 +364,24 @@ export class JsonDB {
             else {
                 data = JSON.stringify(this.data)
             }
-            FS.writeFileSync(this.config.filename, data, 'utf8')
+            if(this.config.syncOnSave) {
+                const buffer = Buffer.from(String(data), 'utf8')
+                const fd_tmp = FS.openSync(this.config.filename, 'w')
+                let offset = 0
+                let length = buffer.byteLength
+                try {
+                    while (length > 0) {
+                    const written = FS.writeSync(fd_tmp, buffer, offset, length)
+                    offset += written
+                    length -= written
+                    }
+                } finally {
+                    FS.fsyncSync(fd_tmp)
+                    FS.closeSync(fd_tmp)
+                }
+            } else {
+                FS.writeFileSync(this.config.filename, data, 'utf8')
+            }
         } catch (err) {
             const error = new DatabaseError("Can't save the database", 2, err)
             throw error
