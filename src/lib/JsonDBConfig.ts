@@ -4,7 +4,8 @@ export interface JsonDBConfig {
   filename: string,
   saveOnPush: boolean,
   humanReadable: boolean,
-  separator: string
+  separator: string,
+  syncOnSave: boolean
 }
 
 export class Config implements JsonDBConfig {
@@ -12,9 +13,9 @@ export class Config implements JsonDBConfig {
   humanReadable: boolean
   saveOnPush: boolean
   separator: string
+  syncOnSave: boolean
 
-
-  constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/') {
+  constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/', syncOnSave: boolean = false) {
     this.filename = filename
 
     // Force json if no extension
@@ -25,5 +26,6 @@ export class Config implements JsonDBConfig {
     this.humanReadable = humanReadable
     this.saveOnPush = saveOnPush
     this.separator = separator
+    this.syncOnSave = syncOnSave
   }
 }
