@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/Belphemur/node-json-db/compare/v1.4.1...v1.5.0) (2022-03-11)
+
+
+### Features
+
+* **FSYNC:** Optional fsync when saving the database ([d1c67fd](https://github.com/Belphemur/node-json-db/commit/d1c67fd35658ad1ec0c359aafc1cb7e763e0cce7)), closes [#372](https://github.com/Belphemur/node-json-db/issues/372)
+
 ## [1.4.1](https://github.com/Belphemur/node-json-db/compare/v1.4.0...v1.4.1) (2021-09-22)
 
 
