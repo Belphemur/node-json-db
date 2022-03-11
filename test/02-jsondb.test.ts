@@ -10,6 +10,7 @@ const testFile3 = "test/test_file3"
 const testFile4 = "test/array_file"
 const testFile5 = "test/test_file_empty"
 const testFile6 = "test/test_delete"
+const testFile7 = "test/test_sync"
 
 
 interface Test {
@@ -54,6 +55,14 @@ describe('JsonDB', () => {
                 done()
             })
 
+        })
+
+        test('should create JSON file with sync', done => {
+            const jsondb = new JsonDB(testFile7, true, false, '/', true)
+            fs.access(testFile7+ ".json", fs.constants.R_OK, function (err) {
+                expect(err).toBeNull()
+                done()
+            })
         })
 
         test('should set en empty root', () => {
@@ -652,6 +661,7 @@ describe('JsonDB', () => {
             fs.unlinkSync(testFile4 + ".json")
             fs.unlinkSync(testFile5 + ".json")
             fs.unlinkSync(testFile6 + ".json")
+            fs.unlinkSync(testFile7 + ".json")
             fs.rmdirSync("test/dirCreation")
         })
     })
