@@ -22,7 +22,7 @@ jobs:
         - name: Set yarn cache
           run: yarn config set cache-folder ${{env.YARN_CACHE}}
         - name: Cache node modules
-          uses: actions/cache@v2
+          uses: actions/cache@v3
           env:
             cache-name: yarn
           with:
@@ -53,7 +53,7 @@ jobs:
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: yarn
         with:
@@ -82,7 +82,7 @@ jobs:
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: yarn
         with:
