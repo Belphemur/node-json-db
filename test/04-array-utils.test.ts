@@ -72,6 +72,21 @@ describe('Array Utils', () => {
         })
 
     })
+    describe('Nested array', () => {
+        test('get data of a nested array', () => {
+            db.push("/nested/0/array", [["test", "test2"]], true);
+            expect(db.getData("/nested/0/array[0][0]")).toBe("test");
+        })
+        test('append data to a nested array', () => {
+            db.push("/nested/1/array", [["test", "test2"]], true);
+            db.push("/nested/1/array[0][]", "test3", true);
+            expect(db.getData("/nested/array[0][2]")).toBe("test3");
+        })
+        test('get data of a multiple nested array', () => {
+            db.push("/nested/0/array", [[["test", "test2"]]], true);
+            expect(db.getData("/nested/0/array[0][0][0]")).toBe("test");
+        })
+    })
     describe('Cleanup', () => {
         test('should remove the test files', () => {
             fs.unlinkSync("test/recipe.json")
