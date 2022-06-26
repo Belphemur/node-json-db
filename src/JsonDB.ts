@@ -113,11 +113,7 @@ export class JsonDB {
         }
         const arrayIndex = arrayInfo.getIndex(data, true)
         if (!arrayInfo.append && data.hasOwnProperty(arrayIndex)) {
-          if (arrayInfo.isMultiDimensional()) {
-            data = arrayInfo.getMultiDimensionalData(data)
-          } else {
-            data = data[arrayIndex]
-          }
+          data = arrayInfo.getData(data)
         } else if (create) {
           if (arrayInfo.append) {
             data.push({})
