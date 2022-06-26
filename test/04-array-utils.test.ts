@@ -127,6 +127,65 @@ describe('Array Utils', () => {
       db.delete('/nested/0/array[0][0]')
       expect(db.getData('/nested/0/array[0][0]')).toBe('def')
     })
+    describe('', () => {
+      beforeEach(() => [
+        db.push('/nested/0/array', [
+          [['abc', 'def'], [['hij', 'klmn']]],
+          ['123', '456'],
+          ['789', '100'],
+        ]),
+      ])
+      test('should have the correct counts', () => {
+        // first level
+        expect(db.count('/nested/0/array')).toBe(3)
+        // second level
+        expect(db.count('/nested/0/array[0]')).toBe(2)
+        expect(db.count('/nested/0/array[1]')).toBe(2)
+        expect(db.count('/nested/0/array[2]')).toBe(2)
+        // third level
+        expect(db.count('/nested/0/array[0][0]')).toBe(2)
+        // fourth level
+        expect(db.count('/nested/0/array[0][1][0]')).toBe(2)
+      })
+      test('should have correct information after delete', () => {
+        const deepestArrayParentQuery = '/nested/0/array[0][1][0]'
+        const deepestArrayEntryQuery = `${deepestArrayParentQuery}[0]`
+        // validate array value before delete
+        expect(db.getData(deepestArrayEntryQuery)).toBe('hij')
+
+        db.delete(deepestArrayEntryQuery)
+        // validate array value after delete
+        expect(db.count(deepestArrayParentQuery)).toBe(1)
+        expect(db.getData(deepestArrayEntryQuery)).toBe('klmn')
+      })
+
+      test('should return the last entry for an array when using -1', () => {
+        // first level
+        expect(db.getData('/nested/0/array[-1][0]')).toBe('789')
+        // second level
+        expect(db.getData('/nested/0/array[0][-1]')).toEqual([['hij', 'klmn']])
+        // third level
+        expect(db.getData('/nested/0/array[0][-1][-1]')).toEqual([
+          'hij',
+          'klmn',
+        ])
+        // fourth level
+        expect(db.getData('/nested/0/array[0][-1][-1][-1]')).toBe('klmn')
+      })
+
+      test('should delete last entry when using -1', () => {
+        db.delete('/nested/0/array[0][-1][-1][-1]')
+        expect(db.count('/nested/0/array[0][-1][-1]')).toBe(1)
+        expect(db.getData('/nested/0/array[0][-1][-1][0]')).toBe('hij')
+        expect(db.getData('/nested/0/array[0][-1][-1][1]')).toBeUndefined()
+      })
+
+      test('should add to the last entry when using -1', () => {
+        db.push('/nested/0/array[0][-1][-1][]', 'lastRecord')
+        expect(db.count('/nested/0/array[0][-1][-1]')).toBe(3)
+        expect(db.getData('/nested/0/array[0][-1][-1][2]')).toBe('lastRecord')
+      })
+    })
   })
   describe('Nested array regex', () => {
     // Test added to play with the regex

@@ -100,18 +100,9 @@ export class ArrayInfo {
     if (this.append) {
       throw new DataError("Can't get data when appending", 100)
     }
-    const index = this.getIndex(data)
-    return data[this.property][index]
-  }
-
-  public getMultiDimensionalData(data: KeyValue): any {
-    if (this.append) {
-      throw new DataError("Can't get data when appending", 100)
-    }
-    this.indicies.forEach((index) => {
-      data = data[index]
-    })
-    return data
+    const { index, dataForProperty } =
+      this.getArrayDataAndIndexFromProperty(data)
+    return dataForProperty[index]
   }
 
   /**
@@ -126,12 +117,21 @@ export class ArrayInfo {
         if (index === '') {
           return
         }
+        index = +index
+        if (index === -1) {
+          index = dataLocationToAppendTo.length - 1
+        }
         dataLocationToAppendTo = dataLocationToAppendTo[+index]
       })
       dataLocationToAppendTo.push(value)
     } else {
-      const index = this.getIndex(data)
-      data[this.property][index] = value
+      const { index, dataForProperty } =
+        this.getArrayDataAndIndexFromProperty(data)
+      if (index === -1) {
+        dataForProperty.push(value)
+      } else {
+        dataForProperty[index] = value
+      }
     }
   }
 
@@ -143,15 +143,9 @@ export class ArrayInfo {
     if (this.append) {
       throw new DataError("Can't delete an appended data", 10)
     }
-    let indexToRemove = this.getIndex(data)
-    let tempData = data[this.property]
-    if (this.indicies.length > 0) {
-      indexToRemove = this.indicies[this.indicies.length - 1]
-      for (let i = 0; i < this.indicies.length - 1; i++) {
-        tempData = tempData[i]
-      }
-    }
-    tempData.splice(+indexToRemove, 1)
+    const { index, dataForProperty } =
+      this.getArrayDataAndIndexFromProperty(data)
+    dataForProperty.splice(index, 1)
   }
 
   /**
@@ -159,8 +153,28 @@ export class ArrayInfo {
    * @param data
    */
   public isValid(data: KeyValue): boolean {
-    const index = this.getIndex(data)
-    return data[this.property].hasOwnProperty(index)
+    const { index, dataForProperty } =
+      this.getArrayDataAndIndexFromProperty(data)
+    return dataForProperty.hasOwnProperty(index)
+  }
+
+  private getArrayDataAndIndexFromProperty(data: KeyValue): any {
+    let indexToPull = 0
+    let tempData = data[this.property] ?? data
+    if (this.indicies.length > 0) {
+      indexToPull = +this.indicies[this.indicies.length - 1]
+      for (let i = 0; i < this.indicies.length - 1; i++) {
+        let index = +this.indicies[i]
+        if (index === -1) {
+          index = tempData.length - 1
+        }
+        tempData = tempData[index]
+      }
+      if (indexToPull === -1) {
+        indexToPull = tempData.length - 1
+      }
+    }
+    return { index: indexToPull, dataForProperty: tempData }
   }
 
   public isMultiDimensional() {
