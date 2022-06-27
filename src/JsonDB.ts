@@ -311,9 +311,9 @@ export class JsonDB {
    */
   public push(dataPath: string, data: any, override: boolean = true): void {
     const dbData = this.getParentData(dataPath, true)
-    if (!dbData) {
-      throw new Error('Data not found')
-    }
+    // if (!dbData) {
+    //   throw new Error('Data not found')
+    // }
 
     let toSet = data
     if (!override) {
@@ -348,9 +348,9 @@ export class JsonDB {
    */
   public delete(dataPath: string): void {
     const dbData = this.getParentData(dataPath, true)
-    if (!dbData) {
-      return
-    }
+    // if (!dbData) {
+    //   return
+    // }
     dbData.delete()
 
     if (this.config.saveOnPush) {
