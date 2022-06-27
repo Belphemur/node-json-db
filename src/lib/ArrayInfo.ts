@@ -6,7 +6,7 @@ function isInt(value: any) {
 }
 
 export const arrayRegex = () => /^([\.0-9a-zA-Z_$\-][0-9a-zA-Z_\-$\.]*)(.*)/gm
-export const arrayIndiciesRegex = /\[(.?|.+?)\]/g
+export const arrayIndiciesRegex = /\[(.*?)\]/g
 export const malformedArrayRegex = /\]|\[/g
 const regexCache = {} as KeyValue
 
