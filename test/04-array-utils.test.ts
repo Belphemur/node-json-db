@@ -202,7 +202,7 @@ describe('Array Utils', () => {
         const nestedArrayMatches = match[2].toString()
         nestedArrayIndicies = [
           // matchAll to support [5] and []
-          ...nestedArrayMatches.matchAll(/\[(.?|.+?)\]/g),
+          ...nestedArrayMatches.matchAll(/\[(.*?)\]/g),
         ].map((match) => match[1])
       }
       expect(property).toBe('array')
