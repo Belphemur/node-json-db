@@ -72,10 +72,6 @@ export class ArrayInfo {
    * @param avoidProperty
    */
   public getIndex(data: KeyValue, avoidProperty?: boolean): number {
-    if (avoidProperty === undefined) {
-      avoidProperty = false
-    }
-
     if (this.append) {
       return -1
     }
