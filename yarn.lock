@@ -7235,9 +7235,9 @@ typedarray-to-buffer@^3.1.5:
     is-typedarray "^1.0.0"
 
 typedoc@^0.23.1:
-  version "0.23.1"
-  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.23.1.tgz#4bb6ed19ee683bce7b032af0de006445fe6f42e3"
-  integrity sha512-6Lb8E+RTEUPzdPUNugQQTOQYccq0iSfZgZ875fzSynByJWC7RbKNwLIx0Osv8pcJyiByy3jH/wdZR0tajuijLQ==
+  version "0.23.2"
+  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.23.2.tgz#c5f82752530749c8b541ff9b17883f6fb9e72f14"
+  integrity sha512-THpC4vtb3wu1yck6YHzEc4ck6W4lScf8TD0Rg7XAetDih8BzP+ErYO0/6DtdzYcZyKkDwEoujkMeWW7CffCbrQ==
   dependencies:
     lunr "^2.3.9"
     marked "^4.0.16"
