@@ -1,11 +1,9 @@
 import { JsonDB } from '../src/JsonDB'
-import * as fs from 'fs'
-jest.mock('fs')
 
 describe('JsonDB', () => {
   let db: JsonDB
   beforeEach(() => {
-    db = JsonDB.prototype // new JsonDB('', false)
+    db = JsonDB.prototype
   })
   describe('exists()', () => {
     test('should throw error when error is not instance of DataError', () => {
