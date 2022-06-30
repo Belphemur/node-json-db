@@ -237,6 +237,34 @@ db.getIndex("/arraytest/myarray", "test", "name");
 // It's useful if you want to delete some object
 db.delete("/arraytest/myarray[" + db.getIndex("/arraytest/myarray", 65464646155) + "]");
 ```
+    
+#### Nesting in Array
+```javascript
+// You can easily access any nested array and their object
+//You can also append to nested array other array
+db.push("/arraytest/myarray",
+[
+  [
+    {
+      obj: 'test'
+    },
+    {
+      obj: 'hello'
+    }
+  ],
+  [
+    {
+      obj: 'world'
+    }
+  ]
+]
+, true);
+
+//This will return the first object (obj: 'test')
+
+db.getData("/arraytest/myarray[0][0]");
+
+```
 ### Exception/Error
 #### Type
 
@@ -269,7 +297,24 @@ db.delete("/arraytest/myarray[" + db.getIndex("/arraytest/myarray", 65464646155)
  Please consider the `separator` as a reserved character by node-json-db.
 
 
-# Thanks
+# Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://davisjam.github.io/"><img src="https://avatars.githubusercontent.com/u/22822319?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jamie Davis</b></sub></a><br /><a href="#security-davisjam" title="Security">🛡️</a></td>
+    <td align="center"><a href="https://github.com/sidblommerswork"><img src="https://avatars.githubusercontent.com/u/93680615?v=4?s=100" width="100px;" alt=""/><br /><sub><b>sidblommerswork</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=sidblommerswork" title="Code">💻</a> <a href="https://github.com/Belphemur/node-json-db/commits?author=sidblommerswork" title="Tests">⚠️</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+    
+## Special Thanks
 
 [James Davis](https://github.com/davisjam) for helping to fix a regular expression vulnerable to [catastrophic backtracking](https://docs.microsoft.com/en-us/dotnet/standard/base-types/backtracking-in-regular-expressions).
 

@@ -22,14 +22,14 @@ jobs:
         - name: Set yarn cache
           run: yarn config set cache-folder ${{env.YARN_CACHE}}
         - name: Cache node modules
-          uses: actions/cache@v2
+          uses: actions/cache@v3
           env:
             cache-name: yarn
           with:
             path: ${{env.YARN_CACHE}}
             key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         - name: Setup Node.js ${{ matrix.node }}
-          uses: actions/setup-node@v3.0.0
+          uses: actions/setup-node@v3.3.0
           with:
             node-version: ${{ matrix.node }}
         - name: Install dependencies
@@ -37,7 +37,7 @@ jobs:
         - name: Run tests
           run: yarn test
         - name: Upload code coverage
-          uses: codecov/codecov-action@v2.1.0
+          uses: codecov/codecov-action@v3
           with:
             fail_ci_if_error: true # optional (default = false)
   deploy-pages:
@@ -49,11 +49,11 @@ jobs:
       - name: Set yarn cache
         run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
-        uses: actions/setup-node@v3.0.0
+        uses: actions/setup-node@v3.3.0
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: yarn
         with:
@@ -64,7 +64,7 @@ jobs:
       - name: Build package
         run: yarn build:doc
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: docs # The folder the action should deploy.
@@ -78,11 +78,11 @@ jobs:
       - name: Set yarn cache
         run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
-        uses: actions/setup-node@v3.0.0
+        uses: actions/setup-node@v3.3.0
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: yarn
         with:
