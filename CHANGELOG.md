@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/Belphemur/node-json-db/compare/v1.5.0...v1.6.0) (2022-06-30)
+
+
+### Features
+
+* **Array:** Add support for nested array ([854422f](https://github.com/Belphemur/node-json-db/commit/854422f5855acd397a9027c011a66b142052d84e)), closes [#422](https://github.com/Belphemur/node-json-db/issues/422) [#417](https://github.com/Belphemur/node-json-db/issues/417)
+
 # [1.5.0](https://github.com/Belphemur/node-json-db/compare/v1.4.1...v1.5.0) (2022-03-11)
 
 
