@@ -5,9 +5,18 @@
   "imageSize": 100,
   "commit": false,
   "contributors": [
+    {
+      "login": "davisjam",
+      "name": "Jamie Davis",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22822319?v=4",
+      "profile": "https://davisjam.github.io/",
+      "contributions": [
+        "security"
+      ]
+    }
   ],
   "contributorsPerLine": 7,
-  "projectName": "SoundSwitch",
+  "projectName": "node-json-db",
   "projectOwner": "Belphemur",
   "repoType": "github",
   "repoHost": "https://github.com",
