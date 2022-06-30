@@ -13,6 +13,16 @@
       "contributions": [
         "security"
       ]
+    },
+    {
+      "login": "sidblommerswork",
+      "name": "sidblommerswork",
+      "avatar_url": "https://avatars.githubusercontent.com/u/93680615?v=4",
+      "profile": "https://github.com/sidblommerswork",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
