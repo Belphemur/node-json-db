@@ -237,6 +237,34 @@ db.getIndex("/arraytest/myarray", "test", "name");
 // It's useful if you want to delete some object
 db.delete("/arraytest/myarray[" + db.getIndex("/arraytest/myarray", 65464646155) + "]");
 ```
+    
+#### Nesting in Array
+```javascript
+// You can easily access any nested array and their object
+//You can also append to nested array other array
+db.push("/arraytest/myarray",
+[
+  [
+    {
+      obj: 'test'
+    },
+    {
+      obj: 'hello'
+    }
+  ],
+  [
+    {
+      obj: 'world'
+    }
+  ]
+]
+, true);
+
+//This will return the first object (obj: 'test')
+
+db.getData("/arraytest/myarray[0][0]");
+
+```
 ### Exception/Error
 #### Type
 
