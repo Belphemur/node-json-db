@@ -269,7 +269,16 @@ db.delete("/arraytest/myarray[" + db.getIndex("/arraytest/myarray", 65464646155)
  Please consider the `separator` as a reserved character by node-json-db.
 
 
-# Thanks
+# Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+    
+## Special Thanks
 
 [James Davis](https://github.com/davisjam) for helping to fix a regular expression vulnerable to [catastrophic backtracking](https://docs.microsoft.com/en-us/dotnet/standard/base-types/backtracking-in-regular-expressions).
 
