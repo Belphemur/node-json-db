@@ -58,10 +58,7 @@ describe('Utils', () => {
 
     test('should not process array with string key', () => {
       try {
-        ;(function (args) {
-          ArrayInfo.processArray(args)
-        })('test[test]')
-
+        ArrayInfo.processArray('test[test]')
         throw Error('Function did not throw')
       } catch (e) {
         expect(e).toBeInstanceOf(DataError)
