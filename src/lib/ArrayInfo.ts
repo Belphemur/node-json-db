@@ -1,13 +1,9 @@
 import { DataError } from './Errors'
 import { KeyValue } from './Utils'
 
-function isInt(value: any) {
-  return !isNaN(value) && Number(value) == value && !isNaN(parseInt(value, 10))
-}
+export const arrayRegex = () =>
+  /^([\.0-9a-zA-Z_$\-][0-9a-zA-Z_\-$\.]*)\[((?!(\]|\[)).*|)\]$/gm
 
-export const arrayRegex = () => /^([\.0-9a-zA-Z_$\-][0-9a-zA-Z_\-$\.]*)(.*)/gm
-export const arrayIndiciesRegex = /\[(.*?)\]/g
-export const malformedArrayRegex = /\]|\[/g
 const regexCache = {} as KeyValue
 
 export class ArrayInfo {
@@ -43,24 +39,16 @@ export class ArrayInfo {
 
     const arrayIndexRegex = arrayRegex()
     const match = arrayIndexRegex.exec(property.trim())
-    if (match != null && match[2]) {
+    if (match != null) {
       const propertyName = match[1]
-      const nestedArrayMatches = match[2].toString()
-      const nestedArrayIndicies = [
-        ...nestedArrayMatches.matchAll(arrayIndiciesRegex),
-      ].map((match) => match[1])
-      let malformedArray = false
-      nestedArrayIndicies.forEach((value) => {
-        if (value.match(malformedArrayRegex)) {
-          malformedArray = true
-        }
-      })
-      if (!malformedArray && nestedArrayIndicies.length > 0) {
-        return (regexCache[property] = new ArrayInfo(
-          propertyName,
-          nestedArrayIndicies
-        ))
-      }
+      // reset the match[2] to the full array index.
+      const nestedArrayMatches = '[' + match[2].toString() + ']'
+      const nestedArrayIndicies = getArrayIndicies(nestedArrayMatches)
+      validateArrayIndicies(nestedArrayIndicies)
+      return (regexCache[property] = new ArrayInfo(
+        propertyName,
+        nestedArrayIndicies
+      ))
     }
 
     return null
@@ -176,4 +164,49 @@ export class ArrayInfo {
   public isMultiDimensional() {
     return this.indicies.length > 1
   }
+}
+
+export function isInt(value: any) {
+  return !isNaN(value) && Number(value) == value && !isNaN(parseInt(value, 10))
+}
+
+export function validateArrayIndicies(arrayIndicies: string[]) {
+  const appendIndicies = arrayIndicies.filter((x) => x === '')
+  if (appendIndicies.length > 1) {
+    throw Error('Only one append index is supported for nested arrays')
+  } else if (
+    appendIndicies.length === 1 &&
+    arrayIndicies[arrayIndicies.length - 1] !== ''
+  ) {
+    throw Error('Append index must be at the end of the nested array')
+  }
+}
+
+export function validateArrayIndex(index: string) {
+  // Append index
+  if (index.length === 0) {
+    return
+  }
+  if (!isInt(index)) {
+    throw new DataError('Only numerical values accepted for array index', 200)
+  }
+}
+
+export function getArrayIndicies(arrayIndicies: string): string[] {
+  if (arrayIndicies.length === 0) {
+    return []
+  }
+
+  if (arrayIndicies.charAt(0) !== '[') {
+    throw new Error('Invalid array syntax detected')
+  }
+
+  const indexValue = arrayIndicies.substring(1, arrayIndicies.indexOf(']'))
+  validateArrayIndex(indexValue)
+
+  const nextArrayIndex = indexValue.length + 2
+  return [
+    indexValue,
+    ...getArrayIndicies(arrayIndicies.substring(nextArrayIndex)),
+  ]
 }
