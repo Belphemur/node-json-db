@@ -1,3 +1,28 @@
+# [2.0.0](https://github.com/Belphemur/node-json-db/compare/v1.6.0...v2.0.0) (2022-08-01)
+
+
+### Bug Fixes
+
+* **Array:** Fix array not properly async ([26355b0](https://github.com/Belphemur/node-json-db/commit/26355b0b72697783d95a6fd817ba51ff146ff6f6))
+* **HumanReadable:** Fix missing humanreadable ([13e51d9](https://github.com/Belphemur/node-json-db/commit/13e51d930eb93548ecb6b4dd1736d45eb4ed5e5b))
+* **JsonAdapter:** Don't override the data property ([817c581](https://github.com/Belphemur/node-json-db/commit/817c581037bcf3268863264de256cd966dc66f62))
+
+
+### Features
+
+* **Adapter:** Add concept of adapter to read and write data ([fcea4bb](https://github.com/Belphemur/node-json-db/commit/fcea4bbd44a5dab9ce0857d14831686c5b190be4))
+* **Adapter:** Let the user decide what adapter to use if they want to tweak the inner working ([c8f264b](https://github.com/Belphemur/node-json-db/commit/c8f264b1f71d4e1d0c72fe9954134a0af7c4d10f)), closes [#448](https://github.com/Belphemur/node-json-db/issues/448)
+* **Async:** All the method are now async/await ([ab63e82](https://github.com/Belphemur/node-json-db/commit/ab63e8202456c0d43167df27dcbd77a403e8bd07)), closes [#171](https://github.com/Belphemur/node-json-db/issues/171)
+* **Async:** Make the whole library async ([764cdf4](https://github.com/Belphemur/node-json-db/commit/764cdf4484f21c2d05c98c39814cc9573f2bf822)), closes [#444](https://github.com/Belphemur/node-json-db/issues/444)
+* **AtomicFileAdapter:** Add support for fsync ([4a51239](https://github.com/Belphemur/node-json-db/commit/4a51239f492a4f6b1f15e14ce2e468b363802608))
+* **Configuration:** Force giving a config object to the constructor ([002a72a](https://github.com/Belphemur/node-json-db/commit/002a72aff02fbf516c5c47b0d98bfe5eda4043d2))
+
+
+### BREAKING CHANGES
+
+* **Async:** Every method of the library is now async and returns a promise.
+* **Configuration:** We now need to receive the JsonDBConfig object in the constructor
+
 # [1.6.0](https://github.com/Belphemur/node-json-db/compare/v1.5.0...v1.6.0) (2022-06-30)
 
 
