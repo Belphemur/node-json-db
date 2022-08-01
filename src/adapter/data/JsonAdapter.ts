@@ -1,5 +1,4 @@
 import {IAdapter} from "../IAdapter";
-import {DataError} from "../../lib/Errors";
 
 export class JsonAdapter implements IAdapter<any> {
 
@@ -22,12 +21,13 @@ export class JsonAdapter implements IAdapter<any> {
     }
 
     writeAsync(data: any): Promise<void> {
+        let stringify = '';
         if (this.humanReadable) {
-            data = JSON.stringify(data, null, 4)
+            stringify = JSON.stringify(data, null, 4)
         } else {
-            data = JSON.stringify(data)
+            stringify = JSON.stringify(data)
         }
-        return this.adapter.writeAsync(data);
+        return this.adapter.writeAsync(stringify);
     }
 
 }
