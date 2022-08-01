@@ -241,7 +241,7 @@ describe('JsonDB', () => {
 
     })
     describe('Array Support', () => {
-        const db = new JsonDB(testFile4, true)
+        const db = new JsonDB(new Config(testFile4, true))
         test('should create an array with a string at index 0', async () => {
             await db.push('/arraytest/myarray[0]', "test", true)
             const myarray = await db.getData('/arraytest/myarray')
@@ -428,9 +428,9 @@ describe('JsonDB', () => {
             expect(index1).toBe(1)
         })
 
-        test('should throw an error when deleting a append command', () => {
+        test('should throw an error when deleting a append command', async () => {
             try {
-                (async function (args) {
+                await (async function (args) {
                     await db.delete(args)
                 })('/arraytest/appendArray[]')
 
@@ -575,7 +575,7 @@ describe('JsonDB', () => {
         test('shouldn\'t be able to find a data in anything else than Object or Array',
             async () => {
                 await db.push('/find/number', 1)
-                expect(async () => await db.find<string>('/find/number', entry => entry.test === 'hello')).toThrow(DataError)
+                expect(async () => await db.find<string>('/find/number', entry => entry.test === 'hello')).rejects.toThrow(DataError)
             })
     })
 
@@ -606,7 +606,7 @@ describe('JsonDB', () => {
         test('shouldn\'t be able to find a data in anything else than Object or Array',
             async () => {
                 await db.push('/filter/number', 1)
-                expect(async () => await db.find<{ test: string }>('/filter/number', entry => entry.test === 'hello')).toThrow(DataError)
+                expect(async () => await db.find<{ test: string }>('/filter/number', entry => entry.test === 'hello')).rejects.toThrow(DataError)
             })
     })
 
