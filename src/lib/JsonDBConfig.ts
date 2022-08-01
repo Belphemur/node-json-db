@@ -6,14 +6,12 @@ import {AtomicFileAdapter} from "../adapter/file/AtomicFileAdapter";
 export interface JsonDBConfig {
     readonly adapter: IAdapter<any>,
     readonly saveOnPush: boolean,
-    readonly humanReadable: boolean,
     readonly separator: string,
 }
 
 export class Config implements JsonDBConfig {
     adapter: IAdapter<any>;
     public readonly filename: string
-    humanReadable: boolean
     saveOnPush: boolean
     separator: string
 
@@ -25,7 +23,6 @@ export class Config implements JsonDBConfig {
             this.filename += ".json"
         }
 
-        this.humanReadable = humanReadable
         this.saveOnPush = saveOnPush
         this.separator = separator
         this.adapter = new JsonAdapter(new AtomicFileAdapter(this.filename, syncOnSave), humanReadable);
@@ -34,14 +31,12 @@ export class Config implements JsonDBConfig {
 
 export class ConfigWithAdapter implements JsonDBConfig {
     readonly adapter: IAdapter<any>;
-    readonly humanReadable: boolean;
     readonly saveOnPush: boolean;
     readonly separator: string;
 
 
     constructor(adapter: IAdapter<any>, humanReadable: boolean, saveOnPush: boolean, separator: string) {
         this.adapter = adapter;
-        this.humanReadable = humanReadable;
         this.saveOnPush = saveOnPush;
         this.separator = separator;
     }
