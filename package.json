@@ -29,7 +29,8 @@
   },
   "homepage": "https://github.com/Belphemur/node-json-db",
   "dependencies": {
-    "mkdirp": "~1.0.4"
+    "mkdirp": "~1.0.4",
+    "steno": "^2.1.0"
   },
   "config": {
     "commitizen": {
