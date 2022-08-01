@@ -12,3 +12,10 @@ export interface IAdapter<T> {
      */
     writeAsync: (data: T) => Promise<void>
 }
+
+export interface IFileAdapter<T> extends IAdapter<T> {
+    /**
+     * Name of the file used by the file adapter
+     */
+    readonly filename: string;
+}

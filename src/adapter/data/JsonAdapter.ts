@@ -7,7 +7,7 @@ export class JsonAdapter implements IAdapter<any> {
     private readonly humanReadable: boolean;
 
 
-    constructor(adapter: IAdapter<string>, humanReadable: boolean) {
+    constructor(adapter: IAdapter<string>, humanReadable: boolean = false) {
         this.adapter = adapter;
         this.humanReadable = humanReadable;
     }
@@ -15,7 +15,8 @@ export class JsonAdapter implements IAdapter<any> {
     async readAsync(): Promise<any> {
         const data = await this.adapter.readAsync();
         if (data == null) {
-            throw new DataError("Can't Load Database", 1);
+            await this.writeAsync({});
+            return {};
         }
         return JSON.parse(data);
     }
