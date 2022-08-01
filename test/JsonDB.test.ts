@@ -8,7 +8,7 @@ describe('JsonDB', () => {
     describe('exists()', () => {
         test('should throw error when error is not instance of DataError', () => {
             db.getData = jest.fn(() => {
-                throw 'error'
+                throw new Error('error')
             })
 
             expect(async () => {
@@ -37,12 +37,12 @@ describe('JsonDB', () => {
         })
     })
     describe('filter()', () => {
-        test('should return undefined when not found', () => {
+        test('should return undefined when not found', async () => {
             db.getData = jest.fn(async () => ({
                 a: 1,
                 b: 2,
             }))
-            const result = db.filter<{ test: string }>(
+            const result = await db.filter<{ test: string }>(
                 '/filter/data',
                 (entry) => entry.test === 'echo'
             )
