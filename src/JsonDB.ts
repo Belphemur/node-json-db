@@ -1,11 +1,8 @@
 import {KeyValue, merge, removeTrailingChar} from './lib/Utils'
-import * as FS from 'fs'
-import * as path from 'path'
-import * as mkdirp from 'mkdirp'
 import {DatabaseError, DataError} from './lib/Errors'
 import {DBParentData} from './lib/DBParentData'
 import {ArrayInfo} from './lib/ArrayInfo'
-import {Config, JsonDBConfig} from './lib/JsonDBConfig'
+import {JsonDBConfig} from './lib/JsonDBConfig'
 
 type DataPath = Array<string>
 
@@ -41,8 +38,8 @@ export class JsonDB {
         return path
     }
 
-    private retrieveData(dataPath: DataPath, create: boolean = false) {
-        this.load()
+    private async retrieveData(dataPath: DataPath, create: boolean = false) : Promise<any> {
+        await this.load()
 
         const thisDb = this
 
@@ -121,11 +118,11 @@ export class JsonDB {
         return recursiveProcessDataPath(this.data, 0)
     }
 
-    private getParentData(dataPath: string, create: boolean): DBParentData {
+    private async getParentData(dataPath: string, create: boolean): Promise<DBParentData> {
         const path = this.processDataPath(dataPath)
         const last = path.pop()
         return new DBParentData(
-            this.retrieveData(path, create),
+            await this.retrieveData(path, create),
             this,
             dataPath,
             last
@@ -136,7 +133,7 @@ export class JsonDB {
      * Get the wanted data
      * @param dataPath path of the data to retrieve
      */
-    public getData(dataPath: string): any {
+    public getData(dataPath: string): Promise<any> {
         const path = this.processDataPath(dataPath)
         return this.retrieveData(path, false)
     }
@@ -145,7 +142,7 @@ export class JsonDB {
      * Same as getData only here it's directly typed to your object
      * @param dataPath  path of the data to retrieve
      */
-    public getObject<T>(dataPath: string): T {
+    public getObject<T>(dataPath: string): Promise<T> {
         return this.getData(dataPath)
     }
 
@@ -153,9 +150,9 @@ export class JsonDB {
      * Check for existing datapath
      * @param dataPath
      */
-    public exists(dataPath: string): boolean {
+    public async exists(dataPath: string): Promise<boolean> {
         try {
-            this.getData(dataPath)
+            await this.getData(dataPath)
             return true
         } catch (e) {
             if (e instanceof DataError) {
@@ -169,13 +166,13 @@ export class JsonDB {
      * Returns the number of element which constitutes the array
      * @param dataPath
      */
-    public count(dataPath: string): number {
-        const result = this.getData(dataPath)
+    public async count(dataPath: string): Promise<number> {
+        const result = await this.getData(dataPath)
         if (!Array.isArray(result)) {
             throw new DataError(`DataPath: ${dataPath} is not an array.`, 11)
         }
         const path = this.processDataPath(dataPath)
-        const data = this.retrieveData(path, false)
+        const data = await this.retrieveData(path, false)
         return data.length
     }
 
@@ -185,12 +182,12 @@ export class JsonDB {
      * @param searchValue value to look for in the dataPath
      * @param propertyName name of the property to look for searchValue
      */
-    public getIndex(
+    public async getIndex(
         dataPath: string,
         searchValue: string | number,
         propertyName: string = 'id'
-    ): number {
-        const data = this.getArrayData(dataPath)
+    ): Promise<number> {
+        const data = await this.getArrayData(dataPath)
         return data
             .map(function (element: any) {
                 return element[propertyName]
@@ -203,11 +200,11 @@ export class JsonDB {
      * @param dataPath  base dataPath from where to start searching
      * @param searchValue value to look for in the dataPath
      */
-    public getIndexValue(dataPath: string, searchValue: string | number): number {
-        return this.getArrayData(dataPath).indexOf(searchValue)
+    public async getIndexValue(dataPath: string, searchValue: string | number): Promise<number> {
+        return (await this.getArrayData(dataPath)).indexOf(searchValue)
     }
 
-    private getArrayData(dataPath: string) {
+    private getArrayData(dataPath: string) : Promise<any>{
         const result = this.getData(dataPath)
         if (!Array.isArray(result)) {
             throw new DataError(`DataPath: ${dataPath} is not an array.`, 11)
@@ -221,8 +218,8 @@ export class JsonDB {
      * @param rootPath base dataPath from where to start searching
      * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.
      */
-    public filter<T>(rootPath: string, callback: FindCallback): T[] | undefined {
-        const result = this.getData(rootPath)
+    public async filter<T>(rootPath: string, callback: FindCallback): Promise<T[] | undefined> {
+        const result = await this.getData(rootPath)
         if (Array.isArray(result)) {
             return result.filter(callback) as T[]
         }
@@ -253,8 +250,8 @@ export class JsonDB {
      * @param rootPath base dataPath from where to start searching
      * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.
      */
-    public find<T>(rootPath: string, callback: FindCallback): T | undefined {
-        const result = this.getData(rootPath)
+    public async find<T>(rootPath: string, callback: FindCallback): Promise<T | undefined> {
+        const result = await this.getData(rootPath)
         if (Array.isArray(result)) {
             return result.find(callback) as T
         }
@@ -282,8 +279,8 @@ export class JsonDB {
      * @param data data to push
      * @param override overriding or not the data, if not, it will merge them
      */
-    public push(dataPath: string, data: any, override: boolean = true): void {
-        const dbData = this.getParentData(dataPath, true)
+    public async push(dataPath: string, data: any, override: boolean = true): Promise<void> {
+        const dbData = await this.getParentData(dataPath, true)
         // if (!dbData) {
         //   throw new Error('Data not found')
         // }
@@ -311,7 +308,7 @@ export class JsonDB {
         dbData.setData(toSet)
 
         if (this.config.saveOnPush) {
-            this.save()
+            await this.save()
         }
     }
 
@@ -319,15 +316,15 @@ export class JsonDB {
      * Delete the data
      * @param dataPath path leading to the data
      */
-    public delete(dataPath: string): void {
-        const dbData = this.getParentData(dataPath, true)
+    public async delete(dataPath: string): Promise<void> {
+        const dbData = await this.getParentData(dataPath, true)
         // if (!dbData) {
         //   return
         // }
         dbData.delete()
 
         if (this.config.saveOnPush) {
-            this.save()
+            await this.save()
         }
     }
 
@@ -343,26 +340,24 @@ export class JsonDB {
     /**
      * Reload the database from the file
      */
-    public reload(): void {
+    public async reload(): Promise<void> {
         this.loaded = false
-        this.load()
+        await this.load()
     }
 
     /**
      * Manually load the database
      * It is automatically called when the first getData is done
      */
-    public load(): void {
+    public async load(): Promise<void> {
         if (this.loaded) {
             return
         }
         try {
-            const data = FS.readFileSync(this.config.filename, 'utf8')
-            this.data = JSON.parse(data)
+            this.data = await this.config.adapter.readAsync();
             this.loaded = true
         } catch (err) {
-            const error = new DatabaseError("Can't Load Database", 1, err)
-            throw error
+            throw new DatabaseError("Can't Load Database", 1, err)
         }
     }
 
@@ -371,39 +366,15 @@ export class JsonDB {
      * By default you can't save the database if it's not loaded
      * @param force force the save of the database
      */
-    public save(force?: boolean): void {
+    public async save(force?: boolean): Promise<void> {
         force = force || false
         if (!force && !this.loaded) {
             throw new DatabaseError("DataBase not loaded. Can't write", 7)
         }
-        let data = ''
         try {
-            if (this.config.humanReadable) {
-                data = JSON.stringify(this.data, null, 4)
-            } else {
-                data = JSON.stringify(this.data)
-            }
-            if (this.config.syncOnSave) {
-                const buffer = Buffer.from(String(data), 'utf8')
-                const fd_tmp = FS.openSync(this.config.filename, 'w')
-                let offset = 0
-                let length = buffer.byteLength
-                try {
-                    while (length > 0) {
-                        const written = FS.writeSync(fd_tmp, buffer, offset, length)
-                        offset += written
-                        length -= written
-                    }
-                } finally {
-                    FS.fsyncSync(fd_tmp)
-                    FS.closeSync(fd_tmp)
-                }
-            } else {
-                FS.writeFileSync(this.config.filename, data, 'utf8')
-            }
+            await this.config.adapter.writeAsync(this.data);
         } catch (err) {
-            const error = new DatabaseError("Can't save the database", 2, err)
-            throw error
+            throw new DatabaseError("Can't save the database", 2, err)
         }
     }
 }
