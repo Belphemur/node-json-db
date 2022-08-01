@@ -2,7 +2,12 @@
 [![npm version](https://badge.fury.io/js/node-json-db.svg)](https://badge.fury.io/js/node-json-db)
 > A simple "database" that use JSON file for Node.JS.
 
-## Breaking changes since v1.x.x for v2.0.0
+## Breaking changes since v1.x.x
+### v2.0.0
+
+JsonDB is now using the concept of async/await for all its calls since we read from the database file on demands and
+depending on how the database is configured, we might write at each push.
+
 * You're now forced to use the `Config` object to setup JsonDB
 * Every method are now asynchronous
 
@@ -137,12 +142,6 @@ import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
 
 const db = new JsonDB(new Config("myDataBase", true, false, '/'));
 ```
-#### v2.0.0
-
-JsonDB is now using the concept of async/await for all its calls since we read from the database file on demands and 
-depending how the database is configured, we might write at each push.
-
-
 
 #### Typing
 With TypeScript, you have access to a new method: getObject<T> that will take care of typing your return object.
