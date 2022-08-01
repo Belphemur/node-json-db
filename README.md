@@ -1,8 +1,15 @@
-[![NodeJs](https://github.com/Belphemur/node-json-db/actions/workflows/nodejs.yml/badge.svg)](https://github.com/Belphemur/node-json-db/actions/workflows/nodejs.yml)[![codecov](https://codecov.io/gh/Belphemur/node-json-db/branch/master/graph/badge.svg?token=J3Ppt4UCbY)](https://codecov.io/gh/Belphemur/node-json-db)[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FBelphemur%2Fnode-json-db.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FBelphemur%2Fnode-json-db?ref=badge_shield)
-
-[![NPM](https://nodei.co/npm/node-json-db.png?downloads=true&stars=true)](https://nodei.co/npm/node-json-db/)
-
+[![NodeJs](https://github.com/Belphemur/node-json-db/actions/workflows/nodejs.yml/badge.svg)](https://github.com/Belphemur/node-json-db/actions/workflows/nodejs.yml) [![codecov](https://codecov.io/gh/Belphemur/node-json-db/branch/master/graph/badge.svg?token=J3Ppt4UCbY)](https://codecov.io/gh/Belphemur/node-json-db)
+[![npm version](https://badge.fury.io/js/node-json-db.svg)](https://badge.fury.io/js/node-json-db)
 > A simple "database" that use JSON file for Node.JS.
+
+## Breaking changes since v1.x.x
+### v2.0.0
+
+JsonDB is now using the concept of async/await for all its calls since we read from the database file on demands and
+depending on how the database is configured, we might write at each push.
+
+* You're now forced to use the `Config` object to setup JsonDB
+* Every method are now asynchronous
 
 ## Installation
 Add `node-json-db` to your existing Node.js project.
@@ -52,17 +59,17 @@ var db = new JsonDB(new Config("myDataBase", true, false, '/'));
 // Pushing the data into the database
 // With the wanted DataPath
 // By default the push will override the old value
-db.push("/test1","super test");
+await db.push("/test1","super test");
 
 // It also create automatically the hierarchy when pushing new data for a DataPath that doesn't exists
-db.push("/test2/my/test",5);
+await db.push("/test2/my/test",5);
 
 // You can also push directly objects
-db.push("/test3", {test:"test", json: {test:["test"]}});
+await db.push("/test3", {test:"test", json: {test:["test"]}});
 
 // If you don't want to override the data but to merge them
 // The merge is recursive and work with Object and Array.
-db.push("/test3", {
+await db.push("/test3", {
     new:"cool",
     json: {
         important : 5
@@ -85,20 +92,20 @@ This give you this results :
 
 // You can't merge primitive.
 // If you do this:
-db.push("/test2/my/test/",10,false);
+await db.push("/test2/my/test/",10,false);
 
 // The data will be overriden
 
 // Get the data from the root
-var data = db.getData("/");
+var data = await db.getData("/");
 
 // From a particular DataPath
-var data = db.getData("/test1");
+var data = await db.getData("/test1");
 
 // If you try to get some data from a DataPath that doesn't exists
 // You'll get an Error
 try {
-    var data = db.getData("/test1/test/dont/work");
+    var data = await db.getData("/test1/test/dont/work");
 } catch(error) {
     // The error will tell you where the DataPath stopped. In this case test1
     // Since /test1/test does't exist.
@@ -106,14 +113,14 @@ try {
 };
 
 // Deleting data
-db.delete("/test1");
+await db.delete("/test1");
 
 // Save the data (useful if you disable the saveOnPush)
-db.save();
+await db.save();
 
 // In case you have a exterior change to the databse file and want to reload it
 // use this method
-db.reload();
+await db.reload();
 
 ```
 
@@ -150,10 +157,10 @@ interface FooBar {
 }
 const object = {Hello: "World", World: 5} as FooBar;
 
-db.push("/test", object);
+await db.push("/test", object);
 
 //Will be typed as FooBar in your IDE
-const result = db.getObject<FooBar>("/test");
+const result = await db.getObject<FooBar>("/test");
 ```
 
 
@@ -170,79 +177,79 @@ import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
 const db = new JsonDB(new Config("myDataBase", true, false, '/'));
 
 // This will create an array 'myarray' with the object '{obj:'test'}' at index 0
-db.push("/arraytest/myarray[0]", {
+await db.push("/arraytest/myarray[0]", {
     obj:'test'
 }, true);
 
 // You can retrieve a property of an object included in an array
 // testString = 'test';
-var testString = db.getData("/arraytest/myarray[0]/obj");
+var testString = await db.getData("/arraytest/myarray[0]/obj");
 
 // Doing this will delete the object stored at the index 0 of the array.
 // Keep in mind this won't delete the array even if it's empty.
-db.delete("/arraytest/myarray[0]");
+await db.delete("/arraytest/myarray[0]");
 ```
 
 #### Appending in Array
 ```javascript
 // You can also easily append new item to an existing array
 // This set the next index with {obj: 'test'}
-db.push("/arraytest/myarray[]", {
+await db.push("/arraytest/myarray[]", {
     obj:'test'
 }, true);
 
 
 // The append feature can be used in conjuction with properties
 // This will set the next index as an object {myTest: 'test'}
-db.push("/arraytest/myarray[]/myTest", 'test', true);
+await db.push("/arraytest/myarray[]/myTest", 'test', true);
 
 ```
 
 #### Last Item in Array
 ```javascript
 // Add basic array
-db.push("/arraytest/lastItemArray", [1, 2, 3], true);
+await db.push("/arraytest/lastItemArray", [1, 2, 3], true);
 
 // You can easily get the last item of the array with the index -1
 // This will return 3
-db.getData("/arraytest/lastItemArray[-1]");
+await db.getData("/arraytest/lastItemArray[-1]");
 
 
 // You can delete the last item of an array with -1
 // This will remove the integer "3" from the array
-db.delete("/arraytest/lastItemArray[-1]");
+await db.delete("/arraytest/lastItemArray[-1]");
 
 // This will return 2 since 3 just got removed
-db.getData("/arraytest/lastItemArray[-1]");
+await db.getData("/arraytest/lastItemArray[-1]");
 ```
 #### Count for Array
 ```javascript
 //
-db.push("/arraytest/list", [{id: 65464646155, name: "test"}], true);
+await db.push("/arraytest/list", [{id: 65464646155, name: "test"}], true);
 
 // You can have the number of element, in this case  = 1
-let numberOfElement = db.count("/arraytest/list");
+let numberOfElement = await db.count("/arraytest/list");
 ```
 
 #### Get Index in Array
 ```javascript
 
 // You can have the current index of an object
-db.push("/arraytest/myarray", {id: 65464646155, name: "test"}, true);
-db.getIndex("/arraytest/myarray", 65464646155);
+await db.push("/arraytest/myarray", {id: 65464646155, name: "test"}, true);
+await db.getIndex("/arraytest/myarray", 65464646155);
 // By default, the property is 'id'
 // You can add another property instead
-db.getIndex("/arraytest/myarray", "test", "name");
+await db.getIndex("/arraytest/myarray", "test", "name");
 
 // It's useful if you want to delete some object
-db.delete("/arraytest/myarray[" + db.getIndex("/arraytest/myarray", 65464646155) + "]");
+await db.delete("/arraytest/myarray[" + await db.getIndex("/arraytest/myarray", 65464646155) + "]");
 ```
     
 #### Nesting in Array
 ```javascript
 // You can easily access any nested array and their object
 //You can also append to nested array other array
-db.push("/arraytest/myarray",
+await db.push("/arraytest/myarray",
 [
   [
     {
@@ -262,7 +269,7 @@ db.push("/arraytest/myarray",
 
 //This will return the first object (obj: 'test')
 
-db.getData("/arraytest/myarray[0][0]");
+await db.getData("/arraytest/myarray[0][0]");
 
 ```
 ### Exception/Error
@@ -294,7 +301,7 @@ db.getData("/arraytest/myarray[0][0]");
 ## Object with `separator` in key
  Object pushed with key containing the `separator` character won't be reachable. See [#75](https://github.com/Belphemur/node-json-db/issues/75).
 
- Please consider the `separator` as a reserved character by node-json-db.
+ Please consider the `separator` as a reserved character by node-json-await db.
 
 
 # Contributors
@@ -306,6 +313,7 @@ db.getData("/arraytest/myarray[0][0]");
   <tr>
     <td align="center"><a href="https://davisjam.github.io/"><img src="https://avatars.githubusercontent.com/u/22822319?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jamie Davis</b></sub></a><br /><a href="#security-davisjam" title="Security">🛡️</a></td>
     <td align="center"><a href="https://github.com/sidblommerswork"><img src="https://avatars.githubusercontent.com/u/93680615?v=4?s=100" width="100px;" alt=""/><br /><sub><b>sidblommerswork</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=sidblommerswork" title="Code">💻</a> <a href="https://github.com/Belphemur/node-json-db/commits?author=sidblommerswork" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/drproktor"><img src="https://avatars.githubusercontent.com/u/19718418?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Max Huber</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=drproktor" title="Code">💻</a></td>
   </tr>
 </table>
 
@@ -320,4 +328,4 @@ db.getData("/arraytest/myarray[0][0]");
 
 
 ## License
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FBelphemur%2Fnode-json-db.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FBelphemur%2Fnode-json-db?ref=badge_large)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FBelphemur%2Fnode-json-await db.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FBelphemur%2Fnode-json-db?ref=badge_large)
