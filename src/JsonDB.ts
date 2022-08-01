@@ -204,8 +204,8 @@ export class JsonDB {
         return (await this.getArrayData(dataPath)).indexOf(searchValue)
     }
 
-    private getArrayData(dataPath: string) : Promise<any>{
-        const result = this.getData(dataPath)
+    private async getArrayData(dataPath: string): Promise<any> {
+        const result = await this.getData(dataPath)
         if (!Array.isArray(result)) {
             throw new DataError(`DataPath: ${dataPath} is not an array.`, 11)
         }
