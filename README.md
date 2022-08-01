@@ -4,6 +4,10 @@
 
 > A simple "database" that use JSON file for Node.JS.
 
+## Breaking changes since v1.x.x for v2.0.0
+* You're now forced to use the `Config` object to setup JsonDB
+* Every method are now asynchronous
+
 ## Installation
 Add `node-json-db` to your existing Node.js project.
 ```bash
