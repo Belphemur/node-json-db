@@ -8,7 +8,6 @@ export interface JsonDBConfig {
     readonly saveOnPush: boolean,
     readonly humanReadable: boolean,
     readonly separator: string,
-    readonly syncOnSave: boolean
 }
 
 export class Config implements JsonDBConfig {
@@ -17,7 +16,6 @@ export class Config implements JsonDBConfig {
     humanReadable: boolean
     saveOnPush: boolean
     separator: string
-    syncOnSave: boolean
 
     constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/', syncOnSave: boolean = false) {
         this.filename = filename
@@ -30,8 +28,7 @@ export class Config implements JsonDBConfig {
         this.humanReadable = humanReadable
         this.saveOnPush = saveOnPush
         this.separator = separator
-        this.syncOnSave = syncOnSave
-        this.adapter = new JsonAdapter(new AtomicFileAdapter(this.filename));
+        this.adapter = new JsonAdapter(new AtomicFileAdapter(this.filename, syncOnSave));
     }
 }
 
@@ -40,14 +37,12 @@ export class ConfigWithAdapter implements JsonDBConfig {
     readonly humanReadable: boolean;
     readonly saveOnPush: boolean;
     readonly separator: string;
-    readonly syncOnSave: boolean;
 
 
-    constructor(adapter: IAdapter<any>, humanReadable: boolean, saveOnPush: boolean, separator: string, syncOnSave: boolean) {
+    constructor(adapter: IAdapter<any>, humanReadable: boolean, saveOnPush: boolean, separator: string) {
         this.adapter = adapter;
         this.humanReadable = humanReadable;
         this.saveOnPush = saveOnPush;
         this.separator = separator;
-        this.syncOnSave = syncOnSave;
     }
 }

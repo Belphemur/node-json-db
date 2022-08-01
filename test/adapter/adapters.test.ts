@@ -14,7 +14,7 @@ describe('Adapter', () => {
             const filename = "data/test.file";
             const data = "Hello World";
 
-            const adapter = new AtomicFileAdapter(filename);
+            const adapter = new AtomicFileAdapter(filename, false);
             await adapter.writeAsync(data);
             const exists = await checkFileExists(filename);
             expect(exists).toBeTruthy();
@@ -24,7 +24,7 @@ describe('Adapter', () => {
         test('should return null data when file doesn\'t exists', async () => {
             const filename = "data/test2.file";
 
-            const adapter = new AtomicFileAdapter(filename);
+            const adapter = new AtomicFileAdapter(filename, false);
             const data = await adapter.readAsync();
             expect(data).toBeNull();
 
@@ -34,7 +34,7 @@ describe('Adapter', () => {
                 const filename = "data/test.json";
                 const data = {Hello: "World", Foo: "Bar"};
 
-                const adapter = new JsonAdapter(new AtomicFileAdapter(filename), false);
+                const adapter = new JsonAdapter(new AtomicFileAdapter(filename, false), false);
                 await adapter.writeAsync(data);
                 const exists = await checkFileExists(filename);
                 expect(exists).toBeTruthy();
@@ -44,7 +44,7 @@ describe('Adapter', () => {
             })
             test('should create file when loading if it doesn\'t exists', async () => {
                 const filename = "data/test.json";
-                const adapter = new JsonAdapter(new AtomicFileAdapter(filename), false);
+                const adapter = new JsonAdapter(new AtomicFileAdapter(filename, false), false);
                 await adapter.readAsync();
 
                 const fileExists = await checkFileExists(filename);
