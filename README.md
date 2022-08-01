@@ -1,7 +1,5 @@
-[![NodeJs](https://github.com/Belphemur/node-json-db/actions/workflows/nodejs.yml/badge.svg)](https://github.com/Belphemur/node-json-db/actions/workflows/nodejs.yml)[![codecov](https://codecov.io/gh/Belphemur/node-json-db/branch/master/graph/badge.svg?token=J3Ppt4UCbY)](https://codecov.io/gh/Belphemur/node-json-db)[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FBelphemur%2Fnode-json-await db.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FBelphemur%2Fnode-json-db?ref=badge_shield)
-
-[![NPM](https://nodei.co/npm/node-json-await db.png?downloads=true&stars=true)](https://nodei.co/npm/node-json-db/)
-
+[![NodeJs](https://github.com/Belphemur/node-json-db/actions/workflows/nodejs.yml/badge.svg)](https://github.com/Belphemur/node-json-db/actions/workflows/nodejs.yml) [![codecov](https://codecov.io/gh/Belphemur/node-json-db/branch/master/graph/badge.svg?token=J3Ppt4UCbY)](https://codecov.io/gh/Belphemur/node-json-db)
+[![npm version](https://badge.fury.io/js/node-json-db.svg)](https://badge.fury.io/js/node-json-db)
 > A simple "database" that use JSON file for Node.JS.
 
 ## Breaking changes since v1.x.x for v2.0.0
