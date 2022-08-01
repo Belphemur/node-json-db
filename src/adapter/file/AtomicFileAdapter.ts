@@ -3,9 +3,11 @@ import {readFile, writeFile} from "atomically";
 
 export class AtomicFileAdapter implements IFileAdapter<string> {
     public readonly filename: string;
+    private fsync: boolean;
 
-    constructor(filename: string) {
+    constructor(filename: string, fsync: boolean) {
         this.filename = filename;
+        this.fsync = fsync;
     }
 
     async readAsync(): Promise<string | null> {
@@ -23,7 +25,8 @@ export class AtomicFileAdapter implements IFileAdapter<string> {
 
     writeAsync(data: string): Promise<void> {
         return writeFile(this.filename, data, {
-            encoding: 'utf-8'
+            encoding: 'utf-8',
+            fsync: this.fsync
         })
     }
 }
