@@ -8,9 +8,7 @@ const testFile2 = "test/dirCreation/test_file2"
 const faulty = "test/faulty.json"
 const testFile3 = "test/test_file3"
 const testFile4 = "test/array_file"
-const testFile5 = "test/test_file_empty"
 const testFile6 = "test/test_delete"
-const testFile7 = "test/test_sync"
 
 
 interface Test {
@@ -616,9 +614,7 @@ describe('JsonDB', () => {
             fs.unlinkSync(testFile2 + ".json")
             fs.unlinkSync(testFile3 + ".json")
             fs.unlinkSync(testFile4 + ".json")
-            fs.unlinkSync(testFile5 + ".json")
             fs.unlinkSync(testFile6 + ".json")
-            fs.unlinkSync(testFile7 + ".json")
             fs.rmdirSync("test/dirCreation")
         })
     })
