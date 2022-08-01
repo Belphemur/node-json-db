@@ -28,7 +28,7 @@ export class Config implements JsonDBConfig {
         this.humanReadable = humanReadable
         this.saveOnPush = saveOnPush
         this.separator = separator
-        this.adapter = new JsonAdapter(new AtomicFileAdapter(this.filename, syncOnSave));
+        this.adapter = new JsonAdapter(new AtomicFileAdapter(this.filename, syncOnSave), humanReadable);
     }
 }
 
