@@ -1,6 +1,6 @@
 import {AtomicFileAdapter} from "../../src/adapter/file/AtomicFileAdapter";
 import * as fs from "fs";
-import {JsonAdapter} from "../../dist/adapter/data/JsonAdapter";
+import {JsonAdapter} from "../../src/adapter/data/JsonAdapter";
 
 function checkFileExists(file: string): Promise<boolean> {
     return fs.promises.access(file, fs.constants.F_OK)
