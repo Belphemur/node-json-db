@@ -1,11 +1,27 @@
 import {AtomicFileAdapter} from "../../src/adapter/file/AtomicFileAdapter";
 import * as fs from "fs";
 import {JsonAdapter} from "../../src/adapter/data/JsonAdapter";
+import {IAdapter} from "../../src/adapter/IAdapter";
+import {ConfigWithAdapter} from "../../src/lib/JsonDBConfig";
 
 function checkFileExists(file: string): Promise<boolean> {
     return fs.promises.access(file, fs.constants.F_OK)
         .then(() => true)
         .catch(() => false)
+}
+
+class MemoryAdapter implements IAdapter<any> {
+    private data: any = {};
+
+    readAsync(): Promise<any> {
+        return Promise.resolve(this.data);
+    }
+
+    writeAsync(data: any): Promise<void> {
+        this.data = data;
+        return Promise.resolve(undefined);
+    }
+
 }
 
 describe('Adapter', () => {
@@ -52,5 +68,13 @@ describe('Adapter', () => {
 
             })
         })
+    });
+    describe('Config', () => {
+        test('should be able to set own adapter with config', async () => {
+            const config = new ConfigWithAdapter(new MemoryAdapter());
+            await config.adapter.writeAsync({test: "test"});
+            const result = await config.adapter.readAsync();
+            expect(result.test).toBe("test");
+        });
     });
 });
