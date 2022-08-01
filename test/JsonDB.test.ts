@@ -65,6 +65,7 @@ describe('JsonDB', () => {
             )
         })
     })
+
     describe('find()', () => {
         test('should return undefined when not found', async () => {
             db.getData = jest.fn(async () => ({
