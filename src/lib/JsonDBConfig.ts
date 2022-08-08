@@ -35,7 +35,7 @@ export class ConfigWithAdapter implements JsonDBConfig {
     readonly separator: string;
 
 
-    constructor(adapter: IAdapter<any>, humanReadable: boolean, saveOnPush: boolean, separator: string) {
+    constructor(adapter: IAdapter<any>, saveOnPush: boolean = true, separator: string = '/') {
         this.adapter = adapter;
         this.saveOnPush = saveOnPush;
         this.separator = separator;
