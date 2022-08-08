@@ -67,6 +67,19 @@ describe('Adapter', () => {
                 expect(fileExists).toBeTruthy();
 
             })
+
+            test('should serialize and deserialize dates', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    myDate: new Date()
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject).not.toBeNaN();
+                expect(readObject.myDate).toBeInstanceOf(Date);
+                expect(readObject.myDate.toString()).toBe(data.myDate.toString())
+            })
         })
     });
     describe('Config', () => {
