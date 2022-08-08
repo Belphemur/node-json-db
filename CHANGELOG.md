@@ -1,3 +1,15 @@
+# [2.1.0](https://github.com/Belphemur/node-json-db/compare/v2.0.0...v2.1.0) (2022-08-08)
+
+
+### Bug Fixes
+
+* **Config:** put proper default for ConfigWithAdapter ([8d38302](https://github.com/Belphemur/node-json-db/commit/8d3830267e72831ea2abdd3c6ff4a061f5dc3c40))
+
+
+### Features
+
+* **Date:** Add support for serializing and deserializing date type ([d7a904e](https://github.com/Belphemur/node-json-db/commit/d7a904e84e6a5c3671d3177508faca217c0c909b)), closes [#362](https://github.com/Belphemur/node-json-db/issues/362)
+
 # [2.0.0](https://github.com/Belphemur/node-json-db/compare/v1.6.0...v2.0.0) (2022-08-01)
 
 
