@@ -8,7 +8,7 @@ type DataPath = Array<string>
 
 export type FindCallback = (entry: any, index: number | string) => boolean
 
-export { Config } from './lib/JsonDBConfig.js' 
+export { Config } from './lib/JsonDBConfig' 
 
 export class JsonDB {
     private loaded: boolean = false
