@@ -310,6 +310,7 @@ await db.getData("/arraytest/myarray[0][0]");
     <td align="center"><a href="https://davisjam.github.io/"><img src="https://avatars.githubusercontent.com/u/22822319?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jamie Davis</b></sub></a><br /><a href="#security-davisjam" title="Security">🛡️</a></td>
     <td align="center"><a href="https://github.com/sidblommerswork"><img src="https://avatars.githubusercontent.com/u/93680615?v=4?s=100" width="100px;" alt=""/><br /><sub><b>sidblommerswork</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=sidblommerswork" title="Code">💻</a> <a href="https://github.com/Belphemur/node-json-db/commits?author=sidblommerswork" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/drproktor"><img src="https://avatars.githubusercontent.com/u/19718418?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Max Huber</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=drproktor" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/adamhl8"><img src="https://avatars.githubusercontent.com/u/1844269?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Adam</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=adamhl8" title="Code">💻</a> <a href="https://github.com/Belphemur/node-json-db/commits?author=adamhl8" title="Documentation">📖</a></td>
   </tr>
 </table>
 
