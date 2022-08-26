@@ -46,8 +46,7 @@ See [test](https://github.com/Belphemur/node-json-db/tree/master/test) for more 
 
 
 ```javascript
-import { JsonDB } from 'node-json-db';
-import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
+import { JsonDB, Config } from 'node-json-db';
 
 // The first argument is the database filename. If no extension, '.json' is assumed and automatically added.
 // The second argument is used to tell the DB to save after each push
@@ -137,8 +136,7 @@ JsonDB isn't exported as default any more. You'll need to change how you load th
 
 This change is done to follow the right way to import module.
 ```javascript
-import { JsonDB } from 'node-json-db';
-import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
+import { JsonDB, Config } from 'node-json-db';
 
 const db = new JsonDB(new Config("myDataBase", true, false, '/'));
 ```
@@ -146,8 +144,7 @@ const db = new JsonDB(new Config("myDataBase", true, false, '/'));
 #### Typing
 With TypeScript, you have access to a new method: getObject<T> that will take care of typing your return object.
 ```typescript
-import { JsonDB } from 'node-json-db';
-import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
+import { JsonDB, Config } from 'node-json-db';
 
 const db = new JsonDB(new Config("myDataBase", true, false, '/'));
 
@@ -167,8 +164,7 @@ const result = await db.getObject<FooBar>("/test");
 ### Array Support
 You can also access the information stored into arrays and manipulate them.
 ```typescript
-import { JsonDB } from 'node-json-db';
-import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
+import { JsonDB, Config } from 'node-json-db';
 
 // The first argument is the database filename. If no extension, '.json' is assumed and automatically added.
 // The second argument is used to tell the DB to save after each push
