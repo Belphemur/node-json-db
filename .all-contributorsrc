@@ -32,6 +32,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "adamhl8",
+      "name": "Adam",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1844269?v=4",
+      "profile": "https://github.com/adamhl8",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
