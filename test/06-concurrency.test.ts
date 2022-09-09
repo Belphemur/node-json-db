@@ -17,9 +17,9 @@ async function addData(db: JsonDB) {
 }
 
 describe('Concurrency', () => {
-    const db = new JsonDB(new Config('test-concurrent'));
+    const db = new JsonDB(new Config('test-concurrent-write'));
     db.resetData({});
-    describe('Multi write', () => {
+    describe('Multi push', () => {
         test('shouldn\'t corrupt the data', async () => {
             let promiseList = [];
             for (let i = 0; i < 10; i++) {
@@ -40,9 +40,23 @@ describe('Concurrency', () => {
         })
 
     });
-    describe('Mutli-read', () => {
-        test('should be able to set own adapter with config', async () => {
+    describe('Mutli getData', () => {
+        const db = new JsonDB(new Config('test-concurrent-read'));
+        db.resetData({});
+        test('should be blocking and wait for push to finish', async () => {
+            let counter = 1;
+            let record = {
+                strval: `value ${counter}`,
+                intval: counter
+            };
+            //We don't await the promise directly, to trigger a concurrent case
+            const pushPromise = db.push(`/test/key${counter}`, record, false);
+            const data = await db.getData("/test")
 
+            await pushPromise;
+
+            expect(data).toHaveProperty(`key${counter}`)
+            expect(data[`key${counter}`]).toEqual(record);
         });
     });
 })

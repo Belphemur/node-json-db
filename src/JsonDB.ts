@@ -140,8 +140,10 @@ export class JsonDB {
      * @param dataPath path of the data to retrieve
      */
     public getData(dataPath: string): Promise<any> {
-        const path = this.processDataPath(dataPath)
-        return this.retrieveData(path, false)
+        return this.lock.acquire(this.lockKey, async () => {
+            const path = this.processDataPath(dataPath)
+            return this.retrieveData(path, false)
+        });
     }
 
     /**
