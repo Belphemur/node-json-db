@@ -3,17 +3,21 @@ import {DatabaseError, DataError} from './lib/Errors'
 import {DBParentData} from './lib/DBParentData'
 import {ArrayInfo} from './lib/ArrayInfo'
 import {JsonDBConfig} from './lib/JsonDBConfig'
+import * as AsyncLock from 'async-lock'
+
+export {Config} from './lib/JsonDBConfig'
 
 type DataPath = Array<string>
 
 export type FindCallback = (entry: any, index: number | string) => boolean
 
-export { Config } from './lib/JsonDBConfig' 
 
 export class JsonDB {
     private loaded: boolean = false
     private data: KeyValue = {}
     private readonly config: JsonDBConfig
+    private readonly lock = new AsyncLock()
+    private readonly lockKey = 'jsonDb'
 
     /**
      * JSONDB Constructor
@@ -40,7 +44,7 @@ export class JsonDB {
         return path
     }
 
-    private async retrieveData(dataPath: DataPath, create: boolean = false) : Promise<any> {
+    private async retrieveData(dataPath: DataPath, create: boolean = false): Promise<any> {
         await this.load()
 
         const thisDb = this
@@ -282,36 +286,39 @@ export class JsonDB {
      * @param override overriding or not the data, if not, it will merge them
      */
     public async push(dataPath: string, data: any, override: boolean = true): Promise<void> {
-        const dbData = await this.getParentData(dataPath, true)
-        // if (!dbData) {
-        //   throw new Error('Data not found')
-        // }
+        return this.lock.acquire(this.lockKey, async () => {
+            const dbData = await this.getParentData(dataPath, true)
+            // if (!dbData) {
+            //   throw new Error('Data not found')
+            // }
 
-        let toSet = data
-        if (!override) {
-            if (Array.isArray(data)) {
-                let storedData = dbData.getData()
-                if (storedData === undefined) {
-                    storedData = []
-                } else if (!Array.isArray(storedData)) {
-                    throw new DataError(
-                        "Can't merge another type of data with an Array",
-                        3
-                    )
+            let toSet = data
+            if (!override) {
+                if (Array.isArray(data)) {
+                    let storedData = dbData.getData()
+                    if (storedData === undefined) {
+                        storedData = []
+                    } else if (!Array.isArray(storedData)) {
+                        throw new DataError(
+                            "Can't merge another type of data with an Array",
+                            3
+                        )
+                    }
+                    toSet = storedData.concat(data)
+                } else if (data === Object(data)) {
+                    if (Array.isArray(dbData.getData())) {
+                        throw new DataError("Can't merge an Array with an Object", 4)
+                    }
+                    toSet = merge(dbData.getData(), data)
                 }
-                toSet = storedData.concat(data)
-            } else if (data === Object(data)) {
-                if (Array.isArray(dbData.getData())) {
-                    throw new DataError("Can't merge an Array with an Object", 4)
-                }
-                toSet = merge(dbData.getData(), data)
             }
-        }
-        dbData.setData(toSet)
+            dbData.setData(toSet)
 
-        if (this.config.saveOnPush) {
-            await this.save()
-        }
+            if (this.config.saveOnPush) {
+                await this.save()
+            }
+        });
+
     }
 
     /**
@@ -319,15 +326,18 @@ export class JsonDB {
      * @param dataPath path leading to the data
      */
     public async delete(dataPath: string): Promise<void> {
-        const dbData = await this.getParentData(dataPath, true)
-        // if (!dbData) {
-        //   return
-        // }
-        dbData.delete()
+        await this.lock.acquire(this.lockKey, async () => {
+            const dbData = await this.getParentData(dataPath, true)
+            // if (!dbData) {
+            //   return
+            // }
+            dbData.delete()
 
-        if (this.config.saveOnPush) {
-            await this.save()
-        }
+            if (this.config.saveOnPush) {
+                await this.save()
+            }
+        });
+
     }
 
     /**

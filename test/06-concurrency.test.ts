@@ -17,7 +17,8 @@ async function addData(db: JsonDB) {
 }
 
 describe('Concurrency', () => {
-    const db = new JsonDB(new Config('concurrency'));
+    const db = new JsonDB(new Config('test-concurrent'));
+    db.resetData({});
     describe('Multi write', () => {
         test('shouldn\'t corrupt the data', async () => {
             let promiseList = [];
@@ -43,10 +44,5 @@ describe('Concurrency', () => {
         test('should be able to set own adapter with config', async () => {
 
         });
-    });
-    describe('Cleanup', () => {
-        test('should remove the test files', () => {
-            fs.unlinkSync("concurrency.json")
-        })
     });
 })
