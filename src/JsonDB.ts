@@ -6,6 +6,7 @@ import {JsonDBConfig} from './lib/JsonDBConfig'
 import * as AsyncLock from 'async-lock'
 
 export {Config} from './lib/JsonDBConfig'
+export {DatabaseError, DataError} from './lib/Errors'
 
 type DataPath = Array<string>
 
