@@ -1,3 +1,16 @@
+## [2.1.2](https://github.com/Belphemur/node-json-db/compare/v2.1.1...v2.1.2) (2022-09-09)
+
+
+### Bug Fixes
+
+* **Concurrency:** Fix issue with concurrent push from different sources ([daae2bb](https://github.com/Belphemur/node-json-db/commit/daae2bb6310d79c7479e4a50b9bde63ac93d0d02)), closes [#484](https://github.com/Belphemur/node-json-db/issues/484)
+
+
+### Performance Improvements
+
+* **Concurrency:** Be sure that only one read or one write can be done at the same time ([1cf0038](https://github.com/Belphemur/node-json-db/commit/1cf0038fc344ab1c1edd3f45ad3660d7ba04daaa))
+* **Errors:** Export errors for easier error management in other projects ([60c90f8](https://github.com/Belphemur/node-json-db/commit/60c90f862a840576b90af7be375dfc2ed7c0777d)), closes [#479](https://github.com/Belphemur/node-json-db/issues/479)
+
 ## [2.1.1](https://github.com/Belphemur/node-json-db/compare/v2.1.0...v2.1.1) (2022-08-26)
 
 
