@@ -1,3 +1,10 @@
+## [2.1.3](https://github.com/Belphemur/node-json-db/compare/v2.1.2...v2.1.3) (2022-09-21)
+
+
+### Performance Improvements
+
+* **Locking:** Use proper read write lock instead of one lock for all operation ([f3f422a](https://github.com/Belphemur/node-json-db/commit/f3f422a5f4cea27f339da8c9adde7ebad251396c)), closes [#490](https://github.com/Belphemur/node-json-db/issues/490)
+
 ## [2.1.2](https://github.com/Belphemur/node-json-db/compare/v2.1.1...v2.1.2) (2022-09-09)
 
 
