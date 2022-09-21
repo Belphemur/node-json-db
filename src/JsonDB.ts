@@ -4,6 +4,7 @@ import {DBParentData} from './lib/DBParentData'
 import {ArrayInfo} from './lib/ArrayInfo'
 import {JsonDBConfig} from './lib/JsonDBConfig'
 import * as AsyncLock from 'async-lock'
+import {readLockAsync, writeLockAsync} from "./lock/Lock";
 
 export {Config} from './lib/JsonDBConfig'
 export {DatabaseError, DataError} from './lib/Errors'
@@ -17,8 +18,6 @@ export class JsonDB {
     private loaded: boolean = false
     private data: KeyValue = {}
     private readonly config: JsonDBConfig
-    private readonly lock = new AsyncLock()
-    private readonly lockKey = 'jsonDb'
 
     /**
      * JSONDB Constructor
@@ -141,7 +140,7 @@ export class JsonDB {
      * @param dataPath path of the data to retrieve
      */
     public getData(dataPath: string): Promise<any> {
-        return this.lock.acquire(this.lockKey, async () => {
+        return readLockAsync(async () => {
             const path = this.processDataPath(dataPath)
             return this.retrieveData(path, false)
         });
@@ -289,7 +288,7 @@ export class JsonDB {
      * @param override overriding or not the data, if not, it will merge them
      */
     public async push(dataPath: string, data: any, override: boolean = true): Promise<void> {
-        return this.lock.acquire(this.lockKey, async () => {
+        return writeLockAsync( async () => {
             const dbData = await this.getParentData(dataPath, true)
             // if (!dbData) {
             //   throw new Error('Data not found')
@@ -329,7 +328,7 @@ export class JsonDB {
      * @param dataPath path leading to the data
      */
     public async delete(dataPath: string): Promise<void> {
-        await this.lock.acquire(this.lockKey, async () => {
+        await writeLockAsync(async () => {
             const dbData = await this.getParentData(dataPath, true)
             // if (!dbData) {
             //   return
