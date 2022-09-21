@@ -3,7 +3,6 @@ import {DatabaseError, DataError} from './lib/Errors'
 import {DBParentData} from './lib/DBParentData'
 import {ArrayInfo} from './lib/ArrayInfo'
 import {JsonDBConfig} from './lib/JsonDBConfig'
-import * as AsyncLock from 'async-lock'
 import {readLockAsync, writeLockAsync} from "./lock/Lock";
 
 export {Config} from './lib/JsonDBConfig'
