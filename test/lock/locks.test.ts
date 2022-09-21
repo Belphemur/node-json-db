@@ -32,7 +32,7 @@ describe('Lock', () => {
         expect(currentCount).toBe(1);
     });
 
-    test('will timeout if requested', async () => {
+    test('read will timeout if requested', async () => {
         let count = 0;
         writeLockAsync(() => new Promise<void>(resolve => {
             setTimeout(() => {
@@ -43,6 +43,17 @@ describe('Lock', () => {
 
         await expect(async () => await readLockAsync(async () => {
             return count;
+        }, 10)).rejects.toThrow(TimeoutError)
+    });
+    test('read write timeout if requested', async () => {
+        let count = 0;
+        readLockAsync(() => new Promise<void>(resolve => {
+            setTimeout(() => {
+                resolve();
+            }, 100)
+        }))
+
+        await expect(async () => await writeLockAsync(async () => {
         }, 10)).rejects.toThrow(TimeoutError)
     });
 });
