@@ -6298,8 +6298,8 @@ typedoc@^0.23.1:
     shiki "^0.11.1"
 
 typescript@^4.4.3:
-  version "4.8.3"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.8.3.tgz"
+  version "4.8.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.4.tgz#c464abca159669597be5f96b8943500b238e60e6"
 
 uglify-js@^3.1.4:
   version "3.14.2"
