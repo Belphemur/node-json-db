@@ -56,7 +56,7 @@
     ]
   },
   "dependencies": {
-    "atomically": "^1.7.0",
+    "atomically": "^2.0.0",
     "rwlock": "^5.0.0"
   },
   "devDependencies": {
