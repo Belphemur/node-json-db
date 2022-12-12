@@ -6284,8 +6284,8 @@ type-fest@^1.0.2:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-1.4.0.tgz"
 
 typedoc@^0.23.1:
-  version "0.23.21"
-  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.23.21.tgz#2a6b0e155f91ffa9689086706ad7e3e4bc11d241"
+  version "0.23.22"
+  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.23.22.tgz#e25281ca816cd92ecfdaf3ec336d27e7bebb69ac"
   dependencies:
     lunr "^2.3.9"
     marked "^4.0.19"
