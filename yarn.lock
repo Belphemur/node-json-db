@@ -3492,8 +3492,8 @@ humanize-ms@^1.2.1:
     ms "^2.0.0"
 
 husky@^8.0.0:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.2.tgz#5816a60db02650f1f22c8b69b928fd6bcd77a236"
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.3.tgz#4936d7212e46d1dea28fef29bb3a108872cd9184"
 
 iconv-lite@^0.4.24:
   version "0.4.24"
