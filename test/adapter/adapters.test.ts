@@ -1,4 +1,4 @@
-import {AtomicFileAdapter} from "../../src/adapter/file/AtomicFileAdapter";
+import {FileAdapter} from "../../src/adapter/file/FileAdapter";
 import * as fs from "fs";
 import {JsonAdapter} from "../../src/adapter/data/JsonAdapter";
 import {IAdapter} from "../../src/adapter/IAdapter";
@@ -25,12 +25,12 @@ class MemoryAdapter implements IAdapter<any> {
 }
 
 describe('Adapter', () => {
-    describe('Atomic', () => {
+    describe('File', () => {
         test('should be able to write then read to a file', async () => {
             const filename = "data/test.file";
             const data = "Hello World";
 
-            const adapter = new AtomicFileAdapter(filename, false);
+            const adapter = new FileAdapter(filename, false);
             await adapter.writeAsync(data);
             const exists = await checkFileExists(filename);
             expect(exists).toBeTruthy();
@@ -40,7 +40,7 @@ describe('Adapter', () => {
         test('should return null data when file doesn\'t exists', async () => {
             const filename = "data/test2.file";
 
-            const adapter = new AtomicFileAdapter(filename, false);
+            const adapter = new FileAdapter(filename, false);
             const data = await adapter.readAsync();
             expect(data).toBeNull();
 
@@ -50,7 +50,7 @@ describe('Adapter', () => {
                 const filename = "data/test.json";
                 const data = {Hello: "World", Foo: "Bar"};
 
-                const adapter = new JsonAdapter(new AtomicFileAdapter(filename, false), false);
+                const adapter = new JsonAdapter(new FileAdapter(filename, false), false);
                 await adapter.writeAsync(data);
                 const exists = await checkFileExists(filename);
                 expect(exists).toBeTruthy();
@@ -60,7 +60,7 @@ describe('Adapter', () => {
             })
             test('should create file when loading if it doesn\'t exists', async () => {
                 const filename = "data/test.json";
-                const adapter = new JsonAdapter(new AtomicFileAdapter(filename, false), false);
+                const adapter = new JsonAdapter(new FileAdapter(filename, false), false);
                 await adapter.readAsync();
 
                 const fileExists = await checkFileExists(filename);

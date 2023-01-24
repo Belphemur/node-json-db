@@ -1,7 +1,7 @@
 import * as path from "path";
 import {IAdapter} from "../adapter/IAdapter";
 import {JsonAdapter} from "../adapter/data/JsonAdapter";
-import {AtomicFileAdapter} from "../adapter/file/AtomicFileAdapter";
+import {FileAdapter} from "../adapter/file/FileAdapter";
 
 export interface JsonDBConfig {
     readonly adapter: IAdapter<any>,
@@ -25,7 +25,7 @@ export class Config implements JsonDBConfig {
 
         this.saveOnPush = saveOnPush
         this.separator = separator
-        this.adapter = new JsonAdapter(new AtomicFileAdapter(this.filename, syncOnSave), humanReadable);
+        this.adapter = new JsonAdapter(new FileAdapter(this.filename, syncOnSave), humanReadable);
     }
 }
 
