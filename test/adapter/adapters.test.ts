@@ -46,6 +46,17 @@ describe('Adapter', () => {
             expect(data).toBeNull();
 
         })
+        test('should be able to read/write a file with fsync', async () => {
+            const filename = "data/test.file";
+            const data = "hello fsync";
+
+            const adapter = new FileAdapter(filename, true);
+            await adapter.writeAsync(data);
+            const exists = await checkFileExists(filename);
+            expect(exists).toBeTruthy();
+            const content = await adapter.readAsync();
+            expect(content).toBe(data);
+        })
         test('should throw error with null character in path when reading', async () => {
             const filename = "data/\0";
 
