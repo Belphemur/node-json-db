@@ -3,6 +3,7 @@ import * as fs from "fs";
 import {JsonAdapter} from "../../src/adapter/data/JsonAdapter";
 import {IAdapter} from "../../src/adapter/IAdapter";
 import {ConfigWithAdapter} from "../../src/lib/JsonDBConfig";
+import {DataError} from "../../src/lib/Errors";
 
 function checkFileExists(file: string): Promise<boolean> {
     return fs.promises.access(file, fs.constants.F_OK)
@@ -44,6 +45,20 @@ describe('Adapter', () => {
             const data = await adapter.readAsync();
             expect(data).toBeNull();
 
+        })
+        test('should throw error with null character in path when reading', async () => {
+            const filename = "data/\0";
+
+            const adapter = new FileAdapter(filename, false);
+
+            await expect(async () => await adapter.readAsync()).rejects.toThrow()
+        })
+        test('should throw error with null character in path when writting', async () => {
+            const filename = "data/\0";
+
+            const adapter = new FileAdapter(filename, false);
+
+            await expect(async () => await adapter.writeAsync("test")).rejects.toThrow()
         })
         describe('Json', () => {
             test('should be able to write then read to a file', async () => {
