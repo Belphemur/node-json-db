@@ -1,3 +1,10 @@
+## [2.1.4](https://github.com/Belphemur/node-json-db/compare/v2.1.3...v2.1.4) (2023-01-24)
+
+
+### Performance Improvements
+
+* **FileAdapter:** Remove need for atomically. With RWLock we have all we need. ([4b52670](https://github.com/Belphemur/node-json-db/commit/4b526703c78f8c2e0ff8cdcd0e198ffba0cd5219))
+
 ## [2.1.3](https://github.com/Belphemur/node-json-db/compare/v2.1.2...v2.1.3) (2022-09-21)
 
 
