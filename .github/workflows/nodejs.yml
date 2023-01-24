@@ -2,7 +2,7 @@ name: NodeJs
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NPM_TOKEN: ${{secrets.NPM_TOKEN }}
-  NODEJS: 16
+  NODEJS: 18
   YARN_CACHE: "yarn-cache"
 
 on:
@@ -29,17 +29,38 @@ jobs:
             path: ${{env.YARN_CACHE}}
             key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         - name: Setup Node.js ${{ matrix.node }}
-          uses: actions/setup-node@v3.4.1
+          uses: actions/setup-node@v3.6.0
           with:
             node-version: ${{ matrix.node }}
         - name: Install dependencies
-          run: yarn install --frozen-lockfile
+          run: yarn install --frozen-lockfile --ignore-engines
         - name: Run tests
           run: yarn test
         - name: Upload code coverage
           uses: codecov/codecov-action@v3
           with:
             fail_ci_if_error: true # optional (default = false)
+  ci-cd-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set yarn cache
+        run: yarn config set cache-folder ${{env.YARN_CACHE}}
+      - name: Cache node modules
+        uses: actions/cache@v3
+        env:
+          cache-name: yarn
+        with:
+          path: ${{env.YARN_CACHE}}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Setup Node.js ${{env.NODEJS}}
+        uses: actions/setup-node@v3.6.0
+        with:
+          node-version: ${{env.NODEJS}}
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Run semantic-release
+        run: yarn semantic-release --dry-run
   deploy-pages:
     needs: build
     if: github.ref == 'refs/heads/master'
@@ -49,7 +70,7 @@ jobs:
       - name: Set yarn cache
         run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
-        uses: actions/setup-node@v3.4.1
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
@@ -64,13 +85,13 @@ jobs:
       - name: Build package
         run: yarn build:doc
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.4.0
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: docs # The folder the action should deploy.
             
   release:
-    needs: build
+    needs: [build, ci-cd-check]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
@@ -78,7 +99,7 @@ jobs:
       - name: Set yarn cache
         run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
-        uses: actions/setup-node@v3.4.1
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
