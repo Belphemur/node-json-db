@@ -5,8 +5,12 @@ import {ArrayInfo} from './lib/ArrayInfo'
 import {JsonDBConfig} from './lib/JsonDBConfig'
 import {readLockAsync, writeLockAsync} from "./lock/Lock";
 
-export {Config} from './lib/JsonDBConfig'
+//Export to be used by other projects that want to extend JsonDB
+export {Config, ConfigWithAdapter} from './lib/JsonDBConfig'
 export {DatabaseError, DataError} from './lib/Errors'
+export {IAdapter} from './adapter/IAdapter'
+export {JsonAdapter} from './adapter/data/JsonAdapter'
+export {FileAdapter} from './adapter/file/FileAdapter'
 
 type DataPath = Array<string>
 
