@@ -1,3 +1,10 @@
+## [2.1.5](https://github.com/Belphemur/node-json-db/compare/v2.1.4...v2.1.5) (2023-03-14)
+
+
+### Performance Improvements
+
+* **Interoperability:** Export underlying adapter type to let developers customize the storage logic ([cfa874e](https://github.com/Belphemur/node-json-db/commit/cfa874ed9c43500578131470e391142464d9f03b)), closes [#568](https://github.com/Belphemur/node-json-db/issues/568)
+
 ## [2.1.4](https://github.com/Belphemur/node-json-db/compare/v2.1.3...v2.1.4) (2023-01-24)
 
 
