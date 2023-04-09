@@ -1,3 +1,15 @@
+# [2.2.0](https://github.com/Belphemur/node-json-db/compare/v2.1.5...v2.2.0) (2023-04-09)
+
+
+### Bug Fixes
+
+* **Array:** Fix issue with array that have numerical property key ([db7b5cb](https://github.com/Belphemur/node-json-db/commit/db7b5cb0672e9371a9eb97531d8dfdc7ffa1c406)), closes [#571](https://github.com/Belphemur/node-json-db/issues/571)
+
+
+### Features
+
+* **getObjectDefault:** Add method `getObjectDefault` to get an object or a default value when the path is leading to non existing data. ([d47786b](https://github.com/Belphemur/node-json-db/commit/d47786bf76529f9bb6f878e138893c06a1f4b491)), closes [#582](https://github.com/Belphemur/node-json-db/issues/582)
+
 ## [2.1.5](https://github.com/Belphemur/node-json-db/compare/v2.1.4...v2.1.5) (2023-03-14)
 
 
