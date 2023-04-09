@@ -2,6 +2,8 @@ import {DatabaseError, DataError} from "../src/lib/Errors"
 import {JsonDB} from "../src/JsonDB"
 import * as fs from 'fs'
 import { Config } from "../src/lib/JsonDBConfig"
+import {writeLockAsync} from "../src/lock/Lock";
+import {TimeoutError} from "../src/lock/Error";
 
 const testFile1 = "test/test_file1"
 const testFile2 = "test/dirCreation/test_file2"
@@ -95,6 +97,23 @@ describe('JsonDB', () => {
             const result = await db.getObject<Test>("@/hello");
             expect(result).toBe(object)
         })
+
+        test('should store the data with typing and default', async () => {
+            const object = {Hello: "test", World: 0} as Test;
+            await db.push("@lol@test", object)
+            const result = await db.getObjectDefault<Test>("@lol@test");
+            expect(result).toBe(object)
+        })
+
+        test('should get default value when not finding path', async () => {
+            const result = await db.getObjectDefault<string>("@lol@test@nah", "defaultValue");
+            expect(result).toBe("defaultValue")
+        })
+
+        test('should get exception when not the right data type', async () => {
+            await expect(async () => await db.getObjectDefault<string>("@lol@test[0]", "defaultValue")).rejects.toThrowError(DataError)
+        })
+
         test('should have data at root', async () => {
             expect(await db.exists('@test@test')).toBeTruthy()
         })
@@ -448,6 +467,20 @@ describe('JsonDB', () => {
                 expect(array).toBeInstanceOf(Array)
                 const index1 = await db.getData('/arrayAppend/mySuperArray[1]/test')
                 expect(index1).toBe(1)
+            }
+        )
+
+        //issue #571
+        test(
+            'should have no issue with numerical property for getting data in an array',
+            async () => {
+                await db.push('/issue571/1[]', "Hello", true)
+                await db.push('/issue571/1[]', "world", true)
+                let data = await db.getObject("/issue571/1[0]");
+                expect(data).toBe("Hello");
+                data = await db.getObject("/issue571/1[-1]");
+                expect(data).toBe("world");
+
             }
         )
 

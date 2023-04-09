@@ -158,6 +158,25 @@ export class JsonDB {
     }
 
     /**
+     * Same as getData but with your own object type and a possible default value when we can't find the data path
+     * @param dataPath path of the data to retrieve
+     * @param defaultValue value to use when the dataPath doesn't lead to data
+     */
+    public async getObjectDefault<T>(dataPath: string, defaultValue?: T): Promise<T> {
+        try {
+            return await this.getData(dataPath);
+        } catch (e) {
+            if (!(e instanceof DataError)) {
+                throw e;
+            }
+            if (e.id != 5) {
+                throw e;
+            }
+            return defaultValue as T;
+        }
+    }
+
+    /**
      * Check for existing datapath
      * @param dataPath
      */
@@ -291,7 +310,7 @@ export class JsonDB {
      * @param override overriding or not the data, if not, it will merge them
      */
     public async push(dataPath: string, data: any, override: boolean = true): Promise<void> {
-        return writeLockAsync( async () => {
+        return writeLockAsync(async () => {
             const dbData = await this.getParentData(dataPath, true)
             // if (!dbData) {
             //   throw new Error('Data not found')

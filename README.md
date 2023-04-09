@@ -111,6 +111,10 @@ try {
     console.error(error);
 };
 
+//easier than try catch when the path doesn't lead to data
+//this will return `myDefaultValue` if `/super/path` don't have data, else it return the data
+var data = await db.getObjectDefault<string>("/super/path", "myDefaultValue");
+
 // Deleting data
 await db.delete("/test1");
 

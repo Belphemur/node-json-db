@@ -144,7 +144,7 @@ export class ArrayInfo {
 
   private getArrayDataAndIndexFromProperty(data: KeyValue): any {
     let indexToPull = 0
-    let tempData = data[this.property] ?? data
+    let tempData = data instanceof Array ? data : data[this.property] ?? data
     if (this.indicies.length > 0) {
       indexToPull = +this.indicies[this.indicies.length - 1]
       for (let i = 0; i < this.indicies.length - 1; i++) {
