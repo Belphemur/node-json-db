@@ -470,6 +470,20 @@ describe('JsonDB', () => {
             }
         )
 
+        //issue #571
+        test(
+            'should have no issue with numerical property for getting data in an array',
+            async () => {
+                await db.push('/issue571/1[]', "Hello", true)
+                await db.push('/issue571/1[]', "world", true)
+                let data = await db.getObject("/issue571/1[0]");
+                expect(data).toBe("Hello");
+                data = await db.getObject("/issue571/1[-1]");
+                expect(data).toBe("world");
+
+            }
+        )
+
         test(
             'should throw an error when trying to append to a non array',
             async () => {
