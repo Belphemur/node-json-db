@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '14', '16', '18' ]
+        node: ['lts/-1', 'lts/*', 'current' ]
     steps:
         - uses: actions/checkout@v4
         - name: Set yarn cache
