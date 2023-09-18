@@ -2,7 +2,7 @@ name: NodeJs
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NPM_TOKEN: ${{secrets.NPM_TOKEN }}
-  NODEJS: 18
+  NODEJS: "lts/*"
   YARN_CACHE: "yarn-cache"
 
 on:
