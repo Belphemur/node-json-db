@@ -413,4 +413,36 @@ export class JsonDB {
             throw new DatabaseError("Can't save the database", 2, err)
         }
     }
+
+
+    /**
+     * Convert a router style path to a normal path
+     * @param path router based path to a correct base path
+     */
+    public async toPath(path: string ): Promise<string> {
+
+        const [,...pathToQuery] = path.split("/")
+
+        const pathObject = pathToQuery.reduce((prev, curr, indexPath) => {
+            const isKey = indexPath % 2 === 0
+            if (isKey) {
+                prev[`${curr}`] = ''
+            } else {
+                const keys = Object.keys(prev)
+                prev[`${keys[keys.length - 1]}`] = `${curr}`
+            }
+            return prev
+        }, {} as {[key: string]:string})
+    
+        let router = ''
+    
+        for await (const pathKey of Object.keys(pathObject)) {
+            router += `/${pathKey}`
+            const pathValue = pathObject[pathKey]
+            const pathIndex = await this.getIndex(router, pathValue)
+            router += `[${pathIndex}]`
+        }
+    
+        return router
+    }
 }
