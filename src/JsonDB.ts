@@ -442,9 +442,6 @@ export class JsonDB {
             const pathValue = pathObject[pathKey]
             try {
                 const pathIndex = await this.getIndex(normalPath.join(""), pathValue)
-                if(pathIndex === -1){
-                    throw new DataError(`DataPath: ${normalPath.join("")}/${pathValue} not found.`, 13)
-                }
                 normalPath.push(`[${pathIndex}]`)
             } catch (error) {
                 throw new DataError(`DataPath: ${normalPath.join("")}/${pathValue} not found.`, 13, error)
