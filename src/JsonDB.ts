@@ -434,15 +434,23 @@ export class JsonDB {
             return prev
         }, {} as {[key: string]:string})
     
-        let router = ''
+        let normalPath: string[] = []
     
         for await (const pathKey of Object.keys(pathObject)) {
-            router += `/${pathKey}`
+            normalPath.push(`/${pathKey}`)
+
             const pathValue = pathObject[pathKey]
-            const pathIndex = await this.getIndex(router, pathValue)
-            router += `[${pathIndex}]`
+            try {
+                const pathIndex = await this.getIndex(normalPath.join(""), pathValue)
+                if(pathIndex === -1){
+                    throw new DataError(`DataPath: ${normalPath.join("")}/${pathValue} not found.`, 13)
+                }
+                normalPath.push(`[${pathIndex}]`)
+            } catch (error) {
+                throw new DataError(`DataPath: ${normalPath.join("")}/${pathValue} not found.`, 13, error)
+            }
         }
     
-        return router
+        return normalPath.join("")
     }
 }
