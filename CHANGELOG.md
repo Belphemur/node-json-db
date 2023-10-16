@@ -1,3 +1,20 @@
+# [2.3.0](https://github.com/Belphemur/node-json-db/compare/v2.2.0...v2.3.0) (2023-10-16)
+
+
+### Bug Fixes
+
+* add trow erros ([c71b446](https://github.com/Belphemur/node-json-db/commit/c71b4468435935e01b5b0872a9320090b3f22fc3))
+* increment test coverage ([33a7e93](https://github.com/Belphemur/node-json-db/commit/33a7e93e13e942cd7fe4b7acddbbb4ff8f0bc2a9))
+
+
+### Features
+
+* adjust to support others properties ([58911b5](https://github.com/Belphemur/node-json-db/commit/58911b5727713081ad18f21b3ff16629434923d4))
+* change method name ([889d55e](https://github.com/Belphemur/node-json-db/commit/889d55eeddaf609fcde87284c25b6d3ee4fef40b))
+* new toPath method ([7d224c3](https://github.com/Belphemur/node-json-db/commit/7d224c3113cc40a02d44921dea53fae3fff43fb2))
+* **path:** add method to transform a usual "route" into a path for the db ([c389c7c](https://github.com/Belphemur/node-json-db/commit/c389c7c3cfad57228a72112a249acb70b6400f13))
+* test wrong propertyName ([6a95687](https://github.com/Belphemur/node-json-db/commit/6a95687ea3528ba455a19ee3e64417a4edc099f8))
+
 # [2.2.0](https://github.com/Belphemur/node-json-db/compare/v2.1.5...v2.2.0) (2023-04-09)
 
 
