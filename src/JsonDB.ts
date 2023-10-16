@@ -421,7 +421,7 @@ export class JsonDB {
      * @param path router based path to a correct base path
      * @param propertyName name of the property to look for searchValue
      */
-    public async toPath(path: string, propertyName:string = 'id' ): Promise<string> {
+    public async fromPath(path: string, propertyName:string = 'id' ): Promise<string> {
 
         const [,...pathToQuery] = path.split("/")
 

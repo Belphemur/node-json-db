@@ -96,7 +96,7 @@ describe('JsonDB', () => {
         })
     })
 
-    describe('toPath()', () => {
+    describe('fromPath()', () => {
         test('should throw path error when not found item',() => {
             db.getData = jest.fn(async () => ({
                 a: [
@@ -107,7 +107,7 @@ describe('JsonDB', () => {
             }))
 
             expect(async () => {
-                await db.toPath('/a/1')
+                await db.fromPath('/a/1')
             }).rejects.toThrow(
                 'DataPath: /a/1 not found.'
             )
@@ -122,7 +122,7 @@ describe('JsonDB', () => {
             }))
 
             expect(async () => {
-                await db.toPath('/a/1', '_id')
+                await db.fromPath('/a/1', '_id')
             }).rejects.toThrow(
                 'DataPath: /a/1 not found.'
             )

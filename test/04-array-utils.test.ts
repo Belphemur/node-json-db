@@ -249,7 +249,7 @@ describe('Array Utils', () => {
 
             const routerPathStyle = '/recipes/65464646155/nested/88488'
 
-            const normalPath = await db.toPath(routerPathStyle)
+            const normalPath = await db.fromPath(routerPathStyle)
 
             expect(normalPath).toEqual('/recipes[1]/nested[1]')
         })
@@ -289,7 +289,7 @@ describe('Array Utils', () => {
 
             const routerPathStyle = '/recipes/65464646155/nested/88488'
 
-            const normalPath = await db.toPath(routerPathStyle, '_id')
+            const normalPath = await db.fromPath(routerPathStyle, '_id')
 
             expect(normalPath).toEqual('/recipes[1]/nested[1]')
         })
