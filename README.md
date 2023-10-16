@@ -324,6 +324,7 @@ await db.getData("/arraytest/myarray[0][0]");
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/adamhl8"><img src="https://avatars.githubusercontent.com/u/1844269?v=4?s=100" width="100px;" alt="Adam"/><br /><sub><b>Adam</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=adamhl8" title="Code">💻</a> <a href="https://github.com/Belphemur/node-json-db/commits?author=adamhl8" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://divineanum.me"><img src="https://avatars.githubusercontent.com/u/44934037?v=4?s=100" width="100px;" alt="Divine Anum"/><br /><sub><b>Divine Anum</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=CHR-onicles" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/michalfedyna"><img src="https://avatars.githubusercontent.com/u/84079005?v=4?s=100" width="100px;" alt="Michał Fedyna"/><br /><sub><b>Michał Fedyna</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=michalfedyna" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/alexsad"><img src="https://avatars.githubusercontent.com/u/2659613?v=4?s=100" width="100px;" alt="alex.query"/><br /><sub><b>alex.query</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=alexsad" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
