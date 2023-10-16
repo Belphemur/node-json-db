@@ -51,6 +51,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "michalfedyna",
+      "name": "Michał Fedyna",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84079005?v=4",
+      "profile": "https://github.com/michalfedyna",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -59,5 +68,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": false,
-  "commitConvention": "angular"
+  "commitConvention": "angular",
+  "commitType": "docs"
 }
