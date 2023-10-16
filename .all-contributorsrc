@@ -60,6 +60,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "alexsad",
+      "name": "alex.query",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2659613?v=4",
+      "profile": "https://github.com/alexsad",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
