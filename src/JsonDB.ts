@@ -141,6 +141,7 @@ export class JsonDB {
     /**
      * Get the wanted data
      * @param dataPath path of the data to retrieve
+     * @returns {Promise<any>}
      */
     public getData(dataPath: string): Promise<any> {
         return readLockAsync(async () => {
@@ -152,6 +153,7 @@ export class JsonDB {
     /**
      * Same as getData only here it's directly typed to your object
      * @param dataPath  path of the data to retrieve
+     * @returns {Promise}
      */
     public getObject<T>(dataPath: string): Promise<T> {
         return this.getData(dataPath)
@@ -161,6 +163,8 @@ export class JsonDB {
      * Same as getData but with your own object type and a possible default value when we can't find the data path
      * @param dataPath path of the data to retrieve
      * @param defaultValue value to use when the dataPath doesn't lead to data
+     * @returns {Promise}
+     * @throws {DataError}
      */
     public async getObjectDefault<T>(dataPath: string, defaultValue?: T): Promise<T> {
         try {
@@ -179,6 +183,7 @@ export class JsonDB {
     /**
      * Check for existing datapath
      * @param dataPath
+     * @returns {Promise<boolean>}
      */
     public async exists(dataPath: string): Promise<boolean> {
         try {
@@ -195,6 +200,8 @@ export class JsonDB {
     /**
      * Returns the number of element which constitutes the array
      * @param dataPath
+     * @returns {Promise<number>}
+     * @throws {DataError}
      */
     public async count(dataPath: string): Promise<number> {
         const result = await this.getData(dataPath)
@@ -211,6 +218,7 @@ export class JsonDB {
      * @param dataPath  base dataPath from where to start searching
      * @param searchValue value to look for in the dataPath
      * @param propertyName name of the property to look for searchValue
+     * @returns {Promise<number>}
      */
     public async getIndex(
         dataPath: string,
@@ -229,6 +237,7 @@ export class JsonDB {
      * Return the index of the value inside the array. Returns -1, if no match is found.
      * @param dataPath  base dataPath from where to start searching
      * @param searchValue value to look for in the dataPath
+     * @returns {Promise<number>}
      */
     public async getIndexValue(dataPath: string, searchValue: string | number): Promise<number> {
         return (await this.getArrayData(dataPath)).indexOf(searchValue)
@@ -247,6 +256,8 @@ export class JsonDB {
      * Find all specific entry in an array/object
      * @param rootPath base dataPath from where to start searching
      * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.
+     * @returns {Promise}
+     * @throws {DataError}
      */
     public async filter<T>(rootPath: string, callback: FindCallback): Promise<T[] | undefined> {
         const result = await this.getData(rootPath)
@@ -279,6 +290,8 @@ export class JsonDB {
      * Find a specific entry in an array/object
      * @param rootPath base dataPath from where to start searching
      * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.
+     * @returns {Promise}
+     * @throws {DataError}
      */
     public async find<T>(rootPath: string, callback: FindCallback): Promise<T | undefined> {
         const result = await this.getData(rootPath)
@@ -308,6 +321,8 @@ export class JsonDB {
      * @param dataPath path leading to the data
      * @param data data to push
      * @param override overriding or not the data, if not, it will merge them
+     * @returns {Promise<void>}
+     * @throws {DataError}
      */
     public async push(dataPath: string, data: any, override: boolean = true): Promise<void> {
         return writeLockAsync(async () => {
@@ -384,6 +399,8 @@ export class JsonDB {
     /**
      * Manually load the database
      * It is automatically called when the first getData is done
+     * @return {Promise<void>}
+     * @throws {DatabaseError}
      */
     public async load(): Promise<void> {
         if (this.loaded) {
@@ -401,6 +418,8 @@ export class JsonDB {
      * Manually save the database
      * By default you can't save the database if it's not loaded
      * @param force force the save of the database
+     * @return {Promise<void>}
+     * @throws {DatabaseError}
      */
     public async save(force?: boolean): Promise<void> {
         force = force || false
