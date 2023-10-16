@@ -212,6 +212,88 @@ describe('Array Utils', () => {
             expect(nestedArrayIndicies[1]).toEqual('2')
         })
     })
+    describe('To router path style to normal path', () => {
+        test('should convert a router style path to a normal path', async () => {
+            const recipe_1 = {
+                id: '78687873783', 
+                name: 'Gratin', 
+                category: 'Dish',
+            }
+            const recipe_2 = {
+                id: '65464646155',
+                name: 'Cheesecake',
+                category: 'Dessert',
+                nested: [
+                    {
+                        id: '458445',
+                        name: 'test-1',
+                    },
+                    {
+                        id: '88488',
+                        name: 'test-2',
+                    },
+                    {
+                        id: '458455',
+                        name: 'test-3',
+                    },
+                ],
+            }
+            const recipe_3 = {
+                id: '12335373873',
+                name: 'Soupe',
+                category: 'Starter',
+            }
+            await db.push('/recipes[0]', recipe_1, true)
+            await db.push('/recipes[1]', recipe_2, true)
+            await db.push('/recipes[2]', recipe_3, true)
+
+            const routerPathStyle = '/recipes/65464646155/nested/88488'
+
+            const normalPath = await db.fromPath(routerPathStyle)
+
+            expect(normalPath).toEqual('/recipes[1]/nested[1]')
+        })
+        test('should convert a router style path to a normal path using other propertyName', async () => {
+            const recipe_1 = {
+                _id: '78687873783', 
+                name: 'Gratin', 
+                category: 'Dish',
+            }
+            const recipe_2 = {
+                _id: '65464646155',
+                name: 'Cheesecake',
+                category: 'Dessert',
+                nested: [
+                    {
+                        _id: '458445',
+                        name: 'test-1',
+                    },
+                    {
+                        _id: '88488',
+                        name: 'test-2',
+                    },
+                    {
+                        _id: '458455',
+                        name: 'test-3',
+                    },
+                ],
+            }
+            const recipe_3 = {
+                _id: '12335373873',
+                name: 'Soupe',
+                category: 'Starter',
+            }
+            await db.push('/recipes[0]', recipe_1, true)
+            await db.push('/recipes[1]', recipe_2, true)
+            await db.push('/recipes[2]', recipe_3, true)
+
+            const routerPathStyle = '/recipes/65464646155/nested/88488'
+
+            const normalPath = await db.fromPath(routerPathStyle, '_id')
+
+            expect(normalPath).toEqual('/recipes[1]/nested[1]')
+        })
+    })
     describe('Cleanup', () => {
         test('should remove the test files', async () => {
             fs.unlinkSync('test/recipe.json')

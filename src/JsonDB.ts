@@ -432,4 +432,43 @@ export class JsonDB {
             throw new DatabaseError("Can't save the database", 2, err)
         }
     }
+
+
+    /**
+     * Convert a router style path to a normal path
+     * By default propertyName to search is "id"
+     * @param path router based path to a correct base path
+     * @param propertyName name of the property to look for searchValue
+     */
+    public async fromPath(path: string, propertyName:string = 'id' ): Promise<string> {
+
+        const [,...pathToQuery] = path.split("/")
+
+        const pathObject = pathToQuery.reduce((prev, curr, indexPath) => {
+            const isKey = indexPath % 2 === 0
+            if (isKey) {
+                prev[`${curr}`] = ''
+            } else {
+                const keys = Object.keys(prev)
+                prev[`${keys[keys.length - 1]}`] = `${curr}`
+            }
+            return prev
+        }, {} as {[key: string]:string})
+    
+        let normalPath: string[] = []
+    
+        for await (const pathKey of Object.keys(pathObject)) {
+            normalPath.push(`/${pathKey}`)
+
+            const pathValue = pathObject[pathKey]
+            try {
+                const pathIndex = await this.getIndex(normalPath.join(""), pathValue, propertyName)
+                normalPath.push(`[${pathIndex}]`)
+            } catch (error) {
+                throw new DataError(`DataPath: ${normalPath.join("")}/${pathValue} not found.`, 13, error)
+            }
+        }
+    
+        return normalPath.join("")
+    }
 }
