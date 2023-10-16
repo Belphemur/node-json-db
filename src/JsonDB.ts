@@ -255,7 +255,7 @@ export class JsonDB {
     /**
      * Find all specific entry in an array/object
      * @param rootPath base dataPath from where to start searching
-     * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.* @returns {Promise}
+     * @param callback method to filter the result and find the wanted entry. Receive the entry and it's index.
      * @returns {Promise}
      * @throws {DataError}
      */
