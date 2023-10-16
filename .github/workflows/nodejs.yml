@@ -2,7 +2,7 @@ name: NodeJs
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NPM_TOKEN: ${{secrets.NPM_TOKEN }}
-  NODEJS: 18
+  NODEJS: "lts/*"
   YARN_CACHE: "yarn-cache"
 
 on:
@@ -16,9 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '14', '16', '18' ]
+        node: ['lts/-1', 'lts/*', 'current' ]
     steps:
-        - uses: actions/checkout@v3
+        - uses: actions/checkout@v4
         - name: Set yarn cache
           run: yarn config set cache-folder ${{env.YARN_CACHE}}
         - name: Cache node modules
@@ -29,7 +29,7 @@ jobs:
             path: ${{env.YARN_CACHE}}
             key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         - name: Setup Node.js ${{ matrix.node }}
-          uses: actions/setup-node@v3.6.0
+          uses: actions/setup-node@v3.8.1
           with:
             node-version: ${{ matrix.node }}
         - name: Install dependencies
@@ -43,7 +43,7 @@ jobs:
   ci-cd-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set yarn cache
         run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Cache node modules
@@ -54,7 +54,7 @@ jobs:
           path: ${{env.YARN_CACHE}}
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Setup Node.js ${{env.NODEJS}}
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v3.8.1
         with:
           node-version: ${{env.NODEJS}}
       - name: Install dependencies
@@ -66,11 +66,11 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set yarn cache
         run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v3.8.1
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
@@ -85,7 +85,7 @@ jobs:
       - name: Build package
         run: yarn build:doc
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: docs # The folder the action should deploy.
@@ -95,11 +95,11 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set yarn cache
         run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v3.8.1
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules

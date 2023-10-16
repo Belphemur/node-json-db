@@ -42,6 +42,33 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "CHR-onicles",
+      "name": "Divine Anum",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44934037?v=4",
+      "profile": "http://divineanum.me",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "michalfedyna",
+      "name": "Michał Fedyna",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84079005?v=4",
+      "profile": "https://github.com/michalfedyna",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "alexsad",
+      "name": "alex.query",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2659613?v=4",
+      "profile": "https://github.com/alexsad",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -50,5 +77,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": false,
-  "commitConvention": "angular"
+  "commitConvention": "angular",
+  "commitType": "docs"
 }

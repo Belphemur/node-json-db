@@ -96,6 +96,39 @@ describe('JsonDB', () => {
         })
     })
 
+    describe('fromPath()', () => {
+        test('should throw path error when not found item',() => {
+            db.getData = jest.fn(async () => ({
+                a: [
+                    {
+                        id: '1'
+                    }
+                ]
+            }))
+
+            expect(async () => {
+                await db.fromPath('/a/1')
+            }).rejects.toThrow(
+                'DataPath: /a/1 not found.'
+            )
+        })
+        test('should throw path error when not found item and using a wrong propertyName',() => {
+            db.getData = jest.fn(async () => ({
+                a: [
+                    {
+                        id: '1'
+                    }
+                ]
+            }))
+
+            expect(async () => {
+                await db.fromPath('/a/1', '_id')
+            }).rejects.toThrow(
+                'DataPath: /a/1 not found.'
+            )
+        })
+    })
+
     // Test was made for code coverage for getParentData, but this cannot return null or undefined.
     // Commented out the test and the checks in JsonDB.ts.
     // describe('push()', () => {
