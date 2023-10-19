@@ -1250,9 +1250,9 @@
   integrity sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==
 
 "@types/rwlock@^5.0.3":
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/@types/rwlock/-/rwlock-5.0.4.tgz#7671aaee512ab4eafca00b7462692649b0274ed8"
-  integrity sha512-dPFiAx1XW2pWfJieRj2dqZlQzidqX4bt8DH5GJz0y0p6FtdpCF1ee2LiVw08MJI8AhScEHZq4Vp+jAv6XqlSgg==
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@types/rwlock/-/rwlock-5.0.5.tgz#975d7313f6e2d29bcfa9a08a425d7350250c02e3"
+  integrity sha512-eitVaGBjNhEqKZmg8tVkHsN9FVMOPOIzwx+1GeMXCik1rYg1xWgVye6qH/EIrKuHgn2TKoTKXKwQHpHNAXQnCg==
 
 "@types/safe-regex@^1.1.2":
   version "1.1.4"
