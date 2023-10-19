@@ -1255,9 +1255,9 @@
   integrity sha512-dPFiAx1XW2pWfJieRj2dqZlQzidqX4bt8DH5GJz0y0p6FtdpCF1ee2LiVw08MJI8AhScEHZq4Vp+jAv6XqlSgg==
 
 "@types/safe-regex@^1.1.2":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@types/safe-regex/-/safe-regex-1.1.4.tgz#ffb9ab8b14b00aa9f909a6cb2cac71e22bcf17de"
-  integrity sha512-olZylRSXI7pG90m/9tFfakrQSBCQBrOO8JevhUEwYB+uRsnlxrtfWf5Y3QzULlHCDAZRW4Aozx1+X4tRDGK5DA==
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@types/safe-regex/-/safe-regex-1.1.5.tgz#ec1d49a6b4de4a680b6e624f3bb03c35eef7bd98"
+  integrity sha512-v7Qb8wpUBV/8GGqL6OSbSBNeu1+gFO44s121TcYb2POEavj8UT1YwZ8ZXst2pNMef3qVNl0NjF/06FLJfdNucg==
 
 "@types/stack-utils@^2.0.0":
   version "2.0.1"
