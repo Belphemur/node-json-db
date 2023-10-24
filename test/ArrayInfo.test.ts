@@ -14,7 +14,8 @@ describe('ArrayInfo', () => {
     })
     test('should throw error when invalid index is passed in', () => {
       expect(() => {
-        new ArrayInfo('abc[0]', ['a'])
+        const a=new ArrayInfo('abc[0]', ['a'])
+        console.log(a)
       }).toThrow('Only numerical values accepted for array index')
     })
   })
@@ -51,7 +52,7 @@ describe('ArrayInfo', () => {
       const index = arrayInfo.getIndex({ abc: [1] })
       expect(index).toBe(0)
     })
-    test('should return length-1 when index is -1, and avoidProperty is true, and data is populated', () => {
+    test('should return length-1 when index is -1, and avoidProperty is false, and data is populated', () => {
       const arrayInfo = new ArrayInfo('abc', [-1])
       const dataArray = [1, 2, 3, 4]
       const index = arrayInfo.getIndex({ abc: [...dataArray] }, false)
