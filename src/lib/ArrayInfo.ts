@@ -17,6 +17,11 @@ export class ArrayInfo {
     const index = indicies[0] ?? 0
     this.append = index === '' || indicies[indicies.length - 1] === ''
     this.indicies = indicies
+    if (isInt(index)) {
+      this.index = parseInt(index)
+    } else if (!this.append) {
+      throw new DataError('Only numerical values accepted for array index', 200)
+    }
   }
 
   /**
