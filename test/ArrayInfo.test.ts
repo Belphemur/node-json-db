@@ -14,8 +14,7 @@ describe('ArrayInfo', () => {
     })
     test('should throw error when invalid index is passed in', () => {
       expect(() => {
-        const a=new ArrayInfo('abc[0]', ['a'])
-        console.log(a)
+        new ArrayInfo('abc[0]', ['a'])
       }).toThrow('Only numerical values accepted for array index')
     })
   })
