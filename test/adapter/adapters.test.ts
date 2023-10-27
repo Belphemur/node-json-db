@@ -26,6 +26,18 @@ class MemoryAdapter implements IAdapter<any> {
 }
 
 describe('Adapter', () => {
+    afterEach(()=>{
+        try {
+            fs.rmSync("data/test.file")
+        }
+        catch {
+        }
+        try {
+            fs.rmSync("data/test.json")
+        }
+        catch {
+        }
+    })
     describe('File', () => {
         test('should be able to write then read to a file', async () => {
             const filename = "data/test.file";

@@ -1,30 +1,40 @@
-import {Config} from "../src/lib/JsonDBConfig";
-import {JsonDB} from "../src/JsonDB";
-import fs from "fs";
-
-
-let counter = 0;
-
-async function addData(db: JsonDB) {
-    let k = `/record/key${counter}`;
-    let record = {
-        strval: `value ${counter}`,
-        intval: counter
-    };
-    counter++;
-
-    return await db.push(k, record, false);
-}
+import { Config } from "../src/lib/JsonDBConfig";
+import { JsonDB } from "../src/JsonDB";
+import * as fs from 'fs'
 
 describe('Concurrency', () => {
-    const db = new JsonDB(new Config('test-concurrent-write'));
-    db.resetData({});
+    let counter = 0;
+    async function addData(db: JsonDB) {
+        let k = `/record/key${counter}`;
+        let record = {
+            strval: `value ${counter}`,
+            intval: counter
+        };
+        counter++;
+        await db.push(k, record, false);
+    }
+
+    afterEach(() => {
+        try {
+            fs.rmSync("test-concurrent-write.json")
+        }
+        catch {
+        }
+        try {
+            fs.rmSync("test-concurrent-read.json")
+        }
+        catch {
+        }
+    })
+
     describe('Multi push', () => {
-        test('shouldn\'t corrupt the data', async () => {
+        test('should not corrupt the data', async () => {
+            const db = new JsonDB(new Config('test-concurrent-write'));
+            db.resetData({});
             let promiseList = [];
             for (let i = 0; i < 10; i++) {
                 // NOTE: pushing the promise without awaiting for it!
-                promiseList.push(addData(db));
+                promiseList.push(addData(db) as never);
             }
 
             // Represent multiple async contexts, all running concurrently
@@ -37,13 +47,13 @@ describe('Concurrency', () => {
                 expect(result.record[`key${i}`].strval).toBe(`value ${i}`);
                 expect(result.record[`key${i}`].intval).toBe(i);
             }
+            expect(counter).toBe(10)
         })
 
     });
-    describe('Mutli getData', () => {
-        const db = new JsonDB(new Config('test-concurrent-read'));
-        db.resetData({});
+    describe('Multi getData', () => {
         test('should be blocking and wait for push to finish', async () => {
+            const db = new JsonDB(new Config('test-concurrent-read'));
             let counter = 1;
             let record = {
                 strval: `value ${counter}`,
