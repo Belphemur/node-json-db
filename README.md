@@ -278,6 +278,40 @@ await db.push("/arraytest/myarray",
 await db.getData("/arraytest/myarray[0][0]");
 
 ```
+
+#### Getting Item in Array by id or Another key
+
+```javascript
+
+await db.push("/myarray",
+[
+    {
+      id: '1',
+      obj: 'test'
+    },
+    {
+      id: '2',
+      obj: 'hello'
+    },
+    {
+      id: '3',
+      obj: 'hello',
+      children:[
+        {
+          id: '1',
+          desc: 'a sub item'
+        }
+      ]
+    },
+]
+, true);
+
+// You can easily access any nested array and their object by one property using router style sintax
+
+const item = db.fromPath("/myarray/3/children/1");
+
+```
+
 ### Exception/Error
 #### Type
 
