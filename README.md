@@ -306,7 +306,7 @@ await db.push("/myarray",
 ]
 , true);
 
-// You can easily get any nested array and their object path by one property using router style sintax, default is "id" object property
+// You can easily get the path of any nested array and its child object by a property using the route style syntax, the default is the object's "id" property
 
 const itemPath = db.fromPath("/myarray/3/children/1");
 
