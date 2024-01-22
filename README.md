@@ -241,7 +241,7 @@ let numberOfElements = await db.count("/arraytest/list");
 ```javascript
 
 // You can have the current index of an object
-await db.push("/arraytest/myarray", {id: 65464646155, name: "test"}, true);
+await db.push("/arraytest/myarray", [{id: 65464646155, name: "test"}], true);
 await db.getIndex("/arraytest/myarray", 65464646155);
 // The default property is 'id'
 // You can add another property instead
