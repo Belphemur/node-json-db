@@ -29,7 +29,7 @@ jobs:
             path: ${{env.YARN_CACHE}}
             key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         - name: Setup Node.js ${{ matrix.node }}
-          uses: actions/setup-node@v4.0.3
+          uses: actions/setup-node@v4.0.4
           with:
             node-version: ${{ matrix.node }}
         - name: Install dependencies
@@ -55,7 +55,7 @@ jobs:
           path: ${{env.YARN_CACHE}}
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Setup Node.js ${{env.NODEJS}}
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v4.0.4
         with:
           node-version: ${{env.NODEJS}}
       - name: Install dependencies
@@ -71,7 +71,7 @@ jobs:
       - name: Set yarn cache
         run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v4.0.4
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
@@ -100,7 +100,7 @@ jobs:
       - name: Set yarn cache
         run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v4.0.4
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
