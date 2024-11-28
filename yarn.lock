@@ -5676,9 +5676,9 @@ type-fest@^4.6.0:
   integrity sha512-rLjWJzQFOq4xw7MgJrCZ6T1jIOvvYElXT12r+y0CC6u67hegDHaxcPqb2fZHOGlqxugGQPNB1EnTezjBetkwkw==
 
 typedoc@^0.27.0:
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.27.0.tgz#71425f060a90c296ade831dfc800d4a2c212747f"
-  integrity sha512-7AkTJhFdhsihthaBFHNpj5iFdLyR7FpQqXM+IABJmE1/qTjWypirCLrheToUP3fjpWHN1Drn3K7PWH1t37KvNQ==
+  version "0.27.1"
+  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.27.1.tgz#fe7590c5682ca0f20c283850cf3e21a43b1d8e44"
+  integrity sha512-cbFtNFpkCtHAHRvMnCDdtM2+xhO2uiJAcw4ooLmVMuaY9yLJswKvi6wOwPZgTnKKnm/HKpO/Ub6DVk4KRf/vRg==
   dependencies:
     "@gerrit0/mini-shiki" "^1.23.2"
     lunr "^2.3.9"
