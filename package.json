@@ -56,16 +56,16 @@
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/git": "^10.0.0",
     "@types/jest": "^29.5.0",
-    "@types/node": "^20.1.0",
+    "@types/node": "^22.0.0",
     "@types/rwlock": "^5.0.3",
     "@types/safe-regex": "^1.1.2",
-    "husky": "^8.0.0",
+    "husky": "^9.0.1",
     "jest": "^29.5.0",
     "last-release-git": "^0.0.3",
     "safe-regex": "~2.1.1",
-    "semantic-release": "^22.0.0",
+    "semantic-release": "^24.0.0",
     "ts-jest": "^29.1.0",
-    "typedoc": "^0.25.0",
+    "typedoc": "^0.27.0",
     "typescript": "^5.0.4",
     "validate-commit-msg": "^2.14.0"
   },
@@ -73,5 +73,6 @@
     "hooks": {
       "commit-msg": "validate-commit-msg"
     }
-  }
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }

@@ -1,5 +1,6 @@
 import {FileAdapter} from "../../src/adapter/file/FileAdapter";
 import * as fs from "fs";
+import * as fsPromise from 'node:fs/promises'
 import {JsonAdapter} from "../../src/adapter/data/JsonAdapter";
 import {IAdapter} from "../../src/adapter/IAdapter";
 import {ConfigWithAdapter} from "../../src/lib/JsonDBConfig";
@@ -26,6 +27,18 @@ class MemoryAdapter implements IAdapter<any> {
 }
 
 describe('Adapter', () => {
+    afterEach(()=>{
+        try {
+            fs.rmSync("data/test.file")
+        }
+        catch {
+        }
+        try {
+            fs.rmSync("data/test.json")
+        }
+        catch {
+        }
+    })
     describe('File', () => {
         test('should be able to write then read to a file', async () => {
             const filename = "data/test.file";
@@ -92,6 +105,18 @@ describe('Adapter', () => {
                 const fileExists = await checkFileExists(filename);
                 expect(fileExists).toBeTruthy();
 
+            })
+
+            test('should override empty file when loading', async () => {
+                const filename = "data/emptyFile.json";
+                let fh = await fsPromise.open(filename, 'a');
+                await fh.close();
+                const adapter = new JsonAdapter(new FileAdapter(filename, false), false);
+                await adapter.readAsync();
+
+                const fileExists = await checkFileExists(filename);
+                expect(fileExists).toBeTruthy();
+                await fsPromise.rm(filename);
             })
 
             test('should serialize and deserialize dates', async () => {

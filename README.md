@@ -241,7 +241,7 @@ let numberOfElements = await db.count("/arraytest/list");
 ```javascript
 
 // You can have the current index of an object
-await db.push("/arraytest/myarray", {id: 65464646155, name: "test"}, true);
+await db.push("/arraytest/myarray", [{id: 65464646155, name: "test"}], true);
 await db.getIndex("/arraytest/myarray", 65464646155);
 // The default property is 'id'
 // You can add another property instead
@@ -278,6 +278,40 @@ await db.push("/arraytest/myarray",
 await db.getData("/arraytest/myarray[0][0]");
 
 ```
+
+#### Getting Item path in Array by id or Another key
+
+```javascript
+
+await db.push("/myarray",
+[
+    {
+      id: '1',
+      obj: 'test'
+    },
+    {
+      id: '2',
+      obj: 'hello'
+    },
+    {
+      id: '3',
+      obj: 'hello',
+      children:[
+        {
+          id: '1',
+          desc: 'a sub item'
+        }
+      ]
+    },
+]
+, true);
+
+// You can easily get the path of any nested array and its child object by a property using the route style syntax, the default is the object's "id" property
+
+const itemPath = db.fromPath("/myarray/3/children/1");
+
+```
+
 ### Exception/Error
 #### Type
 
@@ -325,6 +359,9 @@ await db.getData("/arraytest/myarray[0][0]");
       <td align="center" valign="top" width="14.28%"><a href="http://divineanum.me"><img src="https://avatars.githubusercontent.com/u/44934037?v=4?s=100" width="100px;" alt="Divine Anum"/><br /><sub><b>Divine Anum</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=CHR-onicles" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/michalfedyna"><img src="https://avatars.githubusercontent.com/u/84079005?v=4?s=100" width="100px;" alt="Michał Fedyna"/><br /><sub><b>Michał Fedyna</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=michalfedyna" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/alexsad"><img src="https://avatars.githubusercontent.com/u/2659613?v=4?s=100" width="100px;" alt="alex.query"/><br /><sub><b>alex.query</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=alexsad" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://www.antonytrupe.com"><img src="https://avatars.githubusercontent.com/u/182436?v=4?s=100" width="100px;" alt="Tony Trupe"/><br /><sub><b>Tony Trupe</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=antonytrupe" title="Tests">⚠️</a></td>
     </tr>
   </tbody>
 </table>

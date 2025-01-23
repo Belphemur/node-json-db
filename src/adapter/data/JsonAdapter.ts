@@ -25,7 +25,7 @@ export class JsonAdapter implements IAdapter<any> {
 
     async readAsync(): Promise<any> {
         const data = await this.adapter.readAsync();
-        if (data == null) {
+        if (data == null || data === '') {
             await this.writeAsync({});
             return {};
         }
