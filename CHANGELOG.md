@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/Belphemur/node-json-db/compare/v2.3.0...v2.3.1) (2025-01-23)
+
+
+### Bug Fixes
+
+* override empty file ([024169f](https://github.com/Belphemur/node-json-db/commit/024169ffeab114eae993c83c1cfbb9d355c8e178)), closes [#844](https://github.com/Belphemur/node-json-db/issues/844)
+
 # [2.3.0](https://github.com/Belphemur/node-json-db/compare/v2.2.0...v2.3.0) (2023-10-16)
 
 
