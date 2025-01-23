@@ -19,23 +19,15 @@ jobs:
         node: ['lts/-1', 'lts/*', 'current' ]
     steps:
         - uses: actions/checkout@v4
-        - name: Set yarn cache
-          run: yarn config set cache-folder ${{env.YARN_CACHE}}
-        - name: Cache node modules
-          uses: actions/cache@v4
-          env:
-            cache-name: yarn
+        - name: Use Node.js  ${{ matrix.node }}
+          uses: actions/setup-node@v4
           with:
-            path: ${{env.YARN_CACHE}}
-            key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-        - name: Setup Node.js ${{ matrix.node }}
-          uses: actions/setup-node@v4.1.0
-          with:
-            node-version: ${{ matrix.node }}
+            node-version:  ${{ matrix.node }}
+            cache: 'pnpm'
         - name: Install dependencies
-          run: yarn install --frozen-lockfile --ignore-engines
+          run: corepack pnpm install
         - name: Run tests
-          run: yarn test
+          run: corepack pnpm run test
         - name: Upload code coverage
           uses: codecov/codecov-action@v5
           with:
@@ -45,46 +37,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set yarn cache
-        run: yarn config set cache-folder ${{env.YARN_CACHE}}
-      - name: Cache node modules
-        uses: actions/cache@v4
-        env:
-          cache-name: yarn
-        with:
-          path: ${{env.YARN_CACHE}}
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Setup Node.js ${{env.NODEJS}}
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v4
         with:
           node-version: ${{env.NODEJS}}
+          cache: 'pnpm'
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: corepack pnpm install
       - name: Run semantic-release
-        run: yarn semantic-release --dry-run
+        run: corepack pnpm semantic-release --dry-run
   deploy-pages:
     needs: build
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set yarn cache
-        run: yarn config set cache-folder ${{env.YARN_CACHE}}
-      - name: Setup Node.js
-        uses: actions/setup-node@v4.1.0
+      - name: Use Node.js ${{env.NODEJS}}
+        uses: actions/setup-node@v4
         with:
           node-version: ${{env.NODEJS}}
-      - name: Cache node modules
-        uses: actions/cache@v4
-        env:
-          cache-name: yarn
-        with:
-          path: ${{env.YARN_CACHE}}
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          cache: 'pnpm'
       - name: Install semantic-release dependencies
-        run: yarn install --frozen-lockfile
+        run: corepack pnpm install
       - name: Build package
-        run: yarn build:doc
+        run: corepack pnpm run build:doc
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.7.2
         with:
@@ -97,23 +73,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set yarn cache
-        run: yarn config set cache-folder ${{env.YARN_CACHE}}
       - name: Setup Node.js
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v4
         with:
           node-version: ${{env.NODEJS}}
-      - name: Cache node modules
-        uses: actions/cache@v4
-        env:
-          cache-name: yarn
-        with:
-          path: ${{env.YARN_CACHE}}
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          cache: 'pnpm'
       - name: Install semantic-release dependencies
-        run: yarn install --frozen-lockfile
+        run: corepack pnpm install --frozen-lockfile
       - name: Build package
-        run: yarn build
+        run: corepack pnpm run build
       - name: Release
-        run: yarn semantic-release
+        run: corepack pnpm run semantic-release
       
