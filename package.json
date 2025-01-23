@@ -45,7 +45,12 @@
       "@semantic-release/git"
     ],
     "publish": [
-      "@semantic-release/github",
+      [
+        "@semantic-release/github",
+        {
+          "successCommentCondition": "<% return issue.user.type !== 'Bot'; %>"
+        }
+      ],
       "@semantic-release/npm"
     ]
   },
