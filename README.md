@@ -29,7 +29,7 @@ npm i node-json-db
 ## Known projects
 If you're looking for testing out the library in a playground [@Servant-Cities](https://github.com/Servant-Cities/) has made a small project to test it out:
 
-[https://github.com/Servant-Cities/rest-api-playground-template]
+[Rest Api Playground](https://github.com/Servant-Cities/rest-api-playground-template)
 
 ## Inner Working
 
