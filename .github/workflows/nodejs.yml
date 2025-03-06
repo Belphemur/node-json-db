@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['lts/-1', 'lts/*', 'current' ]
+        node: ['lts/*', 'current' ]
     steps:
         - uses: actions/checkout@v4
         - name: Enable pnpm
