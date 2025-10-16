@@ -230,15 +230,17 @@ describe('JsonDB', () => {
             expect(data['a']).toBe(replacement['a'])
         })
 
-        test('should throw an Error when merging Array with Object', async () => {
-            try {
-                await db.push("@test", { test: ['Perfect'], okay: "test" })
-                await db.push("@test", ['test'], false)
-                throw Error('Function did not throw')
-            } catch (e) {
-                expect(e).toBeInstanceOf(DataError)
+        test('should throw an Error when merging Array with Object', async () =>
+            {
+                try {
+                    await db.push("@test", { test: ['Perfect'], okay: "test" })
+                    await db.push("@test", ['test'], false)
+                    throw Error('Function did not throw')
+                } catch (e) {
+                    expect(e).toBeInstanceOf(DataError)
+                }
             }
-        })
+        )
 
         test('should throw an Error when asking for empty dataPath', async () => {
             try {
@@ -533,6 +535,18 @@ describe('JsonDB', () => {
             expect(myarray).toBeInstanceOf(Array)
             expect(myarray[0]).toBe('test')
         })
+        test('should append to array with Chinese characters in path', async () => {
+            await db.push('/中文[]', "test", true)
+            const data = await db.getData('/中文')
+            expect(data).toBeInstanceOf(Array)
+            expect(data[0]).toBe('test')
+        })
+        test('should append to array with % in path', async () => {
+            await db.push('/test%[]', "test", true)
+            const data = await db.getData('/test%')
+            expect(data).toBeInstanceOf(Array)
+            expect(data[0]).toBe('test')
+        })
         describe('last item', () => {
 
             test(
@@ -663,3 +677,4 @@ describe('JsonDB', () => {
         })
     })
 })
+

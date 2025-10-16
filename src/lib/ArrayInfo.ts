@@ -2,7 +2,7 @@ import { DataError } from './Errors'
 import { KeyValue } from './Utils'
 
 export const arrayRegex = () =>
-  /^([\.0-9a-zA-Z_$\-][0-9a-zA-Z_\-$\.]*)\[((?!(\]|\[)).*|)\]$/gm
+  /^([\u0080-\uFFFF.0-9a-zA-Z_$%-][\u0080-\uFFFF0-9a-zA-Z_$%.%-]*)\[((?!(\]|\[)).*|)\]$/gm
 
 const regexCache = {} as KeyValue
 
