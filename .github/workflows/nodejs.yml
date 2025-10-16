@@ -3,7 +3,6 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NPM_TOKEN: ${{secrets.NPM_TOKEN }}
   NODEJS: "lts/*"
-  YARN_CACHE: "yarn-cache"
 
 on:
   push:
@@ -50,46 +49,3 @@ jobs:
         run: corepack pnpm install
       - name: Run semantic-release
         run: corepack pnpm semantic-release --dry-run
-  deploy-pages:
-    needs: build
-    if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Enable pnpm
-        run:  npm install -g corepack@latest && corepack enable pnpm
-      - name: Use Node.js ${{env.NODEJS}}
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{env.NODEJS}}
-          cache: 'pnpm'
-      - name: Install semantic-release dependencies
-        run: corepack pnpm install
-      - name: Build package
-        run: corepack pnpm run build:doc
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.7.3
-        with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: docs # The folder the action should deploy.
-            
-  release:
-    needs: [build, ci-cd-check]
-    if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Enable pnpm
-        run: npm install -g corepack@latest && corepack enable pnpm
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{env.NODEJS}}
-          cache: 'pnpm'
-      - name: Install semantic-release dependencies
-        run: corepack pnpm install --frozen-lockfile
-      - name: Build package
-        run: corepack pnpm run build
-      - name: Release
-        run: corepack pnpm run semantic-release
-      
