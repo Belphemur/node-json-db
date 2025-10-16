@@ -81,7 +81,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Enable pnpm
-        run: npm install -g corepack@latest && corepack enable pnpm
+        run: npm install -g corepack@latest npm@latest && corepack enable pnpm
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
