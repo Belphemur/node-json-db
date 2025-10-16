@@ -5,7 +5,6 @@ module.exports = {
   coverageProvider: "v8",
   transform: {
     '^.+\\.tsx?$': ['ts-jest', {
-      isolatedModules: true,
       useESM: true
     }],
   },

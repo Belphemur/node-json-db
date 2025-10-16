@@ -134,7 +134,7 @@ describe('JsonDB', () => {
             expect.assertions(1);
             const object = { Hello: "test", World: 0 } as Test;
             await db.push("@lol@test", object)
-            await expect(async () => await db.getObjectDefault<string>("@lol@test[0]", "defaultValue")).rejects.toThrowError(DataError)
+            await expect(async () => await db.getObjectDefault<string>("@lol@test[0]", "defaultValue")).rejects.toThrow(DataError)
         })
 
         test('should have data at root', async () => {
