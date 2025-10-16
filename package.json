@@ -1,6 +1,6 @@
 {
   "name": "node-json-db",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Database using JSON file as storage for Node.JS",
   "main": "dist/JsonDB.js",
   "types": "dist/JsonDB.d.ts",
@@ -72,7 +72,7 @@
     "jest": "^30.2.0",
     "last-release-git": "^0.0.3",
     "safe-regex": "~2.1.1",
-    "semantic-release": "^25.0.0",
+    "semantic-release": "25.0.1-beta.1",
     "ts-jest": "^29.4.5",
     "typedoc": "^0.28.14",
     "typescript": "^5.9.3",

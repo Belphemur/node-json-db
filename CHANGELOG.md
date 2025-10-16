@@ -1,3 +1,11 @@
+## [2.3.2](https://github.com/Belphemur/node-json-db/compare/v2.3.1...v2.3.2) (2025-10-16)
+
+
+### Bug Fixes
+
+* **tests:** fix issue with testing framework ([94e3cfe](https://github.com/Belphemur/node-json-db/commit/94e3cfec0d98612d6fe44244681e3413a037f34b))
+* **utf8:** add support for UTF-8 in arrays ([611f6b4](https://github.com/Belphemur/node-json-db/commit/611f6b484ca56319f87c064f6aa18b9dafadb7af)), closes [#550](https://github.com/Belphemur/node-json-db/issues/550)
+
 ## [2.3.1](https://github.com/Belphemur/node-json-db/compare/v2.3.0...v2.3.1) (2025-01-23)
 
 
