@@ -1,7 +1,6 @@
 name: Release
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  NPM_TOKEN: ${{secrets.NPM_TOKEN }}
   NODEJS: "lts/*"
 
 permissions:
@@ -48,6 +47,8 @@ jobs:
         with:
           node-version: ${{env.NODEJS}}
           cache: 'pnpm'
+      - name: Install semantic-release beta
+        run: corepack pnpm add semantic-release@beta
       - name: Install dependencies
         run: corepack pnpm install
       - name: Run semantic-release
@@ -88,6 +89,8 @@ jobs:
           cache: 'pnpm'
       - name: Install semantic-release dependencies
         run: corepack pnpm install --frozen-lockfile
+      - name: Install semantic-release beta
+        run: corepack pnpm add semantic-release@beta
       - name: Build package
         run: corepack pnpm run build
       - name: Release
