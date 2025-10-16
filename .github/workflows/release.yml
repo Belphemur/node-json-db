@@ -21,12 +21,14 @@ jobs:
     steps:
         - uses: actions/checkout@v5
         - name: Enable pnpm
-          run: sudo npm install -g corepack@latest npm@latest && corepack enable pnpm
+          run: npm install -g corepack@latest && corepack enable pnpm
         - name: Use Node.js  ${{ matrix.node }}
           uses: actions/setup-node@v6
           with:
             node-version:  ${{ matrix.node }}
             cache: 'pnpm'
+        - name: Update NPM
+          run: sudo npm install -g npm@latest
         - name: Install dependencies
           run: corepack pnpm install
         - name: Run tests
@@ -41,12 +43,24 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Enable pnpm
-        run: sudo npm install -g corepack@latest npm@latest && corepack enable pnpm
+        run: npm install -g corepack@latest && corepack enable pnpm
       - name: Setup Node.js ${{env.NODEJS}}
         uses: actions/setup-node@v6
         with:
           node-version: ${{env.NODEJS}}
           cache: 'pnpm'
+      - name: Update NPM
+        run: npm install -g npm@latest
+      - name: Output versions
+        run: |
+          cat << EOF >> $GITHUB_STEP_SUMMARY
+          ## Tool Versions
+
+          | Tool | Version |
+          |------|---------|
+          | NPM  | $(npm --version) |
+          | PNPM | $(pnpm --version) |
+          EOF
       - name: Install semantic-release beta
         run: corepack pnpm add semantic-release@beta
       - name: Install dependencies
@@ -81,12 +95,14 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Enable pnpm
-        run: sudo npm install -g corepack@latest npm@latest && corepack enable pnpm
+        run: npm install -g corepack@latest && corepack enable pnpm
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: ${{env.NODEJS}}
           cache: 'pnpm'
+      - name: Update NPM
+        run: npm install -g npm@latest
       - name: Install semantic-release dependencies
         run: corepack pnpm install --frozen-lockfile
       - name: Install semantic-release beta
