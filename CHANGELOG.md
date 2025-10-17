@@ -1,3 +1,15 @@
+# [2.4.0](https://github.com/Belphemur/node-json-db/compare/v2.3.2...v2.4.0) (2025-10-17)
+
+
+### Bug Fixes
+
+* **lock:** memory allocation ([c24199a](https://github.com/Belphemur/node-json-db/commit/c24199af6fac416edf35909ad3ea44e2dc5b5253))
+
+
+### Features
+
+* **locking:** rewrite the locking mechanism to remove dependency ([0beb0ff](https://github.com/Belphemur/node-json-db/commit/0beb0ffad1a66ebe73354a0335c4bf9f5fa514dc))
+
 ## [2.3.2](https://github.com/Belphemur/node-json-db/compare/v2.3.1...v2.3.2) (2025-10-16)
 
 
