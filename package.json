@@ -27,7 +27,8 @@
   "files": [
     "dist/",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "release": {
     "getLastRelease": "last-release-git",
