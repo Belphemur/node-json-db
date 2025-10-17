@@ -11,10 +11,7 @@
     "semantic-release": "semantic-release",
     "prepare": "husky"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Belphemur/node-json-db.git"
-  },
+  "repository": "github:Belphemur/node-json-db",
   "keywords": [
     "database",
     "json",
