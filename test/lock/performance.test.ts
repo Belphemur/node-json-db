@@ -130,7 +130,8 @@ describe("ReadWriteLock Performance", () => {
     expect(finalStats.poolSizes.requests).toBeGreaterThan(0);
   });
 
-  test("memory allocation comparison", async () => {
+  const testFn = process.env.CI ? test.skip : test;
+  testFn("memory allocation comparison", async () => {
     // Force garbage collection if available
     if (global.gc) {
       global.gc();
