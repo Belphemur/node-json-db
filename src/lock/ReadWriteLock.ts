@@ -141,6 +141,10 @@ export class ReadWriteLock {
       releaseFunc._isPooled = true;
       releaseFunc._lockInstance = this;
       releaseFunc._lockType = LockType.READ;
+    } else {
+      // Reset the function's closure context
+      releaseFunc._lockInstance = this;
+      releaseFunc._lockType = LockType.READ;
     }
     return releaseFunc;
   }
@@ -160,6 +164,10 @@ export class ReadWriteLock {
         }
       };
       releaseFunc._isPooled = true;
+      releaseFunc._lockInstance = this;
+      releaseFunc._lockType = LockType.WRITE;
+    } else {
+      // Reset the function's closure context
       releaseFunc._lockInstance = this;
       releaseFunc._lockType = LockType.WRITE;
     }
