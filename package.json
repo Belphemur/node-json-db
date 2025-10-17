@@ -52,9 +52,7 @@
       "@semantic-release/npm"
     ]
   },
-  "dependencies": {
-    "rwlock": "^5.0.0"
-  },
+  "dependencies": {},
   "publishConfig": {
     "access": "public",
     "provenance": true
@@ -64,7 +62,6 @@
     "@semantic-release/git": "^10.0.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.8.0",
-    "@types/rwlock": "^5.0.6",
     "@types/safe-regex": "^1.1.6",
     "husky": "^9.1.7",
     "jest": "^30.2.0",

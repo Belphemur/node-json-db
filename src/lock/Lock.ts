@@ -1,6 +1,5 @@
-import * as ReadWriteLock from 'rwlock'
-import {Options} from "rwlock";
-import {TimeoutError} from "./Error";
+import { ReadWriteLock } from "./ReadWriteLock";
+import { TimeoutError } from "./Error";
 
 const lock = new ReadWriteLock();
 
@@ -9,29 +8,27 @@ const lock = new ReadWriteLock();
  * @param func
  * @param timeout time in ms to wait to get the lock. Null mean infinite.
  */
-export const readLockAsync = <T>(func: () => Promise<T>, timeout: number | null = null): Promise<T> => {
-    let options: Options = {};
-
-    if (timeout != null) {
-        options = {timeout};
+export const readLockAsync = <T>(
+  func: () => Promise<T>,
+  timeout: number | null = null
+): Promise<T> => {
+  return new Promise<T>(async (resolve, reject) => {
+    try {
+      const release = await lock.readLock(timeout ?? undefined);
+      try {
+        const result = await func();
+        resolve(result);
+      } finally {
+        release();
+      }
+    } catch (error) {
+      if (error instanceof TimeoutError) {
+        reject(error);
+      } else {
+        reject(error);
+      }
     }
-
-    return new Promise<T>((resolve, reject) => {
-        lock.readLock(async release => {
-            try {
-                const result = await func();
-                resolve(result);
-            } catch (e) {
-                reject(e);
-            } finally {
-                release();
-            }
-        }, {
-            ...options, timeoutCallback() {
-                reject(new TimeoutError("Timeout", 100))
-            }
-        })
-    })
+  });
 };
 
 /**
@@ -39,26 +36,25 @@ export const readLockAsync = <T>(func: () => Promise<T>, timeout: number | null 
  * @param func
  * @param timeout time in ms to wait to get the lock. Null mean infinite.
  */
-export const writeLockAsync = <T>(func: () => Promise<T>, timeout: number | null = null): Promise<T> => {
-    let options: Options = {};
-
-    if (timeout != null) {
-        options = {timeout};
+export const writeLockAsync = <T>(
+  func: () => Promise<T>,
+  timeout: number | null = null
+): Promise<T> => {
+  return new Promise<T>(async (resolve, reject) => {
+    try {
+      const release = await lock.writeLock(timeout ?? undefined);
+      try {
+        const result = await func();
+        resolve(result);
+      } finally {
+        release();
+      }
+    } catch (error) {
+      if (error instanceof TimeoutError) {
+        reject(error);
+      } else {
+        reject(error);
+      }
     }
-    return new Promise<T>((resolve, reject) => {
-        lock.writeLock(async release => {
-            try {
-                const result = await func();
-                resolve(result);
-            } catch (e) {
-                reject(e);
-            } finally {
-                release();
-            }
-        }, {
-            ...options, timeoutCallback() {
-                reject(new TimeoutError("Timeout", 100))
-            }
-        })
-    })
+  });
 };

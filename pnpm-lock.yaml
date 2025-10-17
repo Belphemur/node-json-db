@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      rwlock:
-        specifier: ^5.0.0
-        version: 5.0.0
     devDependencies:
       '@commitlint/cli':
         specifier: ^19.5.0
@@ -30,9 +26,6 @@ importers:
       '@types/node':
         specifier: ^24.8.0
         version: 24.8.1
-      '@types/rwlock':
-        specifier: ^5.0.6
-        version: 5.0.6
       '@types/safe-regex':
         specifier: ^1.1.6
         version: 1.1.6
@@ -627,9 +620,6 @@ packages:
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
-
-  '@types/rwlock@5.0.6':
-    resolution: {integrity: sha512-JcjZjGATVC+LoLd910jIEkbSVQpvxRvAhHqIYCl9sf0qvKp+m2ps/WfthQRqWUcE38pgiD6YqEQ5tK4oSNK1XA==}
 
   '@types/safe-regex@1.1.6':
     resolution: {integrity: sha512-CQ/uPB9fLOPKwDsrTeVbNIkwfUthTWOx0l6uIGwVFjZxv7e68pCW5gtTYFzdJi3EBJp8h8zYhJbTasAbX7gEMQ==}
@@ -2174,9 +2164,6 @@ packages:
     resolution: {integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==}
     engines: {node: '>=8'}
 
-  rwlock@5.0.0:
-    resolution: {integrity: sha512-XgzRqLMfCcm9QfZuPav9cV3Xin5TRcIlp4X/SH3CvB+x5D2AakdlEepfJKDd8ByncvfpcxNWdRZVUl38PS6ZJg==}
-
   safe-buffer@5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
 
@@ -3448,8 +3435,6 @@ snapshots:
       undici-types: 7.14.0
 
   '@types/normalize-package-data@2.4.4': {}
-
-  '@types/rwlock@5.0.6': {}
 
   '@types/safe-regex@1.1.6': {}
 
@@ -4984,8 +4969,6 @@ snapshots:
   resolve-from@4.0.0: {}
 
   resolve-from@5.0.0: {}
-
-  rwlock@5.0.0: {}
 
   safe-buffer@5.1.2: {}
 
