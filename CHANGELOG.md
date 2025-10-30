@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/Belphemur/node-json-db/compare/v2.4.0...v2.4.1) (2025-10-30)
+
+
+### Bug Fixes
+
+* remove type-only export for Config classes ([#1064](https://github.com/Belphemur/node-json-db/issues/1064)) ([7f3325f](https://github.com/Belphemur/node-json-db/commit/7f3325f8476bd172941d9ffb7d111f7fd95ca8f1))
+
 # [2.4.0](https://github.com/Belphemur/node-json-db/compare/v2.3.2...v2.4.0) (2025-10-17)
 
 
