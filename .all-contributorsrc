@@ -78,6 +78,15 @@
       "contributions": [
         "test"
       ]
+    },
+    {
+      "login": "sh6986",
+      "name": "sh6986",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61879996?v=4",
+      "profile": "https://github.com/sh6986",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
