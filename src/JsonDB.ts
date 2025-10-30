@@ -6,7 +6,7 @@ import {JsonDBConfig} from './lib/JsonDBConfig'
 import {readLockAsync, writeLockAsync} from "./lock/Lock";
 
 //Export to be used by other projects that want to extend JsonDB
-export type {Config, ConfigWithAdapter} from './lib/JsonDBConfig'
+export {Config, ConfigWithAdapter} from './lib/JsonDBConfig'
 export type {DatabaseError, DataError} from './lib/Errors'
 export type {IAdapter} from './adapter/IAdapter'
 export type {JsonAdapter} from './adapter/data/JsonAdapter'
