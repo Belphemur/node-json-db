@@ -1,3 +1,10 @@
+## [2.4.2](https://github.com/Belphemur/node-json-db/compare/v2.4.1...v2.4.2) (2025-11-07)
+
+
+### Bug Fixes
+
+* restore class exports for DataError, DatabaseError, and adapters ([#1071](https://github.com/Belphemur/node-json-db/issues/1071)) ([210a519](https://github.com/Belphemur/node-json-db/commit/210a51957e215f27342c8da7040552f259cd2589)), closes [#1069](https://github.com/Belphemur/node-json-db/issues/1069)
+
 ## [2.4.1](https://github.com/Belphemur/node-json-db/compare/v2.4.0...v2.4.1) (2025-10-30)
 
 
