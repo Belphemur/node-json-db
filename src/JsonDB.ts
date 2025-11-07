@@ -7,10 +7,10 @@ import {readLockAsync, writeLockAsync} from "./lock/Lock";
 
 //Export to be used by other projects that want to extend JsonDB
 export {Config, ConfigWithAdapter} from './lib/JsonDBConfig'
-export type {DatabaseError, DataError} from './lib/Errors'
+export {DatabaseError, DataError} from './lib/Errors'
 export type {IAdapter} from './adapter/IAdapter'
-export type {JsonAdapter} from './adapter/data/JsonAdapter'
-export type {FileAdapter} from './adapter/file/FileAdapter'
+export {JsonAdapter} from './adapter/data/JsonAdapter'
+export {FileAdapter} from './adapter/file/FileAdapter'
 
 type DataPath = Array<string>
 
