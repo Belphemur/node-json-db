@@ -21,7 +21,7 @@ jobs:
     steps:
         - uses: actions/checkout@v5
         - name: Enable pnpm
-          run: npm install -g corepack@latest && corepack enable pnpm
+          run: corepack enable pnpm
         - name: Use Node.js  ${{ matrix.node }}
           uses: actions/setup-node@v6
           with:
@@ -30,9 +30,9 @@ jobs:
         - name: Update NPM
           run: sudo npm install -g npm@latest
         - name: Install dependencies
-          run: corepack pnpm install
+          run: pnpm install
         - name: Run tests
-          run: corepack pnpm run test
+          run: pnpm run test
         - name: Upload code coverage
           uses: codecov/codecov-action@v5
           with:
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Enable pnpm
-        run: npm install -g corepack@latest && corepack enable pnpm
+        run: corepack enable pnpm
       - name: Setup Node.js ${{env.NODEJS}}
         uses: actions/setup-node@v6
         with:
@@ -62,11 +62,11 @@ jobs:
           | PNPM | $(pnpm --version) |
           EOF
       - name: Install semantic-release beta
-        run: corepack pnpm add semantic-release@beta
+        run: pnpm add semantic-release@beta
       - name: Install dependencies
-        run: corepack pnpm install
+        run: pnpm install
       - name: Run semantic-release
-        run: corepack pnpm semantic-release --dry-run
+        run: pnpm semantic-release --dry-run
   deploy-pages:
     needs: build
     runs-on: ubuntu-latest
@@ -80,9 +80,9 @@ jobs:
           node-version: ${{env.NODEJS}}
           cache: 'pnpm'
       - name: Install semantic-release dependencies
-        run: corepack pnpm install
+        run: pnpm install
       - name: Build package
-        run: corepack pnpm run build:doc
+        run: pnpm run build:doc
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.7.4
         with:
@@ -95,7 +95,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Enable pnpm
-        run: npm install -g corepack@latest && corepack enable pnpm
+        run: corepack enable pnpm
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
@@ -104,10 +104,10 @@ jobs:
       - name: Update NPM
         run: npm install -g npm@latest
       - name: Install semantic-release dependencies
-        run: corepack pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Install semantic-release beta
-        run: corepack pnpm add semantic-release@beta
+        run: pnpm add semantic-release@beta
       - name: Build package
-        run: corepack pnpm run build
+        run: pnpm run build
       - name: Release
-        run: corepack pnpm run semantic-release
+        run: pnpm run semantic-release
