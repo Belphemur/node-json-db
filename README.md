@@ -14,9 +14,9 @@ depending on how the database is configured, we might write at each push.
 ## Installation
 Add `node-json-db` to your existing Node.js project.
 
-YARN:
+PNPM:
 ```bash
-yarn add node-json-db
+pnpm add node-json-db
 ```
 NPM:
 ```bash
