@@ -24,6 +24,9 @@ build/Release
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
 node_modules
 
+# Lock files - project uses pnpm
+package-lock.json
+
 #idea
 .idea
 /dist/
