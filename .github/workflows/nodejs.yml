@@ -19,16 +19,16 @@ jobs:
     steps:
         - uses: actions/checkout@v5
         - name: Enable pnpm
-          run: npm install -g corepack@latest && corepack enable pnpm
+          run: corepack enable pnpm
         - name: Use Node.js  ${{ matrix.node }}
           uses: actions/setup-node@v6
           with:
             node-version:  ${{ matrix.node }}
             cache: 'pnpm'
         - name: Install dependencies
-          run: corepack pnpm install
+          run: pnpm install
         - name: Run tests
-          run: corepack pnpm run test
+          run: pnpm run test
         - name: Upload code coverage
           uses: codecov/codecov-action@v5
           with:
@@ -39,13 +39,13 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Enable pnpm
-        run:  npm install -g corepack@latest && corepack enable pnpm
+        run: corepack enable pnpm
       - name: Setup Node.js ${{env.NODEJS}}
         uses: actions/setup-node@v6
         with:
           node-version: ${{env.NODEJS}}
           cache: 'pnpm'
       - name: Install dependencies
-        run: corepack pnpm install
+        run: pnpm install
       - name: Run semantic-release
-        run: corepack pnpm semantic-release --dry-run
+        run: pnpm semantic-release --dry-run
