@@ -18,6 +18,10 @@ PNPM:
 ```bash
 pnpm add node-json-db
 ```
+NPM:
+```bash
+npm i node-json-db
+```
 
 ## Documentation
 [Auto Generated](https://belphemur.github.io/node-json-db)
