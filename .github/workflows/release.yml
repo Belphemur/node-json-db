@@ -19,7 +19,7 @@ jobs:
       matrix:
         node: ['lts/*', 'current' ]
     steps:
-        - uses: actions/checkout@v5
+        - uses: actions/checkout@v6
         - name: Enable pnpm
           run: corepack enable pnpm
         - name: Use Node.js  ${{ matrix.node }}
@@ -41,7 +41,7 @@ jobs:
   ci-cd-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Enable pnpm
         run: corepack enable pnpm
       - name: Setup Node.js ${{env.NODEJS}}
@@ -71,7 +71,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Enable pnpm
         run: sudo npm install -g corepack@latest npm@latest && corepack enable pnpm
       - name: Use Node.js ${{env.NODEJS}}
@@ -93,7 +93,7 @@ jobs:
     needs: [build, ci-cd-check]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Enable pnpm
         run: corepack enable pnpm
       - name: Setup Node.js
