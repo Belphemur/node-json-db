@@ -3,7 +3,7 @@ import {IAdapter} from "../adapter/IAdapter";
 import {JsonAdapter} from "../adapter/data/JsonAdapter";
 import {FileAdapter} from "../adapter/file/FileAdapter";
 import { CipheredFileAdapter } from "../adapter/file/CipheredFileAdapter";
-import { CipherKey } from 'crypto';
+import { CipherKey, KeyObject } from 'crypto';
 
 export interface JsonDBConfig {
     readonly adapter: IAdapter<any>,
@@ -35,8 +35,9 @@ export class Config implements JsonDBConfig {
     }
 
     setEncryption(cipherKey: CipherKey) {
-        console.log(typeof cipherKey, cipherKey.toString())
-        if ((cipherKey as string).length < 32) throw new Error(`Invalid key length. Minimum 32 bytes but got ${cipherKey.length}.`)
+        if ((cipherKey as KeyObject).asymmetricKeyType) throw new Error('Asymmetric key not supported')
+        const keyLength = (cipherKey as string).length || (cipherKey as KeyObject).symmetricKeySize
+        if (!keyLength || keyLength < 32) throw new Error(`Invalid key length. Minimum 32 bytes but got ${keyLength}.`)
         this.adapter = new JsonAdapter(new CipheredFileAdapter(cipherKey, this.filename, this.syncOnSave), this.humanReadable);
     }
 }

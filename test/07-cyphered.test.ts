@@ -1,6 +1,6 @@
 import { Config } from "../src/lib/JsonDBConfig";
 import { JsonDB } from "../src/JsonDB";
-import { randomBytes, randomUUID } from "crypto";
+import { generateKeyPairSync, generateKeySync, randomBytes, randomUUID } from "crypto";
 import { readFileSync, writeFileSync } from "fs";
 import { CipheredFileAdapter } from "../src/adapter/file/CipheredFileAdapter";
 
@@ -41,6 +41,14 @@ describe('Ciphered', () => {
             const dbPath = getDbPath()
             const conf = new Config(dbPath)
             expect(() => conf.setEncryption(getTooSmallKey())).toThrow()
+
+            const key = generateKeySync("hmac", {
+               length: 32,
+            });
+
+            expect(() => conf.setEncryption(key)).toThrow()
+
+
             
         });
 
@@ -49,6 +57,30 @@ describe('Ciphered', () => {
             const conf = new Config(dbPath)
 
             expect(() => conf.setEncryption(getKey())).not.toThrow()
+         
+        });
+
+        test('cipherkey symmetric KeyObject ', async () => {
+            const dbPath = getDbPath()
+            const conf = new Config(dbPath)
+
+            const key = generateKeySync("hmac", {
+               length: 256,
+            });
+
+            expect(() => conf.setEncryption(key)).not.toThrow()         
+        });
+
+        test('cipherkey asymmetric KeyObject not supported ', async () => {
+            const dbPath = getDbPath()
+            const conf = new Config(dbPath)
+
+            const { publicKey, privateKey } = generateKeyPairSync("rsa", {
+            modulusLength: 2048,
+            });
+
+            expect(() => conf.setEncryption(publicKey)).toThrow()
+            expect(() => conf.setEncryption(privateKey)).toThrow()
          
         });
     })
