@@ -34,10 +34,10 @@ export class Config implements JsonDBConfig {
         this.adapter = new JsonAdapter(new FileAdapter(this.filename, syncOnSave), humanReadable);
     }
 
-    setEncryption(cypherKey: CipherKey) {
-        console.log(typeof cypherKey, cypherKey.toString())
-        if ((cypherKey as string).length < 32) throw new Error(`Invalid key length. Minimum 32 bytes but got ${cypherKey.length}.`)
-        this.adapter = new JsonAdapter(new CipheredFileAdapter(cypherKey, this.filename, this.syncOnSave), this.humanReadable);
+    setEncryption(cipherKey: CipherKey) {
+        console.log(typeof cipherKey, cipherKey.toString())
+        if ((cipherKey as string).length < 32) throw new Error(`Invalid key length. Minimum 32 bytes but got ${cipherKey.length}.`)
+        this.adapter = new JsonAdapter(new CipheredFileAdapter(cipherKey, this.filename, this.syncOnSave), this.humanReadable);
     }
 }
 

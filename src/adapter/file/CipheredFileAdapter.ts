@@ -40,16 +40,16 @@ export class CipheredFileAdapter extends FileAdapter {
         try {
             const rawData = await super.readAsync()
             if (rawData) {
-                const cypheredData = JSON.parse(rawData);
+                const cipheredData = JSON.parse(rawData);
                 if (
-                    !cypheredData ||
-                    typeof cypheredData.iv !== 'string' ||
-                    typeof cypheredData.tag !== 'string' ||
-                    typeof cypheredData.data !== 'string'
+                    !cipheredData ||
+                    typeof cipheredData.iv !== 'string' ||
+                    typeof cipheredData.tag !== 'string' ||
+                    typeof cipheredData.data !== 'string'
                 ) {
                     throw new Error('Invalid encrypted data format.');
                 }
-                return this.decrypt(cypheredData as CipheredData);
+                return this.decrypt(cipheredData as CipheredData);
             }
             return null    
         } catch (e) {

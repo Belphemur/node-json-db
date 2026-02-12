@@ -4,7 +4,7 @@ import { randomBytes, randomUUID } from "crypto";
 import { readFileSync, writeFileSync } from "fs";
 import { CipheredFileAdapter } from "../src/adapter/file/CipheredFileAdapter";
 
-describe('Cyphered', () => {
+describe('Ciphered', () => {
     const getData = () => ({
         "test": "hello world!!"
     })
