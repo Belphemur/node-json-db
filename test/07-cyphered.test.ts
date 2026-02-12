@@ -47,7 +47,6 @@ describe('Cyphered', () => {
         test('cipherkey ok', async () => {
             const dbPath = getDbPath()
             const conf = new Config(dbPath)
-            let error = false
 
             expect(() => conf.setEncryption(getKey())).not.toThrow()
          
@@ -56,7 +55,7 @@ describe('Cyphered', () => {
 
     describe('encrypted db', () => {
 
-        test('ciper data', async () => {
+        test('cipher data', async () => {
             const key = getKey()
             const dbPath = getDbPath()
             const conf = new Config(dbPath, true)
