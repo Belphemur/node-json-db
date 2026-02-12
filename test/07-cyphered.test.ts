@@ -40,7 +40,7 @@ describe('Cyphered', () => {
         test('ciperkey too small', async () => {
             const dbPath = getDbPath()
             const conf = new Config(dbPath)
-            expect(() => conf.setEncryption(getTooSmallKey())).toThrow("Invalid key length, 32 chars expected")
+            expect(() => conf.setEncryption(getTooSmallKey())).toThrow("Invalid key length, 32 bytes expected")
             
         });
 
@@ -49,7 +49,7 @@ describe('Cyphered', () => {
             const conf = new Config(dbPath)
             let error = false
 
-            expect(() => conf.setEncryption(getKey())).not.toThrow("Invalid key length, 32 chars expected")
+            expect(() => conf.setEncryption(getKey())).not.toThrow("Invalid key length, 32 bytes expected")
          
         });
     })
