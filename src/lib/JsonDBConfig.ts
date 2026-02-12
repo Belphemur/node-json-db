@@ -35,7 +35,7 @@ export class Config implements JsonDBConfig {
     }
 
     setEncryption(cypherKey: CipherKey) {
-        if (cypherKey.length !== 32) throw new Error("Invalid key length, 32 bytes expected")
+        if (cypherKey.length !== 32) throw new Error(`Invalid key length. Expected 32 bytes but got ${cypherKey.length}.`)
         this.adapter = new JsonAdapter(new CipheredFileAdapter(cypherKey, this.filename, this.syncOnSave), this.humanReadable);
     }
 }
