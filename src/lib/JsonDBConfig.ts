@@ -2,6 +2,8 @@ import * as path from "path";
 import {IAdapter} from "../adapter/IAdapter";
 import {JsonAdapter} from "../adapter/data/JsonAdapter";
 import {FileAdapter} from "../adapter/file/FileAdapter";
+import { CipheredFileAdapter } from "../adapter/file/CipheredFileAdapter";
+import { CipherKey } from 'crypto';
 
 export interface JsonDBConfig {
     readonly adapter: IAdapter<any>,
@@ -14,6 +16,8 @@ export class Config implements JsonDBConfig {
     public readonly filename: string
     saveOnPush: boolean
     separator: string
+    syncOnSave: boolean
+    humanReadable: boolean
 
     constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/', syncOnSave: boolean = false) {
         this.filename = filename
@@ -25,7 +29,14 @@ export class Config implements JsonDBConfig {
 
         this.saveOnPush = saveOnPush
         this.separator = separator
+        this.syncOnSave = syncOnSave
+        this.humanReadable = humanReadable
         this.adapter = new JsonAdapter(new FileAdapter(this.filename, syncOnSave), humanReadable);
+    }
+
+    setEncryption(cypherKey: CipherKey) {
+        if ((cypherKey as string).length < 32) throw new Error("Invalid key length, 32 chars expected")
+        this.adapter = new JsonAdapter(new CipheredFileAdapter(cypherKey, this.filename, this.syncOnSave), this.humanReadable);
     }
 }
 
