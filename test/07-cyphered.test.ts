@@ -37,7 +37,7 @@ describe('Cyphered', () => {
     })
 
     describe('cipherkey', () => {
-        test('ciperkey too small', async () => {
+        test('cipherkey too small', async () => {
             const dbPath = getDbPath()
             const conf = new Config(dbPath)
             expect(() => conf.setEncryption(getTooSmallKey())).toThrow("Invalid key length, 32 bytes expected")
