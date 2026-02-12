@@ -143,6 +143,24 @@ describe('Cyphered', () => {
             await expect(adapter.readAsync()).rejects.toThrow()
         });
 
+        test('readAsync missing decryption iv or tag or data', async () => {
+            const dbPath = getDbPath()
+            
+
+            const adapter = new CipheredFileAdapter(getKey(), dbPath, true)
+
+            // missing iv
+            writeFileSync(dbPath, JSON.stringify({ data: "test", tag: "test" }))
+            await expect(adapter.readAsync()).rejects.toThrow()
+
+            // missing tag
+            writeFileSync(dbPath, JSON.stringify({ data: "test", iv: "test" }))
+            await expect(adapter.readAsync()).rejects.toThrow()
+
+            // missing data
+            writeFileSync(dbPath, JSON.stringify({ tag: "test", iv: "test" }))
+            await expect(adapter.readAsync()).rejects.toThrow()
+        });
 
         test('writeAsync error', async () => {
             const dbPath = getDbPath()
