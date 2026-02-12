@@ -37,13 +37,25 @@ export class CipheredFileAdapter extends FileAdapter {
 
 
     async readAsync(): Promise<string | null> {
-        const rawData = await super.readAsync()
-        if (rawData) {
-            const cypheredData = JSON.parse(rawData)
-            return this.decrypt(cypheredData as CipheredData)
+        try {
+            const rawData = await super.readAsync()
+            if (rawData) {
+                const cypheredData = JSON.parse(rawData);
+                if (
+                    !cypheredData ||
+                    typeof cypheredData.iv !== 'string' ||
+                    typeof cypheredData.tag !== 'string' ||
+                    typeof cypheredData.data !== 'string'
+                ) {
+                    throw new Error('Invalid encrypted data format.');
+                }
+                return this.decrypt(cypheredData as CipheredData);
+            }
+            return null    
+        } catch (e) {
+            throw e
         }
-        return null
-
+        
     }
 
     encrypt(data: string) {
@@ -65,7 +77,12 @@ export class CipheredFileAdapter extends FileAdapter {
     }
 
     async writeAsync(data: string): Promise<void> {
-        await super.writeAsync(JSON.stringify(this.encrypt(data)))
+        try {
+            await super.writeAsync(JSON.stringify(this.encrypt(data)))
+        } catch (err) {
+            throw err
+        }
+
     }
 
 }
