@@ -49,7 +49,7 @@ describe('Cyphered', () => {
             const conf = new Config(dbPath)
             let error = false
 
-            expect(() => conf.setEncryption(getKey())).not.toThrow("Invalid key length, 32 bytes expected")
+            expect(() => conf.setEncryption(getKey())).not.toThrow()
          
         });
     })
