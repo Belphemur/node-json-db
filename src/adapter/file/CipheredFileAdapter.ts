@@ -71,7 +71,6 @@ export class CipheredFileAdapter extends FileAdapter {
 
     async writeAsync(data: string): Promise<void> {
         try {
-            console.log('writing cipherd')
             await super.writeAsync(JSON.stringify(this.encrypt(data)))
         } catch (err) {
             throw err
