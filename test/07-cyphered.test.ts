@@ -145,7 +145,7 @@ describe('Cyphered', () => {
         });
 
 
-        test('wrtiteAsync error', async () => {
+        test('writeAsync error', async () => {
             const dbPath = getDbPath()
             const adapter = new CipheredFileAdapter(getTooSmallKey(), dbPath, true)
             await expect(adapter.writeAsync(JSON.stringify(getData()))).rejects.toThrow()
