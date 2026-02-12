@@ -71,7 +71,7 @@ describe('Cyphered', () => {
             expect(rawData.data).not.toEqual(getData())
         });
 
-        test('ciper/uncipher data', async () => {
+        test('cipher/uncipher data', async () => {
             const key = getKey()
             const dbPath = getDbPath()
             const conf = new Config(dbPath, true)
