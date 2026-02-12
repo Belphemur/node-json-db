@@ -6,7 +6,7 @@ import { CipheredFileAdapter } from "../src/adapter/file/CipheredFileAdapter";
 
 describe('Cyphered', () => {
     const getData = () => ({
-        "test": "hellow world!!"
+        "test": "hello world!!"
     })
 
     const getKey = () => randomBytes(32)
