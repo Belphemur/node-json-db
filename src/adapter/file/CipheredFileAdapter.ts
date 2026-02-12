@@ -2,7 +2,6 @@ import { FileAdapter } from "./FileAdapter";
 import { CipherKey, createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 
 const ALGO = 'aes-256-gcm';
-// Sconst KEY = crypto.randomBytes(32); // 256 bits
 
 interface CipheredData {
     iv: string;
@@ -38,17 +37,13 @@ export class CipheredFileAdapter extends FileAdapter {
 
 
     async readAsync(): Promise<string | null> {
-        try {
-            const rawData = await super.readAsync()
-            if (rawData) {
-                const cypheredData = JSON.parse(rawData)
-                return this.decrypt(cypheredData as CipheredData)
-            }
-            return null          
-        } catch (e) {
-            throw e
+        const rawData = await super.readAsync()
+        if (rawData) {
+            const cypheredData = JSON.parse(rawData)
+            return this.decrypt(cypheredData as CipheredData)
         }
-        
+        return null
+
     }
 
     encrypt(data: string) {
@@ -70,12 +65,7 @@ export class CipheredFileAdapter extends FileAdapter {
     }
 
     async writeAsync(data: string): Promise<void> {
-        try {
-            await super.writeAsync(JSON.stringify(this.encrypt(data)))
-        } catch (err) {
-            throw err
-        }
-
+        await super.writeAsync(JSON.stringify(this.encrypt(data)))
     }
 
 }
