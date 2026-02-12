@@ -44,7 +44,7 @@ describe('Cyphered', () => {
             
         });
 
-        test('ciperkey ok', async () => {
+        test('cipherkey ok', async () => {
             const dbPath = getDbPath()
             const conf = new Config(dbPath)
             let error = false
