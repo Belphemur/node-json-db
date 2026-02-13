@@ -36,8 +36,17 @@ export class Config implements JsonDBConfig {
 
     setEncryption(cipherKey: CipherKey) {
         if ((cipherKey as KeyObject).asymmetricKeyType) throw new Error('Asymmetric key not supported')
-        const keyLength = (cipherKey as string).length || (cipherKey as KeyObject).symmetricKeySize
-        if (!keyLength || keyLength < 32) throw new Error(`Invalid key length. Minimum 32 bytes but got ${keyLength}.`)
+         let keyLength: number | undefined;
+        if (typeof cipherKey === 'string') {
+            keyLength = Buffer.byteLength(cipherKey);
+        } else if (cipherKey instanceof Buffer) {
+            keyLength = cipherKey.length;
+        } else {
+            keyLength = (cipherKey as KeyObject).symmetricKeySize;
+        }
+        if (!keyLength || keyLength !== 32) {
+            throw new Error(`Invalid key length. Expected 32 bytes for aes-256-gcm but got ${keyLength}.`);
+        }
         this.adapter = new JsonAdapter(new CipheredFileAdapter(cipherKey, this.filename, this.syncOnSave), this.humanReadable);
     }
 }
