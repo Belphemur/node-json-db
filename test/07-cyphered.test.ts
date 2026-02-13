@@ -43,7 +43,7 @@ describe('Ciphered', () => {
             expect(() => conf.setEncryption(getTooSmallKey())).toThrow()
 
             const key = generateKeySync("hmac", {
-               length: 32,
+               length: 128,
             });
 
             expect(() => conf.setEncryption(key)).toThrow()
@@ -76,7 +76,7 @@ describe('Ciphered', () => {
             const conf = new Config(dbPath)
 
             const { publicKey, privateKey } = generateKeyPairSync("rsa", {
-            modulusLength: 2048,
+                modulusLength: 2048,
             });
 
             expect(() => conf.setEncryption(publicKey)).toThrow()
@@ -99,7 +99,7 @@ describe('Ciphered', () => {
             const rawData = JSON.parse(readFileSync(dbPath+'.json').toString())
             expect(rawData.iv).not.toBeNull()
             expect(rawData.tag).not.toBeNull()
-            expect(rawData.data).not.toEqual(getData())
+            expect(rawData.data).not.toEqual(JSON.stringify(getData()))
         });
 
         test('cipher/uncipher data', async () => {
