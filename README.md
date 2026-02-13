@@ -317,6 +317,45 @@ const itemPath = db.fromPath("/myarray/3/children/1");
 
 ```
 
+#### Database Ecncryption
+
+#### Supported Encryption keys
+
+- Plain text string
+- Binary Buffer
+- Symmetric Key Object ( cf node crypto lib )
+
+#### Usage 
+
+```
+import { JsonDB, Config } from 'node-json-db';
+import { generateKeySync, randomBytes } from "crypto";
+
+
+// First instanciate Config class
+const config = new Config("myDataBase", true, false, '/');
+
+// create or retrieve binary cipher key of minimum 32 bytes
+const key = randomBytes(32)
+
+// create or retrieve string cipher key of minimum 32 bytes/chars
+// const key = "12345678901234567890123456789012"
+
+// create or retrieve symmetric key of minimum 32 bytes
+// const key = generateKeySync("hmac", {
+//   length: 128,
+// });
+
+// set encryption key into Config object
+config.setEncryption(key)
+
+// instanciate database
+const db = new JsonDB(config);
+
+// use your database as you would normally do
+await db.push("/test1","super test");
+```
+
 ### Exception/Error
 #### Type
 
