@@ -41,6 +41,7 @@ describe('Ciphered', () => {
             const dbPath = getDbPath()
             const conf = new Config(dbPath)
             expect(() => conf.setEncryption(getTooSmallKey())).toThrow()
+            expect(() => conf.setEncryption("1234567890")).toThrow()
 
             const key = generateKeySync("hmac", {
                length: 128,
