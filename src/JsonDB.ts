@@ -22,8 +22,7 @@ export class JsonDB {
     private loaded: boolean = false
     private data: KeyValue = {}
     private readonly config: JsonDBConfig
-    private readonly server?: JsonDBServer
-
+    
     /**
      * JSONDB Constructor
      * @param config Configuration for the database

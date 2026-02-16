@@ -4,7 +4,7 @@ import { verify as hashVerify } from "argon2";
 import { verify as jWTverify, PublicKey, Secret, VerifyOptions } from "jsonwebtoken";
 
 export abstract class Authenticator {
-    abstract authenticate(req: IncomingMessage): false | object
+    abstract authenticate(req: IncomingMessage): Promise<false | any>
 }
 
 interface BasicUser {
@@ -23,12 +23,12 @@ export class JWTAuthenticator extends Authenticator {
         this.options = options
     }
 
-    authenticate(req: IncomingMessage): false | any {
+    async authenticate(req: IncomingMessage): Promise<false | any> {
         try {
             if (req.headers.authorization) {
                 const splited = req.headers.authorization.split(' ')
                 if (splited[0] === "Bearer") {
-                    return jWTverify(splited[1], this.secret, this.options)
+                    return await jWTverify(splited[1], this.secret, this.options)
                 }
             }
             return false
@@ -55,7 +55,7 @@ export class BasicAuthenticator extends Authenticator {
         })
     }
 
-    authenticate(req: IncomingMessage): false | object {
+   async authenticate(req: IncomingMessage): Promise<boolean> {
         if (req.headers.authorization) {
             const splited = req.headers.authorization.split(' ')
             if (splited[0] === "Basic") {
@@ -63,7 +63,7 @@ export class BasicAuthenticator extends Authenticator {
                 const decodedSplit = decoded.split(':')
                 const user = this.users.find(user => user.name === decodedSplit[0]) 
                 if (user) {
-                    return hashVerify(user.hashPassword, decodedSplit[1])
+                    return await hashVerify(user.hashPassword, decodedSplit[1])
                 }
             }
         }
@@ -102,16 +102,16 @@ export class JsonDBServer {
         this.port = conf.port || 3000
         this.cors = conf.cors
         if (conf.options) {
-            this.server = new Server(conf.options, this.reqHandler)
+            this.server = new Server(conf.options, this.reqHandler.bind(this))
         } else {
-            this.server = new Server(this.reqHandler)
+            this.server = new Server(this.reqHandler.bind(this))
         }
         this.server.listen(this.port)
     }
 
     private async reqHandler(req: IncomingMessage, res: ServerResponse) {
         try {
-            const url = new URL(req.url!)
+            const url = new URL(req.url!, `http://${req.headers.host}`)
             const dataPath = url.pathname
             const authenticated = this.auth.authenticate(req)
             if (!authenticated) {
@@ -137,7 +137,6 @@ export class JsonDBServer {
 
                         req.on('end', async () => {
                             try {
-                                const url = new URL(req.url!)
                                 await this.db.push(url.pathname, JSON.parse(body))
                                 res.statusCode = 200
                                 res.end()
@@ -156,7 +155,7 @@ export class JsonDBServer {
                             res.end(`data path not found`)
                         }
                         break;
-                    case "HEAD":
+                    case "OPTIONS":
                         if (this.cors) {
                             res.setHeader('Access-Control-Allow-Origin', this.cors.origin)
                             if (this.cors.allowHeaders) res.setHeader('Access-Control-Allow-Headers', this.cors.allowHeaders)
