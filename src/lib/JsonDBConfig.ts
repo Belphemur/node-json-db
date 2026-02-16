@@ -52,13 +52,12 @@ export class Config implements JsonDBConfig {
             throw new Error(`Invalid key length. Expected 32 bytes for aes-256-gcm but got ${keyLength}.`);
         }
         
-        // Change file extension to .enc.json
-        const currentExt = path.extname(this._filename);
-        if (currentExt === '.json') {
-            this._filename = this._filename.slice(0, -5) + '.enc.json';
-        } else if (currentExt !== '.enc.json') {
-            // If it's not .json or .enc.json, append .enc.json
-            this._filename += '.enc.json';
+        // Change file extension to .enc.json (idempotent)
+        if (!this._filename.endsWith('.enc.json')) {
+            const currentExt = path.extname(this._filename);
+            // Remove current extension and add .enc.json
+            const baseName = currentExt ? this._filename.slice(0, -currentExt.length) : this._filename;
+            this._filename = baseName + '.enc.json';
         }
         
         this.adapter = new JsonAdapter(new CipheredFileAdapter(cipherKey, this._filename, this.syncOnSave), this.humanReadable);

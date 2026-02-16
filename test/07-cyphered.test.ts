@@ -212,6 +212,7 @@ describe('Ciphered', () => {
                 '/tmp/test-enc-db.json',
                 '/tmp/test-db.json',
                 '/tmp/test-db.enc.json',
+                '/tmp/test-db.custom',
             ];
             testFiles.forEach(file => {
                 if (existsSync(file)) {
@@ -274,6 +275,38 @@ describe('Ciphered', () => {
             expect(rawData.iv).toBeDefined()
             expect(rawData.tag).toBeDefined()
             expect(rawData.data).toBeDefined()
+        });
+
+        test('file with custom extension becomes .enc.json', async () => {
+            const key = getKey()
+            const dbPath = '/tmp/test-db.custom'
+            const conf = new Config(dbPath, true)
+            conf.syncOnSave = true
+            
+            expect(conf.filename).toBe('/tmp/test-db.custom')
+            
+            conf.setEncryption(key)
+            
+            expect(conf.filename).toBe('/tmp/test-db.enc.json')
+        });
+
+        test('setEncryption is idempotent', async () => {
+            const key = getKey()
+            const dbPath = '/tmp/test-db'
+            const conf = new Config(dbPath, true)
+            conf.syncOnSave = true
+            
+            conf.setEncryption(key)
+            expect(conf.filename).toBe('/tmp/test-db.enc.json')
+            
+            // Call setEncryption again with same key
+            conf.setEncryption(key)
+            expect(conf.filename).toBe('/tmp/test-db.enc.json')
+            
+            // Call setEncryption again with different key
+            const key2 = getKey()
+            conf.setEncryption(key2)
+            expect(conf.filename).toBe('/tmp/test-db.enc.json')
         });
     });
 
