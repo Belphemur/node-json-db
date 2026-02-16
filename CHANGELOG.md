@@ -1,3 +1,31 @@
+# [2.5.0](https://github.com/Belphemur/node-json-db/compare/v2.4.2...v2.5.0) (2026-02-16)
+
+
+### Bug Fixes
+
+* **config:** remove type of cypherKey check ([aac47ad](https://github.com/Belphemur/node-json-db/commit/aac47ad81b72f8493e47400df5d15c5f3abc8bee))
+* **encryption:** have different suffix for encrypted file to avoid possible conflict with existing setup ([6606fea](https://github.com/Belphemur/node-json-db/commit/6606fea450a8fe843eb7adbe3fd42f7072a148e2))
+* make setEncryption idempotent and handle custom extensions ([a97b2a3](https://github.com/Belphemur/node-json-db/commit/a97b2a35bc69664925d45787c20ec0891d7949ea))
+* **test:** ciphered file test on too small symmetric key, and ecyprtion data result compare to original data ([a34f2e6](https://github.com/Belphemur/node-json-db/commit/a34f2e6505cb0a3038a5d92d783f0c9d462c6721))
+* **test:** error message to check for cipherkey to small ([b28799b](https://github.com/Belphemur/node-json-db/commit/b28799b52b16b392abdcf4302749cd04841490bc))
+* **test:** missing test case on string key length too small ([3c02a4d](https://github.com/Belphemur/node-json-db/commit/3c02a4dbc46bf9c944606a1d077dbdf02eae8411))
+* **test:** typo + unused var ([94a48b3](https://github.com/Belphemur/node-json-db/commit/94a48b37df20fbc9a3a811030f20e3b5cab14d26))
+
+
+### Features
+
+* **adapters:** better error handling ([08d83b9](https://github.com/Belphemur/node-json-db/commit/08d83b92f67733a3fb81b3165294a34f37f1d8f7))
+* **adapters:** remove unecessary key const ([f32991a](https://github.com/Belphemur/node-json-db/commit/f32991a2c5792beb86afda2df10ac4528573df5a))
+* add .enc.json extension for encrypted databases ([5f88570](https://github.com/Belphemur/node-json-db/commit/5f8857067ef8562904e086cb53eb09a49c81e2eb))
+* **config:** better check of encryption key length ([1d4926e](https://github.com/Belphemur/node-json-db/commit/1d4926eb246991f649e035bed4eba39cefa0325a))
+* **config:** clearer cipher key length check ([e95b653](https://github.com/Belphemur/node-json-db/commit/e95b6537e04b14fe235621c6550d6d616ac5bbe1))
+* **encryption:** add ciphered file adapter and encryption method for config ([abf87c0](https://github.com/Belphemur/node-json-db/commit/abf87c0fbf0d708bdeac412ec19f8a61d3b8af82))
+* **encryption:** Add encryption to the database ([34887e8](https://github.com/Belphemur/node-json-db/commit/34887e8a800e15d7f7cc01a5ddd4148c7f4c8314)), closes [#1113](https://github.com/Belphemur/node-json-db/issues/1113)
+* **encryption:** add support of symmetric key ([16f4992](https://github.com/Belphemur/node-json-db/commit/16f499212644addcf59ab9b337fdaac58318457f))
+* **test:** add more coverage on missing decryption data ([ca85c6d](https://github.com/Belphemur/node-json-db/commit/ca85c6d390c6504b02edcd5544ed9cdb17bb5de3))
+* **test:** better coverage on errors ([a3c6fc8](https://github.com/Belphemur/node-json-db/commit/a3c6fc87045a8da7da9b7e891a48f0b787692009))
+* **test:** remove error message expected ([d401ee8](https://github.com/Belphemur/node-json-db/commit/d401ee8137e4149d310608fd78dc1d421cb6da14))
+
 ## [2.4.2](https://github.com/Belphemur/node-json-db/compare/v2.4.1...v2.4.2) (2025-11-07)
 
 
