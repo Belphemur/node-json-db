@@ -317,7 +317,7 @@ const itemPath = db.fromPath("/myarray/3/children/1");
 
 ```
 
-#### Database Ecncryption
+#### Database Encryption
 
 #### Supported Encryption keys
 
@@ -327,7 +327,7 @@ const itemPath = db.fromPath("/myarray/3/children/1");
 
 #### Usage 
 
-```
+```typescript
 import { JsonDB, Config } from 'node-json-db';
 import { generateKeySync, randomBytes } from "crypto";
 
@@ -343,18 +343,28 @@ const key = randomBytes(32)
 
 // create or retrieve symmetric key of minimum 32 bytes
 // const key = generateKeySync("hmac", {
-//   length: 128,
+//   length: 256,
 // });
 
 // set encryption key into Config object
+// This will automatically change the database filename to use .enc.json extension
+// myDataBase.json becomes myDataBase.enc.json
 config.setEncryption(key)
 
 // instanciate database
 const db = new JsonDB(config);
 
 // use your database as you would normally do
+// Data will be encrypted and stored in myDataBase.enc.json
 await db.push("/test1","super test");
 ```
+
+**Important Notes:**
+- When encryption is enabled, the database file extension automatically changes to `.enc.json`
+- This prevents accidentally accessing encrypted databases without the proper encryption key
+- Encrypted and non-encrypted databases use different file paths (e.g., `myDataBase.enc.json` vs `myDataBase.json`)
+- The encryption uses AES-256-GCM for secure authenticated encryption
+- The encryption key must be exactly 32 bytes
 
 ### Exception/Error
 #### Type
