@@ -38,6 +38,34 @@ export class Config implements JsonDBConfig {
         this.adapter = new JsonAdapter(new FileAdapter(this._filename, syncOnSave), humanReadable);
     }
 
+    /**
+     * Enable encryption for the database using AES-256-GCM.
+     * 
+     * When encryption is enabled, the database filename automatically changes to use the `.enc.json` extension.
+     * For example, `mydb.json` becomes `mydb.enc.json`. This prevents accidentally accessing encrypted 
+     * databases without proper encryption settings.
+     * 
+     * This method is idempotent - calling it multiple times won't keep changing the filename.
+     * 
+     * @param cipherKey - The encryption key. Must be exactly 32 bytes. Can be:
+     *   - A string of 32 characters
+     *   - A Buffer of 32 bytes
+     *   - A symmetric KeyObject with 256-bit key size (from Node.js crypto module)
+     * 
+     * @throws {Error} If the key is asymmetric (not supported)
+     * @throws {Error} If the key length is not exactly 32 bytes
+     * 
+     * @example
+     * ```typescript
+     * import { Config } from 'node-json-db';
+     * import { randomBytes } from 'crypto';
+     * 
+     * const config = new Config('mydb', true);
+     * const key = randomBytes(32); // 32-byte encryption key
+     * config.setEncryption(key);
+     * // Database will now be stored in 'mydb.enc.json' with encrypted data
+     * ```
+     */
     setEncryption(cipherKey: CipherKey) {
         if ((cipherKey as KeyObject).asymmetricKeyType) throw new Error('Asymmetric key not supported')
          let keyLength: number | undefined;
