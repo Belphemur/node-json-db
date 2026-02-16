@@ -407,6 +407,7 @@ await db.push("/test1","super test");
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="http://www.antonytrupe.com"><img src="https://avatars.githubusercontent.com/u/182436?v=4?s=100" width="100px;" alt="Tony Trupe"/><br /><sub><b>Tony Trupe</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=antonytrupe" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/sh6986"><img src="https://avatars.githubusercontent.com/u/61879996?v=4?s=100" width="100px;" alt="sh6986"/><br /><sub><b>sh6986</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/issues?q=author%3Ash6986" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/pedroELT"><img src="https://avatars.githubusercontent.com/u/620234?v=4?s=100" width="100px;" alt="pedroELT"/><br /><sub><b>pedroELT</b></sub></a><br /><a href="https://github.com/Belphemur/node-json-db/commits?author=pedroELT" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
