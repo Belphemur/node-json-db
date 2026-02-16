@@ -4,6 +4,7 @@ import {DBParentData} from './lib/DBParentData'
 import {ArrayInfo} from './lib/ArrayInfo'
 import {JsonDBConfig} from './lib/JsonDBConfig'
 import {readLockAsync, writeLockAsync} from "./lock/Lock";
+import { JsonDBServer, ServerConf } from './lib/Server'
 
 //Export to be used by other projects that want to extend JsonDB
 export {Config, ConfigWithAdapter} from './lib/JsonDBConfig'
@@ -21,6 +22,7 @@ export class JsonDB {
     private loaded: boolean = false
     private data: KeyValue = {}
     private readonly config: JsonDBConfig
+    private readonly server?: JsonDBServer
 
     /**
      * JSONDB Constructor
@@ -470,5 +472,9 @@ export class JsonDB {
         }
     
         return normalPath.join("")
+    }
+
+    public listen(serverConf: ServerConf) {
+        return new JsonDBServer(serverConf)
     }
 }
