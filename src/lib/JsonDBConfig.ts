@@ -13,25 +13,29 @@ export interface JsonDBConfig {
 
 export class Config implements JsonDBConfig {
     adapter: IAdapter<any>;
-    public readonly filename: string
+    private _filename: string
     saveOnPush: boolean
     separator: string
     syncOnSave: boolean
     humanReadable: boolean
 
+    get filename(): string {
+        return this._filename;
+    }
+
     constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/', syncOnSave: boolean = false) {
-        this.filename = filename
+        this._filename = filename
 
         // Force json if no extension
         if (path.extname(filename) === "") {
-            this.filename += ".json"
+            this._filename += ".json"
         }
 
         this.saveOnPush = saveOnPush
         this.separator = separator
         this.syncOnSave = syncOnSave
         this.humanReadable = humanReadable
-        this.adapter = new JsonAdapter(new FileAdapter(this.filename, syncOnSave), humanReadable);
+        this.adapter = new JsonAdapter(new FileAdapter(this._filename, syncOnSave), humanReadable);
     }
 
     setEncryption(cipherKey: CipherKey) {
@@ -47,7 +51,17 @@ export class Config implements JsonDBConfig {
         if (!keyLength || keyLength !== 32) {
             throw new Error(`Invalid key length. Expected 32 bytes for aes-256-gcm but got ${keyLength}.`);
         }
-        this.adapter = new JsonAdapter(new CipheredFileAdapter(cipherKey, this.filename, this.syncOnSave), this.humanReadable);
+        
+        // Change file extension to .enc.json
+        const currentExt = path.extname(this._filename);
+        if (currentExt === '.json') {
+            this._filename = this._filename.slice(0, -5) + '.enc.json';
+        } else if (currentExt !== '.enc.json') {
+            // If it's not .json or .enc.json, append .enc.json
+            this._filename += '.enc.json';
+        }
+        
+        this.adapter = new JsonAdapter(new CipheredFileAdapter(cipherKey, this._filename, this.syncOnSave), this.humanReadable);
     }
 }
 

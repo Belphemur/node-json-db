@@ -1,8 +1,9 @@
 import { Config } from "../src/lib/JsonDBConfig";
 import { JsonDB } from "../src/JsonDB";
 import { generateKeyPairSync, generateKeySync, randomBytes, randomUUID } from "crypto";
-import { readFileSync, writeFileSync } from "fs";
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
 import { CipheredFileAdapter } from "../src/adapter/file/CipheredFileAdapter";
+import { DataError } from "../src/lib/Errors";
 
 describe('Ciphered', () => {
     const getData = () => ({
@@ -97,7 +98,7 @@ describe('Ciphered', () => {
             const db = new JsonDB(conf);
             
             await db.push(`/`, getData(), true);
-            const rawData = JSON.parse(readFileSync(dbPath+'.json').toString())
+            const rawData = JSON.parse(readFileSync(dbPath+'.enc.json').toString())
             expect(rawData.iv).not.toBeNull()
             expect(rawData.tag).not.toBeNull()
             expect(rawData.data).not.toEqual(JSON.stringify(getData()))
@@ -142,14 +143,14 @@ describe('Ciphered', () => {
             const db = new JsonDB(conf);
             
             await db.push(`/`, getData(), true);
-            const oldData = JSON.parse(readFileSync(dbPath+'.json').toString())
+            const oldData = JSON.parse(readFileSync(dbPath+'.enc.json').toString())
             expect(oldData.iv).not.toBeNull()
             expect(oldData.tag).not.toBeNull()
             expect(oldData.data).not.toBeNull()
 
 
             await db.push(`/`, getData(), true);
-            const newData = JSON.parse(readFileSync(dbPath+'.json').toString())
+            const newData = JSON.parse(readFileSync(dbPath+'.enc.json').toString())
             expect(newData.iv).not.toBe(oldData.iv)
             expect(newData.tag).not.toBe(oldData.tag)
             expect(newData.data).not.toBe(oldData.data)
@@ -200,6 +201,156 @@ describe('Ciphered', () => {
             const adapter = new CipheredFileAdapter(getTooSmallKey(), dbPath, true)
             await expect(adapter.writeAsync(JSON.stringify(getData()))).rejects.toThrow()
 
+        });
+    });
+
+    describe('file extension', () => {
+        afterEach(() => {
+            // Clean up test files
+            const testFiles = [
+                '/tmp/test-enc-db.enc.json',
+                '/tmp/test-enc-db.json',
+                '/tmp/test-db.json',
+                '/tmp/test-db.enc.json',
+            ];
+            testFiles.forEach(file => {
+                if (existsSync(file)) {
+                    unlinkSync(file);
+                }
+            });
+        });
+
+        test('file extension changes to .enc.json when encryption is enabled', async () => {
+            const key = getKey()
+            const dbPath = '/tmp/test-enc-db'
+            const conf = new Config(dbPath, true)
+            conf.syncOnSave = true
+            
+            // Before encryption - should be .json
+            expect(conf.filename).toBe('/tmp/test-enc-db.json')
+            
+            conf.setEncryption(key)
+            
+            // After encryption - should be .enc.json
+            expect(conf.filename).toBe('/tmp/test-enc-db.enc.json')
+            
+            const db = new JsonDB(conf);
+            await db.push(`/`, getData(), true);
+            
+            // Verify the encrypted file exists
+            expect(existsSync('/tmp/test-enc-db.enc.json')).toBe(true)
+            // Verify the non-encrypted file does not exist
+            expect(existsSync('/tmp/test-enc-db.json')).toBe(false)
+        });
+
+        test('file with .json extension becomes .enc.json', async () => {
+            const key = getKey()
+            const dbPath = '/tmp/test-db.json'
+            const conf = new Config(dbPath, true)
+            conf.syncOnSave = true
+            
+            expect(conf.filename).toBe('/tmp/test-db.json')
+            
+            conf.setEncryption(key)
+            
+            expect(conf.filename).toBe('/tmp/test-db.enc.json')
+        });
+
+        test('encrypted database writes to .enc.json file', async () => {
+            const key = getKey()
+            const dbPath = '/tmp/test-enc-db'
+            const conf = new Config(dbPath, true)
+            conf.syncOnSave = true
+            conf.setEncryption(key)
+            
+            const db = new JsonDB(conf);
+            await db.push(`/`, getData(), true);
+            
+            // Check that the file is created with correct extension
+            expect(existsSync('/tmp/test-enc-db.enc.json')).toBe(true)
+            
+            // Verify the content is encrypted
+            const rawData = JSON.parse(readFileSync('/tmp/test-enc-db.enc.json').toString())
+            expect(rawData.iv).toBeDefined()
+            expect(rawData.tag).toBeDefined()
+            expect(rawData.data).toBeDefined()
+        });
+    });
+
+    describe('encryption mismatch protection', () => {
+        afterEach(() => {
+            // Clean up test files
+            const testFiles = [
+                '/tmp/mismatch-test.enc.json',
+                '/tmp/mismatch-test.json',
+            ];
+            testFiles.forEach(file => {
+                if (existsSync(file)) {
+                    unlinkSync(file);
+                }
+            });
+        });
+
+        test('cannot read encrypted database without encryption key', async () => {
+            const key = getKey()
+            const dbPath = '/tmp/mismatch-test'
+            
+            // Create an encrypted database
+            const confEncrypted = new Config(dbPath, true)
+            confEncrypted.syncOnSave = true
+            confEncrypted.setEncryption(key)
+            const dbEncrypted = new JsonDB(confEncrypted);
+            await dbEncrypted.push(`/`, getData(), true);
+            
+            // Try to open it without encryption
+            const confPlain = new Config(dbPath, true)
+            const dbPlain = new JsonDB(confPlain);
+            
+            // This should fail because the file doesn't exist at .json path
+            await expect(dbPlain.getData("/test")).rejects.toThrow(DataError)
+        });
+
+        test('cannot read non-encrypted database with wrong filename when using encryption', async () => {
+            const dbPath = '/tmp/mismatch-test'
+            
+            // Create a non-encrypted database
+            const confPlain = new Config(dbPath, true)
+            confPlain.syncOnSave = true
+            const dbPlain = new JsonDB(confPlain);
+            await dbPlain.push(`/`, getData(), true);
+            
+            // Verify .json file exists
+            expect(existsSync('/tmp/mismatch-test.json')).toBe(true)
+            
+            // Try to open it with encryption
+            const key = getKey()
+            const confEncrypted = new Config(dbPath, true)
+            confEncrypted.setEncryption(key)
+            const dbEncrypted = new JsonDB(confEncrypted);
+            
+            // This should fail because it looks for .enc.json file which doesn't exist
+            await expect(dbEncrypted.getData("/test")).rejects.toThrow(DataError)
+        });
+
+        test('reading encrypted file with wrong key fails', async () => {
+            const key1 = getKey()
+            const key2 = getKey()
+            const dbPath = '/tmp/mismatch-test'
+            
+            // Create database with key1
+            const conf1 = new Config(dbPath, true)
+            conf1.syncOnSave = true
+            conf1.setEncryption(key1)
+            const db1 = new JsonDB(conf1);
+            await db1.push(`/`, getData(), true);
+            
+            // Try to read with key2
+            const conf2 = new Config(dbPath, true)
+            conf2.setEncryption(key2)
+            const db2 = new JsonDB(conf2);
+            
+            // Should fail to decrypt
+            await expect(db2.getData("/test")).rejects.toThrow()
         });
     });
 })
