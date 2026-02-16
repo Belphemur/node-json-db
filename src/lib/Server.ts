@@ -113,7 +113,7 @@ export class JsonDBServer {
         try {
             const url = new URL(req.url!, `http://${req.headers.host}`)
             const dataPath = url.pathname
-            const authenticated = this.auth.authenticate(req)
+            const authenticated = await this.auth.authenticate(req)
             if (!authenticated) {
                 res.statusCode = 401
                 res.end('unhautorized')
