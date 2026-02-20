@@ -13,7 +13,7 @@ importers:
         version: 20.4.1(@types/node@25.3.0)(typescript@5.9.3)
       '@commitlint/config-conventional':
         specifier: ^20.0.0
-        version: 20.4.1
+        version: 20.4.2
       '@semantic-release/changelog':
         specifier: ^6.0.3
         version: 6.0.3(semantic-release@25.0.3(typescript@5.9.3))
@@ -250,8 +250,8 @@ packages:
     engines: {node: '>=v18'}
     hasBin: true
 
-  '@commitlint/config-conventional@20.4.1':
-    resolution: {integrity: sha512-0YUvIeBtpi86XriqrR+TCULVFiyYTIOEPjK7tTRMxjcBm1qlzb+kz7IF2WxL6Fq5DaundG8VO37BNgMkMTBwqA==}
+  '@commitlint/config-conventional@20.4.2':
+    resolution: {integrity: sha512-rwkTF55q7Q+6dpSKUmJoScV0f3EpDlWKw2UPzklkLS4o5krMN1tPWAVOgHRtyUTMneIapLeQwaCjn44Td6OzBQ==}
     engines: {node: '>=v18'}
 
   '@commitlint/config-validator@20.4.0':
@@ -2826,7 +2826,7 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@commitlint/config-conventional@20.4.1':
+  '@commitlint/config-conventional@20.4.2':
     dependencies:
       '@commitlint/types': 20.4.0
       conventional-changelog-conventionalcommits: 9.1.0
