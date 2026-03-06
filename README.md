@@ -66,7 +66,7 @@ import { JsonDB, Config } from 'node-json-db';
 // The fourth argument is the separator. By default it's slash (/)
 // The fifth argument enables sync writes (default false)
 // The sixth argument controls automatic Date parsing for ISO strings (default true)
-var db = new JsonDB(new Config("myDataBase", true, false, '/', false, true));
+var db = new JsonDB(new Config("myDataBase", true, false, '/', false, false));
 
 // Pushing the data into the database
 // With the wanted DataPath

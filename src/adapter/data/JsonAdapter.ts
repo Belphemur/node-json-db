@@ -19,7 +19,7 @@ export class JsonAdapter implements IAdapter<any> {
     }
 
     private reviver(key: string, value: any): any {
-        if (this.parseDates && typeof value == "string" && this.dateRegex.exec(value) != null) {
+        if (this.parseDates && typeof value == "string" && this.dateRegex.test(value)) {
             return new Date(value);
         }
         return value;
