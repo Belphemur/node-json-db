@@ -5,11 +5,13 @@ export class JsonAdapter implements IAdapter<any> {
     private readonly adapter: IAdapter<string>;
     private readonly humanReadable: boolean;
     private readonly dateRegex = new RegExp('^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}', 'm')
+    private readonly parseDates: boolean;
 
 
-    constructor(adapter: IAdapter<string>, humanReadable: boolean = false) {
+    constructor(adapter: IAdapter<string>, humanReadable: boolean = false, parseDates: boolean = true) {
         this.adapter = adapter;
         this.humanReadable = humanReadable;
+        this.parseDates = parseDates;
     }
 
     private replacer(key: string, value: any): any {
@@ -17,7 +19,7 @@ export class JsonAdapter implements IAdapter<any> {
     }
 
     private reviver(key: string, value: any): any {
-        if (typeof value == "string" && this.dateRegex.exec(value) != null) {
+        if (this.parseDates && typeof value == "string" && this.dateRegex.exec(value) != null) {
             return new Date(value);
         }
         return value;

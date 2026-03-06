@@ -63,8 +63,10 @@ import { JsonDB, Config } from 'node-json-db';
 // The second argument is used to tell the DB to save after each push
 // If you set the second argument to false, you'll have to call the save() method.
 // The third argument is used to ask JsonDB to save the database in a human readable format. (default false)
-// The last argument is the separator. By default it's slash (/)
-var db = new JsonDB(new Config("myDataBase", true, false, '/'));
+// The fourth argument is the separator. By default it's slash (/)
+// The fifth argument enables sync writes (default false)
+// The sixth argument controls automatic Date parsing for ISO strings (default true)
+var db = new JsonDB(new Config("myDataBase", true, false, '/', false, true));
 
 // Pushing the data into the database
 // With the wanted DataPath
