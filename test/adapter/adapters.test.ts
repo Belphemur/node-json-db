@@ -149,6 +149,21 @@ describe('Adapter', () => {
                 expect(readObject.hello).toBe(data.hello);
                 expect(readObject.test).toBe(data.test);
             })
+
+            test('should serialize Map values as plain objects with entries', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    pathToMap: new Map([
+                        ['a', 1],
+                        ['b', 2],
+                        ['c', 3]
+                    ])
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.pathToMap).toEqual({a: 1, b: 2, c: 3});
+            })
         })
     });
     describe('Config', () => {
