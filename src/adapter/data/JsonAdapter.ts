@@ -15,6 +15,9 @@ export class JsonAdapter implements IAdapter<any> {
     }
 
     private replacer(key: string, value: any): any {
+        if (value instanceof Map) {
+            return Object.fromEntries(value);
+        }
         return value;
     }
 
