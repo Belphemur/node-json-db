@@ -18,12 +18,13 @@ export class Config implements JsonDBConfig {
     separator: string
     syncOnSave: boolean
     humanReadable: boolean
+    parseDates: boolean
 
     get filename(): string {
         return this._filename;
     }
 
-    constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/', syncOnSave: boolean = false) {
+    constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/', syncOnSave: boolean = false, parseDates: boolean = true) {
         this._filename = filename
 
         // Force json if no extension
@@ -35,7 +36,8 @@ export class Config implements JsonDBConfig {
         this.separator = separator
         this.syncOnSave = syncOnSave
         this.humanReadable = humanReadable
-        this.adapter = new JsonAdapter(new FileAdapter(this._filename, syncOnSave), humanReadable);
+        this.parseDates = parseDates
+        this.adapter = new JsonAdapter(new FileAdapter(this._filename, syncOnSave), humanReadable, parseDates);
     }
 
     /**
@@ -88,7 +90,7 @@ export class Config implements JsonDBConfig {
             this._filename = baseName + '.enc.json';
         }
         
-        this.adapter = new JsonAdapter(new CipheredFileAdapter(cipherKey, this._filename, this.syncOnSave), this.humanReadable);
+        this.adapter = new JsonAdapter(new CipheredFileAdapter(cipherKey, this._filename, this.syncOnSave), this.humanReadable, this.parseDates);
     }
 }
 
