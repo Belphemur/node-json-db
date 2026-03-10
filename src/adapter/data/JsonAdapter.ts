@@ -1,28 +1,32 @@
 import {IAdapter} from "../IAdapter";
+import {ISerializer} from "./ISerializer";
+import {defaultSerializers} from "./Serializers";
 
 export class JsonAdapter implements IAdapter<any> {
 
     private readonly adapter: IAdapter<string>;
     private readonly humanReadable: boolean;
-    private readonly dateRegex = new RegExp('^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}', 'm')
-    private readonly parseDates: boolean;
+    private readonly serializers: ISerializer[];
 
 
-    constructor(adapter: IAdapter<string>, humanReadable: boolean = false, parseDates: boolean = true) {
+    /**
+     * @param adapter The underlying string adapter for reading/writing raw data
+     * @param humanReadable Whether to pretty-print the JSON output
+     * @param parseDates Whether to serialize/deserialize Date objects (default: true).
+     *   When true, a DateSerializer is included in the serializer list.
+     *   When false, Date objects are excluded from serialization.
+     * @param serializers Custom serializers for complex types (default: Date, Set, Map).
+     *   When providing custom serializers, the parseDates flag still controls
+     *   whether the DateSerializer is included.
+     */
+    constructor(adapter: IAdapter<string>, humanReadable: boolean = false, parseDates: boolean = true, serializers: ISerializer[] = defaultSerializers) {
         this.adapter = adapter;
         this.humanReadable = humanReadable;
-        this.parseDates = parseDates;
-    }
-
-    private replacer(key: string, value: any): any {
-        return value;
-    }
-
-    private reviver(key: string, value: any): any {
-        if (this.parseDates && typeof value == "string" && this.dateRegex.test(value)) {
-            return new Date(value);
+        if (parseDates) {
+            this.serializers = serializers;
+        } else {
+            this.serializers = serializers.filter(s => s.type !== "Date");
         }
-        return value;
     }
 
     async readAsync(): Promise<any> {
@@ -31,15 +35,36 @@ export class JsonAdapter implements IAdapter<any> {
             await this.writeAsync({});
             return {};
         }
-        return JSON.parse(data, this.reviver.bind(this));
+        const serializers = this.serializers;
+        const reviver = function (key: string, value: any): any {
+            if (value !== null && typeof value === 'object' && '__type' in value && '__value' in value) {
+                for (const serializer of serializers) {
+                    if (value.__type === serializer.type) {
+                        return serializer.deserialize(value.__value);
+                    }
+                }
+            }
+            return value;
+        };
+        return JSON.parse(data, reviver);
     }
 
     writeAsync(data: any): Promise<void> {
+        const serializers = this.serializers;
+        const replacer = function (this: any, key: string, value: any): any {
+            const rawValue = this[key];
+            for (const serializer of serializers) {
+                if (rawValue !== null && rawValue !== undefined && serializer.test(rawValue)) {
+                    return {__type: serializer.type, __value: serializer.serialize(rawValue)};
+                }
+            }
+            return value;
+        };
         let stringify = '';
         if (this.humanReadable) {
-            stringify = JSON.stringify(data, this.replacer.bind(this), 4)
+            stringify = JSON.stringify(data, replacer, 4)
         } else {
-            stringify = JSON.stringify(data, this.replacer.bind(this))
+            stringify = JSON.stringify(data, replacer)
         }
         return this.adapter.writeAsync(stringify);
     }

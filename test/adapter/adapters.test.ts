@@ -161,6 +161,208 @@ describe('Adapter', () => {
                 expect(readObject.myDate).toBe(data.myDate);
                 expect(typeof readObject.myDate).toBe("string");
             })
+
+            test('should not serialize Date objects when parseDates is false', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false, false);
+                const date = new Date();
+                const data = {
+                    myDate: date,
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(typeof readObject.myDate).toBe("string");
+                expect(readObject.myDate).toBe(date.toISOString());
+            })
+
+            test('should serialize and deserialize a Set', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    mySet: new Set([1, 2, 3])
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.mySet).toBeInstanceOf(Set);
+                expect(readObject.mySet.size).toBe(3);
+                expect(readObject.mySet.has(1)).toBe(true);
+                expect(readObject.mySet.has(2)).toBe(true);
+                expect(readObject.mySet.has(3)).toBe(true);
+            })
+
+            test('should serialize and deserialize a Map', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    myMap: new Map<string, number>([["a", 1], ["b", 2]])
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.myMap).toBeInstanceOf(Map);
+                expect(readObject.myMap.size).toBe(2);
+                expect(readObject.myMap.get("a")).toBe(1);
+                expect(readObject.myMap.get("b")).toBe(2);
+            })
+
+            test('should serialize and deserialize a RegExp', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    pattern: /hello\s+world/gi
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.pattern).toBeInstanceOf(RegExp);
+                expect(readObject.pattern.source).toBe("hello\\s+world");
+                expect(readObject.pattern.flags).toBe("gi");
+            })
+
+            test('should serialize and deserialize a BigInt', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    big: BigInt("9007199254740993")
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(typeof readObject.big).toBe("bigint");
+                expect(readObject.big).toBe(BigInt("9007199254740993"));
+            })
+
+            test('should serialize and deserialize an empty Set', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    emptySet: new Set()
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.emptySet).toBeInstanceOf(Set);
+                expect(readObject.emptySet.size).toBe(0);
+            })
+
+            test('should serialize and deserialize an empty Map', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    emptyMap: new Map()
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.emptyMap).toBeInstanceOf(Map);
+                expect(readObject.emptyMap.size).toBe(0);
+            })
+
+            test('should serialize and deserialize nested complex types', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    mySet: new Set(["a", "b"]),
+                    myMap: new Map<string, any>([
+                        ["key1", new Set([10, 20])],
+                        ["key2", "plain value"]
+                    ]),
+                    myDate: new Date(),
+                    hello: "world"
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.mySet).toBeInstanceOf(Set);
+                expect(readObject.mySet.has("a")).toBe(true);
+                expect(readObject.myMap).toBeInstanceOf(Map);
+                expect(readObject.myMap.get("key1")).toBeInstanceOf(Set);
+                expect(readObject.myMap.get("key1").has(10)).toBe(true);
+                expect(readObject.myMap.get("key2")).toBe("plain value");
+                expect(readObject.myDate).toBeInstanceOf(Date);
+                expect(readObject.hello).toBe("world");
+            })
+
+            test('should preserve objects with __type that do not match any serializer', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    custom: {__type: "UnknownType", __value: "some data"}
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.custom.__type).toBe("UnknownType");
+                expect(readObject.custom.__value).toBe("some data");
+            })
+
+            test('should support custom serializers alongside defaults', async () => {
+                class Url {
+                    constructor(public href: string) {}
+                    toString() { return this.href; }
+                }
+                const urlSerializer = {
+                    type: "URL",
+                    serialize: (value: Url) => value.href,
+                    deserialize: (value: string) => new Url(value),
+                    test: (value: any) => value instanceof Url,
+                };
+                const {defaultSerializers} = require("../../src/adapter/data/Serializers");
+                const adapter = new JsonAdapter(new MemoryAdapter(), false, true, [...defaultSerializers, urlSerializer]);
+                const data = {
+                    link: new Url("https://example.com"),
+                    tags: new Set(["a", "b"]),
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.link).toBeInstanceOf(Url);
+                expect(readObject.link.href).toBe("https://example.com");
+                expect(readObject.tags).toBeInstanceOf(Set);
+                expect(readObject.tags.has("a")).toBe(true);
+            })
+
+            test('should serialize Set with string values in human-readable format', async () => {
+                const memAdapter = new MemoryAdapter();
+                const adapter = new JsonAdapter(memAdapter, true);
+                const data = {
+                    tags: new Set(["typescript", "json"])
+                }
+
+                await adapter.writeAsync(data);
+                const raw = await memAdapter.readAsync();
+                expect(raw).toContain('"__type": "Set"');
+                expect(raw).toContain('"__value"');
+
+                const readObject = await adapter.readAsync();
+                expect(readObject.tags).toBeInstanceOf(Set);
+                expect(readObject.tags.has("typescript")).toBe(true);
+            })
+
+            test('should serialize and deserialize all built-in types together', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    date: new Date("2023-06-15T12:00:00.000Z"),
+                    set: new Set([1, "two", 3]),
+                    map: new Map<string, any>([["x", 10], ["y", new Date("2020-01-01")]]),
+                    regex: /^test$/i,
+                    bigint: BigInt("12345678901234567890"),
+                    plain: "hello",
+                    num: 42,
+                    bool: true,
+                    nil: null,
+                }
+
+                await adapter.writeAsync(data);
+                const result = await adapter.readAsync();
+                expect(result.date).toBeInstanceOf(Date);
+                expect(result.date.toISOString()).toBe("2023-06-15T12:00:00.000Z");
+                expect(result.set).toBeInstanceOf(Set);
+                expect(result.set.size).toBe(3);
+                expect(result.map).toBeInstanceOf(Map);
+                expect(result.map.get("y")).toBeInstanceOf(Date);
+                expect(result.regex).toBeInstanceOf(RegExp);
+                expect(result.regex.test("TEST")).toBe(true);
+                expect(typeof result.bigint).toBe("bigint");
+                expect(result.bigint).toBe(BigInt("12345678901234567890"));
+                expect(result.plain).toBe("hello");
+                expect(result.num).toBe(42);
+                expect(result.bool).toBe(true);
+                expect(result.nil).toBeNull();
+            })
         })
     });
     describe('Config', () => {
