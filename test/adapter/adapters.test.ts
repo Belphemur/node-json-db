@@ -149,6 +149,18 @@ describe('Adapter', () => {
                 expect(readObject.hello).toBe(data.hello);
                 expect(readObject.test).toBe(data.test);
             })
+
+            test('should not parse ISO date strings when parseDates is false', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false, false);
+                const data = {
+                    myDate: new Date().toISOString(),
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.myDate).toBe(data.myDate);
+                expect(typeof readObject.myDate).toBe("string");
+            })
         })
     });
     describe('Config', () => {
