@@ -15,7 +15,7 @@ export class JsonAdapter implements IAdapter<any> {
      * @param parseDates Whether to serialize/deserialize Date objects (default: true).
      *   When true, a DateSerializer is included in the serializer list.
      *   When false, Date objects are excluded from serialization.
-     * @param serializers Custom serializers for complex types (default: Date, Set, Map).
+     * @param serializers Custom serializers for complex types (default: Date, Set, Map, RegExp, BigInt).
      *   When providing custom serializers, the parseDates flag still controls
      *   whether the DateSerializer is included.
      */

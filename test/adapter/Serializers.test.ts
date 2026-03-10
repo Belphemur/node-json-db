@@ -1,5 +1,4 @@
 import {DateSerializer, SetSerializer, MapSerializer, RegExpSerializer, BigIntSerializer, defaultSerializers} from "../../src/adapter/data/Serializers";
-import {ISerializer} from "../../src/adapter/data/ISerializer";
 
 describe('Serializers', () => {
     describe('DateSerializer', () => {
@@ -189,11 +188,10 @@ describe('Serializers', () => {
 
         test('all serializers should implement ISerializer', () => {
             for (const serializer of defaultSerializers) {
-                const s = serializer as ISerializer;
-                expect(typeof s.type).toBe("string");
-                expect(typeof s.serialize).toBe("function");
-                expect(typeof s.deserialize).toBe("function");
-                expect(typeof s.test).toBe("function");
+                expect(typeof serializer.type).toBe("string");
+                expect(typeof serializer.serialize).toBe("function");
+                expect(typeof serializer.deserialize).toBe("function");
+                expect(typeof serializer.test).toBe("function");
             }
         })
 
