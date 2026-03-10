@@ -11,33 +11,33 @@ permissions:
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['lts/*', 'current' ]
+        node: ["lts/*", "current"]
     steps:
-        - uses: actions/checkout@v6
-        - name: Enable pnpm
-          run: corepack enable pnpm
-        - name: Use Node.js  ${{ matrix.node }}
-          uses: actions/setup-node@v6
-          with:
-            node-version:  ${{ matrix.node }}
-            cache: 'pnpm'
-        - name: Update NPM
-          run: sudo npm install -g npm@latest
-        - name: Install dependencies
-          run: pnpm install
-        - name: Run tests
-          run: pnpm run test
-        - name: Upload code coverage
-          uses: codecov/codecov-action@v5
-          with:
-            token: ${{ secrets.CODECOV_TOKEN }}
-            fail_ci_if_error: true # optional (default = false)
+      - uses: actions/checkout@v6
+      - name: Enable pnpm
+        run: corepack enable pnpm
+      - name: Use Node.js  ${{ matrix.node }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+          cache: "pnpm"
+      - name: Update NPM
+        run: sudo npm install -g npm@latest
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run tests
+        run: pnpm run test
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true # optional (default = false)
   ci-cd-check:
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +48,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{env.NODEJS}}
-          cache: 'pnpm'
+          cache: "pnpm"
       - name: Update NPM
         run: npm install -g npm@latest
       - name: Output versions
@@ -61,8 +61,6 @@ jobs:
           | NPM  | $(npm --version) |
           | PNPM | $(pnpm --version) |
           EOF
-      - name: Install semantic-release beta
-        run: pnpm add semantic-release@beta
       - name: Install dependencies
         run: pnpm install
       - name: Run semantic-release
@@ -78,7 +76,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{env.NODEJS}}
-          cache: 'pnpm'
+          cache: "pnpm"
       - name: Install semantic-release dependencies
         run: pnpm install
       - name: Build package
@@ -100,13 +98,11 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{env.NODEJS}}
-          cache: 'pnpm'
+          cache: "pnpm"
       - name: Update NPM
         run: npm install -g npm@latest
       - name: Install semantic-release dependencies
         run: pnpm install --frozen-lockfile
-      - name: Install semantic-release beta
-        run: pnpm add semantic-release@beta
       - name: Build package
         run: pnpm run build
       - name: Release
