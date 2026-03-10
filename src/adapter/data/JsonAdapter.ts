@@ -7,6 +7,7 @@ export class JsonAdapter implements IAdapter<any> {
     private readonly adapter: IAdapter<string>;
     private readonly humanReadable: boolean;
     private readonly serializers: readonly ISerializer[];
+    private readonly serializerMap: ReadonlyMap<string, ISerializer>;
 
 
     /**
@@ -18,6 +19,7 @@ export class JsonAdapter implements IAdapter<any> {
         this.adapter = adapter;
         this.humanReadable = humanReadable;
         this.serializers = serializers;
+        this.serializerMap = new Map(serializers.map(s => [s.type, s]));
     }
 
     async readAsync(): Promise<any> {
@@ -26,7 +28,7 @@ export class JsonAdapter implements IAdapter<any> {
             await this.writeAsync({});
             return {};
         }
-        const serializers = this.serializers;
+        const serializerMap = this.serializerMap;
         const reviver = function (key: string, value: any): any {
             if (value !== null && typeof value === 'object' && '__type' in value) {
                 // Un-escape user data that naturally contained __type
@@ -35,10 +37,9 @@ export class JsonAdapter implements IAdapter<any> {
                 }
                 // Deserialize known serialized types
                 if ('__value' in value) {
-                    for (const serializer of serializers) {
-                        if (value.__type === serializer.type) {
-                            return serializer.deserialize(value.__value);
-                        }
+                    const serializer = serializerMap.get(value.__type);
+                    if (serializer) {
+                        return serializer.deserialize(value.__value);
                     }
                 }
             }
