@@ -1,6 +1,8 @@
 import * as path from "path";
 import {IAdapter} from "../adapter/IAdapter";
+import {ISerializer} from "../adapter/data/ISerializer";
 import {JsonAdapter} from "../adapter/data/JsonAdapter";
+import {defaultSerializers} from "../adapter/data/Serializers";
 import {FileAdapter} from "../adapter/file/FileAdapter";
 import { CipheredFileAdapter } from "../adapter/file/CipheredFileAdapter";
 import { CipherKey, KeyObject } from 'crypto';
@@ -18,13 +20,14 @@ export class Config implements JsonDBConfig {
     separator: string
     syncOnSave: boolean
     humanReadable: boolean
-    parseDates: boolean
+    private _serializers: ISerializer[]
+    private _cipherKey?: CipherKey
 
     get filename(): string {
         return this._filename;
     }
 
-    constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/', syncOnSave: boolean = false, parseDates: boolean = true) {
+    constructor(filename: string, saveOnPush: boolean = true, humanReadable: boolean = false, separator: string = '/', syncOnSave: boolean = false) {
         this._filename = filename
 
         // Force json if no extension
@@ -36,8 +39,36 @@ export class Config implements JsonDBConfig {
         this.separator = separator
         this.syncOnSave = syncOnSave
         this.humanReadable = humanReadable
-        this.parseDates = parseDates
-        this.adapter = new JsonAdapter(new FileAdapter(this._filename, syncOnSave), humanReadable, parseDates);
+        this._serializers = [...defaultSerializers]
+        this.adapter = new JsonAdapter(new FileAdapter(this._filename, syncOnSave), humanReadable, this._serializers);
+    }
+
+    /**
+     * Add a custom serializer for handling additional types during JSON serialization.
+     *
+     * Custom serializers allow you to extend the built-in type support (Date, Set, Map, RegExp, BigInt)
+     * with your own types. Each serializer uses a `__type`/`__value` envelope pattern in the stored JSON.
+     *
+     * @param serializer - The serializer to add. Must implement the {@link ISerializer} interface.
+     *
+     * @example
+     * ```typescript
+     * import { Config, ISerializer } from 'node-json-db';
+     *
+     * const urlSerializer: ISerializer = {
+     *   type: "URL",
+     *   serialize: (value: URL) => value.href,
+     *   deserialize: (value: string) => new URL(value),
+     *   test: (value: any) => value instanceof URL,
+     * };
+     *
+     * const config = new Config('mydb');
+     * config.addSerializer(urlSerializer);
+     * ```
+     */
+    addSerializer(serializer: ISerializer): void {
+        this._serializers = [...this._serializers, serializer];
+        this._rebuildAdapter();
     }
 
     /**
@@ -90,7 +121,16 @@ export class Config implements JsonDBConfig {
             this._filename = baseName + '.enc.json';
         }
         
-        this.adapter = new JsonAdapter(new CipheredFileAdapter(cipherKey, this._filename, this.syncOnSave), this.humanReadable, this.parseDates);
+        this._cipherKey = cipherKey;
+        this._rebuildAdapter();
+    }
+
+    private _rebuildAdapter(): void {
+        if (this._cipherKey) {
+            this.adapter = new JsonAdapter(new CipheredFileAdapter(this._cipherKey, this._filename, this.syncOnSave), this.humanReadable, this._serializers);
+        } else {
+            this.adapter = new JsonAdapter(new FileAdapter(this._filename, this.syncOnSave), this.humanReadable, this._serializers);
+        }
     }
 }
 

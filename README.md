@@ -65,8 +65,7 @@ import { JsonDB, Config } from 'node-json-db';
 // The third argument is used to ask JsonDB to save the database in a human readable format. (default false)
 // The fourth argument is the separator. By default it's slash (/)
 // The fifth argument enables sync writes (default false)
-// The sixth argument controls automatic Date parsing for ISO strings (default true)
-var db = new JsonDB(new Config("myDataBase", true, false, '/', false, false));
+var db = new JsonDB(new Config("myDataBase", true, false, '/', false));
 
 // Pushing the data into the database
 // With the wanted DataPath
@@ -367,6 +366,71 @@ await db.push("/test1","super test");
 - Encrypted and non-encrypted databases use different file paths (e.g., `myDataBase.enc.json` vs `myDataBase.json`)
 - The encryption uses AES-256-GCM for secure authenticated encryption
 - The encryption key must be exactly 32 bytes
+
+#### Type Serialization
+
+JsonDB automatically serializes and deserializes JavaScript types that are not natively supported by JSON. The following types are supported out of the box:
+
+| Type     | Serialized format                                                     |
+|----------|-----------------------------------------------------------------------|
+| `Date`   | `{ "__type": "Date", "__value": "2023-01-01T00:00:00.000Z" }`        |
+| `Set`    | `{ "__type": "Set", "__value": [1, 2, 3] }`                          |
+| `Map`    | `{ "__type": "Map", "__value": [["key", "value"]] }`                 |
+| `RegExp` | `{ "__type": "RegExp", "__value": { "source": "^test$", "flags": "i" } }` |
+| `BigInt` | `{ "__type": "BigInt", "__value": "9007199254740993" }`               |
+
+```typescript
+import { JsonDB, Config } from 'node-json-db';
+
+const db = new JsonDB(new Config('myDataBase'));
+
+// All these types are automatically serialized and deserialized
+await db.push('/data', {
+    tags: new Set(['typescript', 'json']),
+    metadata: new Map([['version', 1], ['author', 'test']]),
+    createdAt: new Date(),
+    pattern: /^hello\s+world$/i,
+    bigNumber: BigInt('9007199254740993'),
+});
+
+const data = await db.getData('/data');
+// data.tags is a Set, data.metadata is a Map, data.createdAt is a Date, etc.
+```
+
+#### Custom Serializers
+
+You can add support for additional types by implementing the `ISerializer` interface and registering them with `Config.addSerializer()`:
+
+```typescript
+import { JsonDB, Config, ISerializer } from 'node-json-db';
+
+const urlSerializer: ISerializer = {
+    type: "URL",
+    serialize: (value: URL) => value.href,
+    deserialize: (value: string) => new URL(value),
+    test: (value: any) => value instanceof URL,
+};
+
+const config = new Config('myDataBase');
+config.addSerializer(urlSerializer);
+
+const db = new JsonDB(config);
+await db.push('/link', new URL('https://example.com'));
+const link = await db.getData('/link'); // URL instance
+```
+
+You can also use `defaultSerializers` directly with `JsonAdapter` for full control:
+
+```typescript
+import { JsonAdapter, FileAdapter, defaultSerializers, ISerializer } from 'node-json-db';
+
+const mySerializer: ISerializer = { /* ... */ };
+const adapter = new JsonAdapter(
+    new FileAdapter('mydb.json', false),
+    false,
+    [...defaultSerializers, mySerializer]
+);
+```
 
 ### Exception/Error
 #### Type

@@ -9,8 +9,10 @@ import {readLockAsync, writeLockAsync} from "./lock/Lock";
 export {Config, ConfigWithAdapter} from './lib/JsonDBConfig'
 export {DatabaseError, DataError} from './lib/Errors'
 export type {IAdapter} from './adapter/IAdapter'
+export type {ISerializer} from './adapter/data/ISerializer'
 export {JsonAdapter} from './adapter/data/JsonAdapter'
 export {FileAdapter} from './adapter/file/FileAdapter'
+export {DateSerializer, SetSerializer, MapSerializer, RegExpSerializer, BigIntSerializer, defaultSerializers} from './adapter/data/Serializers'
 
 type DataPath = Array<string>
 
