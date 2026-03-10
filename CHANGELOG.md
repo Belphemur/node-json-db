@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/Belphemur/node-json-db/compare/v2.5.0...v2.6.0) (2026-03-10)
+
+
+### Features
+
+* add serialization support for Set, Map, Date, RegExp, and BigInt via ISerializer contract ([#1136](https://github.com/Belphemur/node-json-db/issues/1136)) ([ac65a44](https://github.com/Belphemur/node-json-db/commit/ac65a44908d911030035dec9f72da465a13380f5))
+
 # [2.5.0](https://github.com/Belphemur/node-json-db/compare/v2.4.2...v2.5.0) (2026-02-16)
 
 
