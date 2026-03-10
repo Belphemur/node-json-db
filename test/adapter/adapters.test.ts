@@ -5,6 +5,7 @@ import {JsonAdapter} from "../../src/adapter/data/JsonAdapter";
 import {IAdapter} from "../../src/adapter/IAdapter";
 import {ConfigWithAdapter} from "../../src/lib/JsonDBConfig";
 import {DataError} from "../../src/lib/Errors";
+import {defaultSerializers} from "../../src/adapter/data/Serializers";
 
 function checkFileExists(file: string): Promise<boolean> {
     return fs.promises.access(file, fs.constants.F_OK)
@@ -150,31 +151,6 @@ describe('Adapter', () => {
                 expect(readObject.test).toBe(data.test);
             })
 
-            test('should not parse ISO date strings when parseDates is false', async () => {
-                const adapter = new JsonAdapter(new MemoryAdapter(), false, false);
-                const data = {
-                    myDate: new Date().toISOString(),
-                }
-
-                await adapter.writeAsync(data);
-                const readObject = await adapter.readAsync();
-                expect(readObject.myDate).toBe(data.myDate);
-                expect(typeof readObject.myDate).toBe("string");
-            })
-
-            test('should not serialize Date objects when parseDates is false', async () => {
-                const adapter = new JsonAdapter(new MemoryAdapter(), false, false);
-                const date = new Date();
-                const data = {
-                    myDate: date,
-                }
-
-                await adapter.writeAsync(data);
-                const readObject = await adapter.readAsync();
-                expect(typeof readObject.myDate).toBe("string");
-                expect(readObject.myDate).toBe(date.toISOString());
-            })
-
             test('should serialize and deserialize a Set', async () => {
                 const adapter = new JsonAdapter(new MemoryAdapter(), false);
                 const data = {
@@ -300,8 +276,7 @@ describe('Adapter', () => {
                     deserialize: (value: string) => new Url(value),
                     test: (value: any) => value instanceof Url,
                 };
-                const {defaultSerializers} = require("../../src/adapter/data/Serializers");
-                const adapter = new JsonAdapter(new MemoryAdapter(), false, true, [...defaultSerializers, urlSerializer]);
+                const adapter = new JsonAdapter(new MemoryAdapter(), false, [...defaultSerializers, urlSerializer]);
                 const data = {
                     link: new Url("https://example.com"),
                     tags: new Set(["a", "b"]),
@@ -363,6 +338,48 @@ describe('Adapter', () => {
                 expect(result.bool).toBe(true);
                 expect(result.nil).toBeNull();
             })
+
+            test('should escape user data that has __type matching a serializer name', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    custom: {__type: "Set", __value: [1, 2, 3]}
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.custom.__type).toBe("Set");
+                expect(readObject.custom.__value).toEqual([1, 2, 3]);
+                expect(readObject.custom).not.toBeInstanceOf(Set);
+            })
+
+            test('should escape nested user data with __type properties', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    outer: {
+                        inner: {__type: "Map", __value: "not really a map"},
+                        real: new Set([1, 2])
+                    }
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.outer.inner.__type).toBe("Map");
+                expect(readObject.outer.inner.__value).toBe("not really a map");
+                expect(readObject.outer.real).toBeInstanceOf(Set);
+                expect(readObject.outer.real.has(1)).toBe(true);
+            })
+
+            test('should escape user data with __type that is a non-string value', async () => {
+                const adapter = new JsonAdapter(new MemoryAdapter(), false);
+                const data = {
+                    custom: {__type: 42, extra: "data"}
+                }
+
+                await adapter.writeAsync(data);
+                const readObject = await adapter.readAsync();
+                expect(readObject.custom.__type).toBe(42);
+                expect(readObject.custom.extra).toBe("data");
+            })
         })
     });
     describe('Config', () => {
@@ -371,6 +388,27 @@ describe('Adapter', () => {
             await config.adapter.writeAsync({test: "test"});
             const result = await config.adapter.readAsync();
             expect(result.test).toBe("test");
+        });
+
+        test('should add custom serializer via addSerializer', async () => {
+            const {Config} = require("../../src/lib/JsonDBConfig");
+            class Url {
+                constructor(public href: string) {}
+            }
+            const urlSerializer = {
+                type: "URL",
+                serialize: (value: Url) => value.href,
+                deserialize: (value: string) => new Url(value),
+                test: (value: any) => value instanceof Url,
+            };
+            const config = new Config('/tmp/test-serializer');
+            config.addSerializer(urlSerializer);
+            await config.adapter.writeAsync({link: new Url("https://example.com"), tags: new Set(["a"])});
+            const result = await config.adapter.readAsync();
+            expect(result.link).toBeInstanceOf(Url);
+            expect(result.link.href).toBe("https://example.com");
+            expect(result.tags).toBeInstanceOf(Set);
+            try { fs.rmSync("/tmp/test-serializer.json"); } catch {}
         });
     });
 });

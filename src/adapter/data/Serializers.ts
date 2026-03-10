@@ -129,9 +129,10 @@ export class BigIntSerializer implements ISerializer {
  * Default serializers included with the JsonAdapter.
  * Provides built-in support for Date, Set, Map, RegExp, and BigInt types.
  *
- * You can extend this list with your own serializers:
+ * This array is frozen (immutable). To extend it with your own serializers,
+ * spread it into a new array:
  * ```typescript
- * import { JsonAdapter, defaultSerializers, ISerializer } from 'node-json-db';
+ * import { defaultSerializers, ISerializer } from 'node-json-db';
  *
  * const mySerializer: ISerializer = {
  *   type: "MyType",
@@ -140,13 +141,14 @@ export class BigIntSerializer implements ISerializer {
  *   test: (value) => value instanceof MyType,
  * };
  *
- * const adapter = new JsonAdapter(fileAdapter, false, true, [...defaultSerializers, mySerializer]);
+ * // Use with Config.addSerializer() or spread into a custom list:
+ * const serializers = [...defaultSerializers, mySerializer];
  * ```
  */
-export const defaultSerializers: ISerializer[] = [
+export const defaultSerializers: readonly ISerializer[] = Object.freeze([
     new DateSerializer(),
     new SetSerializer(),
     new MapSerializer(),
     new RegExpSerializer(),
     new BigIntSerializer(),
-];
+]);

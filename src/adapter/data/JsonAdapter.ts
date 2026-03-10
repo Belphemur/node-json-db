@@ -6,27 +6,18 @@ export class JsonAdapter implements IAdapter<any> {
 
     private readonly adapter: IAdapter<string>;
     private readonly humanReadable: boolean;
-    private readonly serializers: ISerializer[];
+    private readonly serializers: readonly ISerializer[];
 
 
     /**
      * @param adapter The underlying string adapter for reading/writing raw data
      * @param humanReadable Whether to pretty-print the JSON output
-     * @param parseDates Whether to serialize/deserialize Date objects (default: true).
-     *   When true, a DateSerializer is included in the serializer list.
-     *   When false, Date objects are excluded from serialization.
      * @param serializers Custom serializers for complex types (default: Date, Set, Map, RegExp, BigInt).
-     *   When providing custom serializers, the parseDates flag still controls
-     *   whether the DateSerializer is included.
      */
-    constructor(adapter: IAdapter<string>, humanReadable: boolean = false, parseDates: boolean = true, serializers: ISerializer[] = defaultSerializers) {
+    constructor(adapter: IAdapter<string>, humanReadable: boolean = false, serializers: readonly ISerializer[] = defaultSerializers) {
         this.adapter = adapter;
         this.humanReadable = humanReadable;
-        if (parseDates) {
-            this.serializers = serializers;
-        } else {
-            this.serializers = serializers.filter(s => s.type !== "Date");
-        }
+        this.serializers = serializers;
     }
 
     async readAsync(): Promise<any> {
@@ -37,10 +28,17 @@ export class JsonAdapter implements IAdapter<any> {
         }
         const serializers = this.serializers;
         const reviver = function (key: string, value: any): any {
-            if (value !== null && typeof value === 'object' && '__type' in value && '__value' in value) {
-                for (const serializer of serializers) {
-                    if (value.__type === serializer.type) {
-                        return serializer.deserialize(value.__value);
+            if (value !== null && typeof value === 'object' && '__type' in value) {
+                // Un-escape user data that naturally contained __type
+                if (typeof value.__type === 'object' && value.__type !== null && '__escaped' in value.__type) {
+                    return {...value, __type: value.__type.__escaped};
+                }
+                // Deserialize known serialized types
+                if ('__value' in value) {
+                    for (const serializer of serializers) {
+                        if (value.__type === serializer.type) {
+                            return serializer.deserialize(value.__value);
+                        }
                     }
                 }
             }
@@ -57,6 +55,10 @@ export class JsonAdapter implements IAdapter<any> {
                 if (rawValue !== null && rawValue !== undefined && serializer.test(rawValue)) {
                     return {__type: serializer.type, __value: serializer.serialize(rawValue)};
                 }
+            }
+            // Escape plain objects that naturally contain __type to prevent false deserialization
+            if (typeof value === 'object' && value !== null && !Array.isArray(value) && '__type' in value) {
+                return {...value, __type: {__escaped: value.__type}};
             }
             return value;
         };
