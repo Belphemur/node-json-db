@@ -4,6 +4,12 @@
   "description": "Database using JSON file as storage for Node.JS",
   "main": "dist/JsonDB.js",
   "types": "dist/JsonDB.d.ts",
+  "imports": {
+    "#/*": {
+      "types": "./src/*",
+      "default": "./dist/*"
+    }
+  },
   "scripts": {
     "test": "jest --coverage",
     "build": "tsc",
@@ -71,7 +77,7 @@
     "semantic-release": "^25.0.0",
     "ts-jest": "^29.4.5",
     "typedoc": "^0.28.14",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.2"
   },
   "commitlint": {
     "extends": [

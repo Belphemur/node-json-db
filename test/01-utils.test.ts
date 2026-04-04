@@ -1,5 +1,5 @@
-import { ArrayInfo, arrayRegex } from '../src/lib/ArrayInfo'
-import { DataError } from '../src/lib/Errors'
+import { ArrayInfo, arrayRegex } from '../src/lib/ArrayInfo.js'
+import { DataError } from '../src/lib/Errors.js'
 
 const SafeRegex = require('safe-regex')
 
