@@ -1,9 +1,9 @@
-import { Config } from "../src/lib/JsonDBConfig";
-import { JsonDB } from "../src/JsonDB";
+import { Config } from "../src/lib/JsonDBConfig.js";
+import { JsonDB } from "../src/JsonDB.js";
 import { generateKeyPairSync, generateKeySync, randomBytes, randomUUID } from "crypto";
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
-import { CipheredFileAdapter } from "../src/adapter/file/CipheredFileAdapter";
-import { DataError } from "../src/lib/Errors";
+import { CipheredFileAdapter } from "../src/adapter/file/CipheredFileAdapter.js";
+import { DataError } from "../src/lib/Errors.js";
 
 describe('Ciphered', () => {
     const getData = () => ({

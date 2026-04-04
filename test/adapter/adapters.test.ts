@@ -1,11 +1,11 @@
-import {FileAdapter} from "../../src/adapter/file/FileAdapter";
+import {FileAdapter} from "../../src/adapter/file/FileAdapter.js";
 import * as fs from "fs";
 import * as fsPromise from 'node:fs/promises'
-import {JsonAdapter} from "../../src/adapter/data/JsonAdapter";
-import {IAdapter} from "../../src/adapter/IAdapter";
-import {ConfigWithAdapter} from "../../src/lib/JsonDBConfig";
-import {DataError} from "../../src/lib/Errors";
-import {defaultSerializers} from "../../src/adapter/data/Serializers";
+import {JsonAdapter} from "../../src/adapter/data/JsonAdapter.js";
+import {IAdapter} from "../../src/adapter/IAdapter.js";
+import {ConfigWithAdapter} from "../../src/lib/JsonDBConfig.js";
+import {DataError} from "../../src/lib/Errors.js";
+import {defaultSerializers} from "../../src/adapter/data/Serializers.js";
 
 function checkFileExists(file: string): Promise<boolean> {
     return fs.promises.access(file, fs.constants.F_OK)
@@ -391,7 +391,7 @@ describe('Adapter', () => {
         });
 
         test('should add custom serializer via addSerializer', async () => {
-            const {Config} = require("../../src/lib/JsonDBConfig");
+            const {Config} = require("../../src/lib/JsonDBConfig.js");
             class Url {
                 constructor(public href: string) {}
             }

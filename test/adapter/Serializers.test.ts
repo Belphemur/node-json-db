@@ -1,4 +1,4 @@
-import {DateSerializer, SetSerializer, MapSerializer, RegExpSerializer, BigIntSerializer, defaultSerializers} from "../../src/adapter/data/Serializers";
+import {DateSerializer, SetSerializer, MapSerializer, RegExpSerializer, BigIntSerializer, defaultSerializers} from "../../src/adapter/data/Serializers.js";
 
 describe('Serializers', () => {
     describe('DateSerializer', () => {

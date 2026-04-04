@@ -1,4 +1,4 @@
-import {JsonDB} from '../src/JsonDB'
+import {JsonDB} from '../src/JsonDB.js'
 
 describe('JsonDB', () => {
     let db: JsonDB
