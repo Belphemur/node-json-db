@@ -1,5 +1,5 @@
-import { ReadWriteLock } from "./ReadWriteLock";
-import { TimeoutError } from "./Error";
+import { ReadWriteLock } from "#/lock/ReadWriteLock.js";
+import { TimeoutError } from "#/lock/Error.js";
 
 const lock = new ReadWriteLock();
 

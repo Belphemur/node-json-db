@@ -1,4 +1,4 @@
-import {ISerializer} from "./ISerializer";
+import {ISerializer} from "#/adapter/data/ISerializer.js";
 
 /**
  * Serializer for JavaScript Date objects.

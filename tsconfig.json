@@ -1,18 +1,17 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "target": "esnext",
-    "module":"commonjs",
-    "lib": ["es2015", "es2016", "es2017", "dom", "es6"],
+    "module": "nodenext",
+    "lib": ["es2020", "dom"],
     "strict": true,
     "sourceMap": true,
     "declaration": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "useUnknownInCatchVariables": false,
     "isolatedModules": true,
+    "rootDir": "src",
     "outDir": "dist",
+    "types": ["node"],
     "typeRoots": [
       "node_modules/@types"
     ]

@@ -1,4 +1,4 @@
-import {IFileAdapter} from "../IAdapter";
+import {IFileAdapter} from "#/adapter/IAdapter.js";
 import {readFile, open, FileHandle, mkdir} from "fs/promises";
 import * as path from "path";
 

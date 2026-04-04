@@ -4,6 +4,12 @@
   "description": "Database using JSON file as storage for Node.JS",
   "main": "dist/JsonDB.js",
   "types": "dist/JsonDB.d.ts",
+  "imports": {
+    "#/*": {
+      "types": "./src/*",
+      "default": "./dist/*"
+    }
+  },
   "scripts": {
     "test": "jest --coverage",
     "build": "tsc",

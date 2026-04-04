@@ -1,5 +1,5 @@
-import { JsonDB } from '../src/JsonDB'
-import { Config } from "../src/lib/JsonDBConfig"
+import { JsonDB } from '../src/JsonDB.js'
+import { Config } from "../src/lib/JsonDBConfig.js"
 
 describe('JsonDB', () => {
     describe('check existing database file', () => {

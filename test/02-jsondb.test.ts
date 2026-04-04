@@ -1,9 +1,9 @@
-import { DatabaseError, DataError } from "../src/lib/Errors"
-import { JsonDB } from "../src/JsonDB"
+import { DatabaseError, DataError } from "../src/lib/Errors.js"
+import { JsonDB } from "../src/JsonDB.js"
 import * as fs from 'fs'
-import { Config } from "../src/lib/JsonDBConfig"
-import { writeLockAsync } from "../src/lock/Lock";
-import { TimeoutError } from "../src/lock/Error";
+import { Config } from "../src/lib/JsonDBConfig.js"
+import { writeLockAsync } from "../src/lock/Lock.js";
+import { TimeoutError } from "../src/lock/Error.js";
 import { readFile, open, FileHandle, mkdir } from "fs/promises";
 
 

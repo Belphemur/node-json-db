@@ -1,5 +1,5 @@
-import { DataError } from './Errors'
-import { KeyValue } from './Utils'
+import { DataError } from '#/lib/Errors.js'
+import { KeyValue } from '#/lib/Utils.js'
 
 export const arrayRegex = () =>
   /^([\u0080-\uFFFF.0-9a-zA-Z_$%-][\u0080-\uFFFF0-9a-zA-Z_$%.%-]*)\[((?!(\]|\[)).*|)\]$/gm
