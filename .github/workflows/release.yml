@@ -23,7 +23,7 @@ jobs:
       - name: Enable pnpm
         run: corepack enable pnpm
       - name: Use Node.js  ${{ matrix.node }}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
           cache: "pnpm"
@@ -45,7 +45,7 @@ jobs:
       - name: Enable pnpm
         run: corepack enable pnpm
       - name: Setup Node.js ${{env.NODEJS}}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: ${{env.NODEJS}}
           cache: "pnpm"
@@ -73,7 +73,7 @@ jobs:
       - name: Enable pnpm
         run: sudo npm install -g corepack@latest npm@latest && corepack enable pnpm
       - name: Use Node.js ${{env.NODEJS}}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: ${{env.NODEJS}}
           cache: "pnpm"
@@ -95,7 +95,7 @@ jobs:
       - name: Enable pnpm
         run: corepack enable pnpm
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: ${{env.NODEJS}}
           cache: "pnpm"
