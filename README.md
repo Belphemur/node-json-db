@@ -121,7 +121,7 @@ This give you this results :
 // If you do this:
 await db.push("/test2/my/test/", 10, false);
 
-// The data will be overriden
+// The data will be overridden
 
 // Get the data from the root
 var data = await db.getData("/");
@@ -150,7 +150,7 @@ await db.delete("/test1");
 // Save the data (useful if you disable the saveOnPush)
 await db.save();
 
-// In case you have an exterior change to the databse file and want to reload it
+// In case you have an exterior change to the database file and want to reload it
 // use this method
 await db.reload();
 ```
@@ -367,7 +367,7 @@ const itemPath = db.fromPath("/myarray/3/children/1");
 import { JsonDB, Config } from "node-json-db";
 import { generateKeySync, randomBytes } from "crypto";
 
-// First instanciate Config class
+// First instantiate Config class
 const config = new Config("myDataBase", true, false, "/");
 
 // create or retrieve binary cipher key of minimum 32 bytes
@@ -386,7 +386,7 @@ const key = randomBytes(32);
 // myDataBase.json becomes myDataBase.enc.json
 config.setEncryption(key);
 
-// instanciate database
+// instantiate database
 const db = new JsonDB(config);
 
 // use your database as you would normally do
