@@ -1,3 +1,11 @@
+## [2.6.1](https://github.com/Belphemur/node-json-db/compare/v2.6.0...v2.6.1) (2026-11-14)
+
+
+### Bug Fixes
+
+* **deps:** remove duplicated @commitlint/config-conventional keys from pnpm-lock.yaml ([25e76ee](https://github.com/Belphemur/node-json-db/commit/25e76eeda3ff6578303e0c3e2def0d7edff1c61f))
+* keys named like Object.prototype members no longer crash push/getData and corrupt the DB ([#1198](https://github.com/Belphemur/node-json-db/issues/1198)) ([bb4f94a](https://github.com/Belphemur/node-json-db/commit/bb4f94a49bdc343b25fc85503c3991d361428fa2))
+
 # [2.6.0](https://github.com/Belphemur/node-json-db/compare/v2.5.0...v2.6.0) (2026-03-10)
 
 
