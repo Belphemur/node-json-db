@@ -150,6 +150,25 @@ describe('JsonDB', () => {
             expect(await db.getData("@mergeProto@other")).toBe(1)
         })
 
+        test('should delete data stored under a __proto__ key', async () => {
+            await db.push("@delProto@__proto__@name", "Haas")
+            await db.push("@delProto@team", "F1")
+            await db.delete("@delProto@__proto__")
+            const parent = await db.getData("@delProto")
+            expect(Object.getPrototypeOf(parent)).toBe(Object.prototype)
+            expect(parent).toEqual({ team: "F1" })
+            await db.delete("@delProto")
+            await expect(db.getData("@delProto")).rejects.toBeInstanceOf(DataError)
+        })
+
+        test('should delete a root-level __proto__ key without touching the prototype', async () => {
+            await db.push("@__proto__", { marker: "x" })
+            await db.delete("@__proto__")
+            const root = await db.getData("@")
+            expect(Object.getPrototypeOf(root)).toBe(Object.prototype)
+            expect(Object.prototype.hasOwnProperty.call(root, "__proto__")).toBe(false)
+        })
+
         test('should still set non-configurable own properties like an array length', async () => {
             await db.push("@lengthTest", [1, 2, 3])
             await db.push("@lengthTest@length", 1)
