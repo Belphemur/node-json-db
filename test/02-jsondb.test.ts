@@ -118,6 +118,16 @@ describe('JsonDB', () => {
             expect(await db.getData("@race")).toEqual({ constructor: "Ferrari", toString: "Red Bull" })
         })
 
+        test('should store and read under an object with its own hasOwnProperty key', async () => {
+            await db.push("@shadow", { hasOwnProperty: "Williams" })
+            await db.push("@shadow@team", "Alpine")
+            await db.push("@shadow@drivers[]", "Gasly")
+            expect(await db.getData("@shadow@hasOwnProperty")).toBe("Williams")
+            expect(await db.getData("@shadow@team")).toBe("Alpine")
+            expect(await db.getData("@shadow@drivers[0]")).toBe("Gasly")
+            expect(await db.exists("@shadow@missing")).toBe(false)
+        })
+
         test('should store the data with typing', async () => {
             expect.assertions(1);
             const object = { Hello: "test", World: 0 } as Test;

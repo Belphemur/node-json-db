@@ -139,7 +139,7 @@ export class ArrayInfo {
   public isValid(data: KeyValue): boolean {
     const { index, dataForProperty } =
       this.getArrayDataAndIndexFromProperty(data)
-    return dataForProperty.hasOwnProperty(index)
+    return Object.prototype.hasOwnProperty.call(dataForProperty, index)
   }
 
   private getArrayDataAndIndexFromProperty(data: KeyValue): any {

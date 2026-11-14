@@ -57,7 +57,7 @@ export class DBParentData {
 
         const arrayInfo = ArrayInfo.processArray(this.parent)
         if (arrayInfo) {
-            if (!this.data.hasOwnProperty(arrayInfo.property)) {
+            if (!Object.prototype.hasOwnProperty.call(this.data, arrayInfo.property)) {
                 this.data[arrayInfo.property] = []
             } else if (!Array.isArray(this.data[arrayInfo.property])) {
                 throw new DataError("DataPath: /" + this.dataPath + ". " + arrayInfo.property + " is not an array.", 11)
