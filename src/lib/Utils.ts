@@ -5,26 +5,27 @@ export interface KeyValue {
 export const merge = (...arrays: KeyValue[]): KeyValue => {
     const destination = {} as KeyValue
     arrays.forEach(function (source) {
-        var prop
-        for (prop in source) {
+        for (const prop of Object.keys(Object(source))) {
+            // Only own keys count: `__proto__` is inherited by every object.
+            const exists = Object.prototype.hasOwnProperty.call(destination, prop)
 
-            if (prop in destination && destination[prop] === null) {
-                destination[prop] = source[prop]
+            if (exists && destination[prop] === null) {
+                setOwnProperty(destination, prop, source[prop])
             }
-            else if (prop in destination && Array.isArray(destination[prop])) {
+            else if (exists && Array.isArray(destination[prop])) {
 
                 // Concat Arrays
-                destination[prop] = destination[prop].concat(source[prop])
+                setOwnProperty(destination, prop, destination[prop].concat(source[prop]))
 
-            } else if (prop in destination && typeof destination[prop] === "object") {
+            } else if (exists && typeof destination[prop] === "object") {
 
                 // Merge Objects
-                destination[prop] = merge(destination[prop], source[prop])
+                setOwnProperty(destination, prop, merge(destination[prop], source[prop]))
 
             } else {
 
                 // Set new values
-                destination[prop] = source[prop]
+                setOwnProperty(destination, prop, source[prop])
 
             }
         }

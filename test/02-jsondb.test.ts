@@ -140,6 +140,16 @@ describe('JsonDB', () => {
             expect(JSON.stringify(root)).toContain('"__proto__":{"marker":"x"}')
         })
 
+        test('should keep a stored __proto__ key when merging other data', async () => {
+            await db.push("@mergeProto@__proto__", { marker: "x" })
+            await db.push("@mergeProto", { other: 1 }, false)
+            const merged = await db.getData("@mergeProto")
+            expect(Object.getPrototypeOf(merged)).toBe(Object.prototype)
+            expect(Object.prototype.hasOwnProperty.call(merged, "__proto__")).toBe(true)
+            expect(await db.getData("@mergeProto@__proto__@marker")).toBe("x")
+            expect(await db.getData("@mergeProto@other")).toBe(1)
+        })
+
         test('should still set non-configurable own properties like an array length', async () => {
             await db.push("@lengthTest", [1, 2, 3])
             await db.push("@lengthTest@length", 1)
