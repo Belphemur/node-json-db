@@ -4,7 +4,7 @@ import { KeyValue } from '#/lib/Utils.js'
 export const arrayRegex = () =>
   /^([\u0080-\uFFFF.0-9a-zA-Z_$%-][\u0080-\uFFFF0-9a-zA-Z_$%.%-]*)\[((?!(\]|\[)).*|)\]$/gm
 
-const regexCache = {} as KeyValue
+const regexCache = new Map<string, ArrayInfo>()
 
 export class ArrayInfo {
   readonly property: string
@@ -33,8 +33,9 @@ export class ArrayInfo {
       return null
     }
 
-    if (regexCache[property]) {
-      return regexCache[property]
+    const cached = regexCache.get(property)
+    if (cached) {
+      return cached
     }
 
     const arrayIndexRegex = arrayRegex()
@@ -45,10 +46,9 @@ export class ArrayInfo {
       const nestedArrayMatches = '[' + match[2].toString() + ']'
       const nestedArrayIndicies = getArrayIndicies(nestedArrayMatches)
       validateArrayIndicies(nestedArrayIndicies)
-      return (regexCache[property] = new ArrayInfo(
-        propertyName,
-        nestedArrayIndicies
-      ))
+      const arrayInfo = new ArrayInfo(propertyName, nestedArrayIndicies)
+      regexCache.set(property, arrayInfo)
+      return arrayInfo
     }
 
     return null
@@ -139,7 +139,7 @@ export class ArrayInfo {
   public isValid(data: KeyValue): boolean {
     const { index, dataForProperty } =
       this.getArrayDataAndIndexFromProperty(data)
-    return dataForProperty.hasOwnProperty(index)
+    return Object.prototype.hasOwnProperty.call(dataForProperty, index)
   }
 
   private getArrayDataAndIndexFromProperty(data: KeyValue): any {

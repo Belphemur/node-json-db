@@ -19,6 +19,12 @@ describe('Utils', () => {
       expect(ArrayInfo.processArray('array[[[]]')).toBe(null)
     })
 
+    test('should not process Object.prototype names as arrays', () => {
+      for (const name of ['constructor', 'toString', 'valueOf', 'hasOwnProperty', '__proto__']) {
+        expect(ArrayInfo.processArray(name)).toBe(null)
+      }
+    })
+
     test('should process array with numerical key', () => {
       const arrayInfo = ArrayInfo.processArray('array[0]')
       expect(arrayInfo).toBeInstanceOf(ArrayInfo)
