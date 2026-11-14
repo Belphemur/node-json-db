@@ -258,10 +258,6 @@ packages:
     resolution: {integrity: sha512-BIFl8xM+3SLy3jrblUC3wmQLCVbLty+++6o859BDCmybVrQdXmIWO+dlkGIbv/M2bBoC55wGuh0zGiw3TPjL1g==}
     engines: {node: '>=22.12.0'}
 
-  '@commitlint/config-conventional@21.1.0':
-    resolution: {integrity: sha512-BIFl8xM+3SLy3jrblUC3wmQLCVbLty+++6o859BDCmybVrQdXmIWO+dlkGIbv/M2bBoC55wGuh0zGiw3TPjL1g==}
-    engines: {node: '>=22.12.0'}
-
   '@commitlint/config-validator@21.1.0':
     resolution: {integrity: sha512-gHczt1xqQSwfNqBmOI3HjejtTljkiBEUneExMmTBLD0WwTC78lAqDvNMyydbySt3DhpH0F9oX7Vvuks6s5XPFw==}
     engines: {node: '>=22.12.0'}
@@ -2924,11 +2920,6 @@ snapshots:
       - conventional-commits-filter
       - conventional-commits-parser
       - typescript
-
-  '@commitlint/config-conventional@21.1.0':
-    dependencies:
-      '@commitlint/types': 21.1.0
-      conventional-changelog-conventionalcommits: 9.3.1
 
   '@commitlint/config-conventional@21.1.0':
     dependencies:
