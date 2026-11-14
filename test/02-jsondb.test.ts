@@ -1,9 +1,9 @@
-import { DatabaseError, DataError } from "../src/lib/Errors"
-import { JsonDB } from "../src/JsonDB"
+import { DatabaseError, DataError } from "../src/lib/Errors.js"
+import { JsonDB } from "../src/JsonDB.js"
 import * as fs from 'fs'
-import { Config } from "../src/lib/JsonDBConfig"
-import { writeLockAsync } from "../src/lock/Lock";
-import { TimeoutError } from "../src/lock/Error";
+import { Config } from "../src/lib/JsonDBConfig.js"
+import { writeLockAsync } from "../src/lock/Lock.js";
+import { TimeoutError } from "../src/lock/Error.js";
 import { readFile, open, FileHandle, mkdir } from "fs/promises";
 
 
@@ -106,6 +106,73 @@ describe('JsonDB', () => {
             const object = { test: { test: "test" } }
             await db.push("@", object)
             expect(await db.getData("@")).toBe(object)
+        })
+
+        test('should store and read keys named like Object.prototype members', async () => {
+            await db.push("@race@constructor", "Ferrari")
+            await db.push("@race@toString", "Red Bull")
+            await db.push("@car", { valueOf: "McLaren" })
+            expect(await db.getData("@race@constructor")).toBe("Ferrari")
+            expect(await db.getData("@race@toString")).toBe("Red Bull")
+            expect(await db.getData("@car@valueOf")).toBe("McLaren")
+            expect(await db.getData("@race")).toEqual({ constructor: "Ferrari", toString: "Red Bull" })
+        })
+
+        test('should store and read under an object with its own hasOwnProperty key', async () => {
+            await db.push("@shadow", { hasOwnProperty: "Williams" })
+            await db.push("@shadow@team", "Alpine")
+            await db.push("@shadow@drivers[]", "Gasly")
+            expect(await db.getData("@shadow@hasOwnProperty")).toBe("Williams")
+            expect(await db.getData("@shadow@team")).toBe("Alpine")
+            expect(await db.getData("@shadow@drivers[0]")).toBe("Gasly")
+            expect(await db.exists("@shadow@missing")).toBe(false)
+        })
+
+        test('should store a __proto__ key as data, not as the prototype', async () => {
+            await db.push("@__proto__", { marker: "x" })
+            await db.push("@team@__proto__@name", "Haas")
+            const root = await db.getData("@")
+            expect(Object.getPrototypeOf(root)).toBe(Object.prototype)
+            expect(Object.prototype.hasOwnProperty.call(root, "__proto__")).toBe(true)
+            expect(await db.getData("@__proto__")).toEqual({ marker: "x" })
+            expect(await db.getData("@__proto__@marker")).toBe("x")
+            expect(await db.getData("@team@__proto__@name")).toBe("Haas")
+            expect(JSON.stringify(root)).toContain('"__proto__":{"marker":"x"}')
+        })
+
+        test('should keep a stored __proto__ key when merging other data', async () => {
+            await db.push("@mergeProto@__proto__", { marker: "x" })
+            await db.push("@mergeProto", { other: 1 }, false)
+            const merged = await db.getData("@mergeProto")
+            expect(Object.getPrototypeOf(merged)).toBe(Object.prototype)
+            expect(Object.prototype.hasOwnProperty.call(merged, "__proto__")).toBe(true)
+            expect(await db.getData("@mergeProto@__proto__@marker")).toBe("x")
+            expect(await db.getData("@mergeProto@other")).toBe(1)
+        })
+
+        test('should delete data stored under a __proto__ key', async () => {
+            await db.push("@delProto@__proto__@name", "Haas")
+            await db.push("@delProto@team", "F1")
+            await db.delete("@delProto@__proto__")
+            const parent = await db.getData("@delProto")
+            expect(Object.getPrototypeOf(parent)).toBe(Object.prototype)
+            expect(parent).toEqual({ team: "F1" })
+            await db.delete("@delProto")
+            await expect(db.getData("@delProto")).rejects.toBeInstanceOf(DataError)
+        })
+
+        test('should delete a root-level __proto__ key without touching the prototype', async () => {
+            await db.push("@__proto__", { marker: "x" })
+            await db.delete("@__proto__")
+            const root = await db.getData("@")
+            expect(Object.getPrototypeOf(root)).toBe(Object.prototype)
+            expect(Object.prototype.hasOwnProperty.call(root, "__proto__")).toBe(false)
+        })
+
+        test('should still set non-configurable own properties like an array length', async () => {
+            await db.push("@lengthTest", [1, 2, 3])
+            await db.push("@lengthTest@length", 1)
+            expect(await db.getData("@lengthTest")).toEqual([1])
         })
 
         test('should store the data with typing', async () => {

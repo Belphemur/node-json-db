@@ -1,4 +1,4 @@
-import { FileAdapter } from "./FileAdapter";
+import { FileAdapter } from "#/adapter/file/FileAdapter.js";
 import { CipherKey, createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 
 const ALGO = 'aes-256-gcm';

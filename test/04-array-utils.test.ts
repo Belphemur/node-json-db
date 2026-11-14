@@ -1,6 +1,6 @@
-import {JsonDB} from '../src/JsonDB'
+import {JsonDB} from '../src/JsonDB.js'
 import * as fs from 'fs'
-import {Config} from "../src/lib/JsonDBConfig"
+import {Config} from "../src/lib/JsonDBConfig.js"
 
 
 describe('Array Utils', () => {

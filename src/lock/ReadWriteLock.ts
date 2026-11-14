@@ -1,4 +1,4 @@
-import { TimeoutError } from "./Error";
+import { TimeoutError } from "#/lock/Error.js";
 
 /**
  * Lock type enumeration

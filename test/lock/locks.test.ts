@@ -1,5 +1,5 @@
-import {readLockAsync, writeLockAsync} from "../../src/lock/Lock";
-import {TimeoutError} from "../../src/lock/Error";
+import {readLockAsync, writeLockAsync} from "../../src/lock/Lock.js";
+import {TimeoutError} from "../../src/lock/Error.js";
 
 describe('Lock', () => {
     test('should be able to just read', async () => {

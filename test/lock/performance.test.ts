@@ -1,4 +1,4 @@
-import { ReadWriteLock } from "../../src/lock/ReadWriteLock";
+import { ReadWriteLock } from "../../src/lock/ReadWriteLock.js";
 
 describe("ReadWriteLock Performance", () => {
   let lock: ReadWriteLock;

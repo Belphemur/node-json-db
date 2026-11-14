@@ -1,6 +1,6 @@
-import { IAdapter } from "../IAdapter";
-import { ISerializer } from "./ISerializer";
-import { defaultSerializers } from "./Serializers";
+import { IAdapter } from "#/adapter/IAdapter.js";
+import { ISerializer } from "#/adapter/data/ISerializer.js";
+import { defaultSerializers } from "#/adapter/data/Serializers.js";
 
 export class JsonAdapter implements IAdapter<any> {
   private readonly adapter: IAdapter<string>;

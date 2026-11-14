@@ -1,10 +1,10 @@
 import * as path from "path";
-import {IAdapter} from "../adapter/IAdapter";
-import {ISerializer} from "../adapter/data/ISerializer";
-import {JsonAdapter} from "../adapter/data/JsonAdapter";
-import {defaultSerializers} from "../adapter/data/Serializers";
-import {FileAdapter} from "../adapter/file/FileAdapter";
-import { CipheredFileAdapter } from "../adapter/file/CipheredFileAdapter";
+import {IAdapter} from "#/adapter/IAdapter.js";
+import {ISerializer} from "#/adapter/data/ISerializer.js";
+import {JsonAdapter} from "#/adapter/data/JsonAdapter.js";
+import {defaultSerializers} from "#/adapter/data/Serializers.js";
+import {FileAdapter} from "#/adapter/file/FileAdapter.js";
+import { CipheredFileAdapter } from "#/adapter/file/CipheredFileAdapter.js";
 import { CipherKey, KeyObject } from 'crypto';
 
 export interface JsonDBConfig {

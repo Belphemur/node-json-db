@@ -1,5 +1,5 @@
-import { Config } from "../src/lib/JsonDBConfig";
-import { JsonDB } from "../src/JsonDB";
+import { Config } from "../src/lib/JsonDBConfig.js";
+import { JsonDB } from "../src/JsonDB.js";
 import * as fs from 'fs'
 
 describe('Concurrency', () => {

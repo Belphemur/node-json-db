@@ -4,7 +4,7 @@ import {
   getArrayIndicies,
   validateArrayIndex,
   validateArrayIndicies,
-} from '../src/lib/ArrayInfo'
+} from '../src/lib/ArrayInfo.js'
 
 describe('ArrayInfo', () => {
   describe('constructor', () => {

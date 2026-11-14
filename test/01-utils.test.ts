@@ -1,5 +1,5 @@
-import { ArrayInfo, arrayRegex } from '../src/lib/ArrayInfo'
-import { DataError } from '../src/lib/Errors'
+import { ArrayInfo, arrayRegex } from '../src/lib/ArrayInfo.js'
+import { DataError } from '../src/lib/Errors.js'
 
 const SafeRegex = require('safe-regex')
 
@@ -17,6 +17,12 @@ describe('Utils', () => {
 
     test('should not process a not well formatted nested array', () => {
       expect(ArrayInfo.processArray('array[[[]]')).toBe(null)
+    })
+
+    test('should not process Object.prototype names as arrays', () => {
+      for (const name of ['constructor', 'toString', 'valueOf', 'hasOwnProperty', '__proto__']) {
+        expect(ArrayInfo.processArray(name)).toBe(null)
+      }
     })
 
     test('should process array with numerical key', () => {

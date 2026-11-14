@@ -1,18 +1,18 @@
-import {KeyValue, merge, removeTrailingChar} from './lib/Utils'
-import {DatabaseError, DataError} from './lib/Errors'
-import {DBParentData} from './lib/DBParentData'
-import {ArrayInfo} from './lib/ArrayInfo'
-import {JsonDBConfig} from './lib/JsonDBConfig'
-import {readLockAsync, writeLockAsync} from "./lock/Lock";
+import {KeyValue, merge, removeTrailingChar, setOwnProperty} from '#/lib/Utils.js'
+import {DatabaseError, DataError} from '#/lib/Errors.js'
+import {DBParentData} from '#/lib/DBParentData.js'
+import {ArrayInfo} from '#/lib/ArrayInfo.js'
+import {JsonDBConfig} from '#/lib/JsonDBConfig.js'
+import {readLockAsync, writeLockAsync} from "#/lock/Lock.js";
 
 //Export to be used by other projects that want to extend JsonDB
-export {Config, ConfigWithAdapter} from './lib/JsonDBConfig'
-export {DatabaseError, DataError} from './lib/Errors'
-export type {IAdapter} from './adapter/IAdapter'
-export type {ISerializer} from './adapter/data/ISerializer'
-export {JsonAdapter} from './adapter/data/JsonAdapter'
-export {FileAdapter} from './adapter/file/FileAdapter'
-export {DateSerializer, SetSerializer, MapSerializer, RegExpSerializer, BigIntSerializer, defaultSerializers} from './adapter/data/Serializers'
+export {Config, ConfigWithAdapter} from '#/lib/JsonDBConfig.js'
+export {DatabaseError, DataError} from '#/lib/Errors.js'
+export type {IAdapter} from '#/adapter/IAdapter.js'
+export type {ISerializer} from '#/adapter/data/ISerializer.js'
+export {JsonAdapter} from '#/adapter/data/JsonAdapter.js'
+export {FileAdapter} from '#/adapter/file/FileAdapter.js'
+export {DateSerializer, SetSerializer, MapSerializer, RegExpSerializer, BigIntSerializer, defaultSerializers} from '#/adapter/data/Serializers.js'
 
 type DataPath = Array<string>
 
@@ -61,14 +61,10 @@ export class JsonDB {
              * Find the wanted Data or create it.
              */
             function findData(isArray: boolean = false) {
-                if (data.hasOwnProperty(property)) {
+                if (Object.prototype.hasOwnProperty.call(data, property)) {
                     data = data[property]
                 } else if (create) {
-                    if (isArray) {
-                        data[property] = []
-                    } else {
-                        data[property] = {}
-                    }
+                    setOwnProperty(data, property, isArray ? [] : {})
                     data = data[property]
                 } else {
                     throw new DataError(
@@ -93,7 +89,7 @@ export class JsonDB {
                     )
                 }
                 const arrayIndex = arrayInfo.getIndex(data, true)
-                if (!arrayInfo.append && data.hasOwnProperty(arrayIndex)) {
+                if (!arrayInfo.append && Object.prototype.hasOwnProperty.call(data, arrayIndex)) {
                     data = arrayInfo.getData(data)
                 } else if (create) {
                     if (arrayInfo.append) {

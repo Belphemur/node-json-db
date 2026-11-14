@@ -1,7 +1,7 @@
-import {ArrayInfo} from "./ArrayInfo"
-import {DataError} from "./Errors"
-import {KeyValue} from "./Utils"
-import {JsonDB} from "../JsonDB"
+import {ArrayInfo} from "#/lib/ArrayInfo.js"
+import {DataError} from "#/lib/Errors.js"
+import {KeyValue, setOwnProperty} from "#/lib/Utils.js"
+import {JsonDB} from "#/JsonDB.js"
 
 export class DBParentData {
     readonly parent?: string
@@ -57,14 +57,14 @@ export class DBParentData {
 
         const arrayInfo = ArrayInfo.processArray(this.parent)
         if (arrayInfo) {
-            if (!this.data.hasOwnProperty(arrayInfo.property)) {
-                this.data[arrayInfo.property] = []
+            if (!Object.prototype.hasOwnProperty.call(this.data, arrayInfo.property)) {
+                setOwnProperty(this.data, arrayInfo.property, [])
             } else if (!Array.isArray(this.data[arrayInfo.property])) {
                 throw new DataError("DataPath: /" + this.dataPath + ". " + arrayInfo.property + " is not an array.", 11)
             }
             arrayInfo.setData(this.data, toSet)
         } else {
-            this.data[this.parent] = toSet
+            setOwnProperty(this.data, this.parent, toSet)
         }
 
     }
