@@ -32,6 +32,19 @@ export const merge = (...arrays: KeyValue[]): KeyValue => {
     return destination
 }
 
+/**
+ * Set an own property, even for keys like `__proto__` where a plain
+ * assignment would change the object's prototype instead.
+ */
+export const setOwnProperty = (target: any, key: string | number, value: any): void => {
+    Object.defineProperty(target, key, {
+        value,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+    })
+}
+
 export const removeTrailingChar = (dataPath: string, trailing: string): string => {
     if (dataPath.length > 1 && dataPath.endsWith(trailing)) {
         return dataPath.substring(0, dataPath.length - 1)

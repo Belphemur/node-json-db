@@ -128,6 +128,18 @@ describe('JsonDB', () => {
             expect(await db.exists("@shadow@missing")).toBe(false)
         })
 
+        test('should store a __proto__ key as data, not as the prototype', async () => {
+            await db.push("@__proto__", { marker: "x" })
+            await db.push("@team@__proto__@name", "Haas")
+            const root = await db.getData("@")
+            expect(Object.getPrototypeOf(root)).toBe(Object.prototype)
+            expect(Object.prototype.hasOwnProperty.call(root, "__proto__")).toBe(true)
+            expect(await db.getData("@__proto__")).toEqual({ marker: "x" })
+            expect(await db.getData("@__proto__@marker")).toBe("x")
+            expect(await db.getData("@team@__proto__@name")).toBe("Haas")
+            expect(JSON.stringify(root)).toContain('"__proto__":{"marker":"x"}')
+        })
+
         test('should store the data with typing', async () => {
             expect.assertions(1);
             const object = { Hello: "test", World: 0 } as Test;
