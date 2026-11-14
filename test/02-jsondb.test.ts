@@ -140,6 +140,12 @@ describe('JsonDB', () => {
             expect(JSON.stringify(root)).toContain('"__proto__":{"marker":"x"}')
         })
 
+        test('should still set non-configurable own properties like an array length', async () => {
+            await db.push("@lengthTest", [1, 2, 3])
+            await db.push("@lengthTest@length", 1)
+            expect(await db.getData("@lengthTest")).toEqual([1])
+        })
+
         test('should store the data with typing', async () => {
             expect.assertions(1);
             const object = { Hello: "test", World: 0 } as Test;
