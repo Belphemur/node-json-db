@@ -1,4 +1,4 @@
-import {KeyValue, merge, removeTrailingChar} from '#/lib/Utils.js'
+import {KeyValue, merge, removeTrailingChar, setOwnProperty} from '#/lib/Utils.js'
 import {DatabaseError, DataError} from '#/lib/Errors.js'
 import {DBParentData} from '#/lib/DBParentData.js'
 import {ArrayInfo} from '#/lib/ArrayInfo.js'
@@ -61,14 +61,10 @@ export class JsonDB {
              * Find the wanted Data or create it.
              */
             function findData(isArray: boolean = false) {
-                if (data.hasOwnProperty(property)) {
+                if (Object.prototype.hasOwnProperty.call(data, property)) {
                     data = data[property]
                 } else if (create) {
-                    if (isArray) {
-                        data[property] = []
-                    } else {
-                        data[property] = {}
-                    }
+                    setOwnProperty(data, property, isArray ? [] : {})
                     data = data[property]
                 } else {
                     throw new DataError(
@@ -93,7 +89,7 @@ export class JsonDB {
                     )
                 }
                 const arrayIndex = arrayInfo.getIndex(data, true)
-                if (!arrayInfo.append && data.hasOwnProperty(arrayIndex)) {
+                if (!arrayInfo.append && Object.prototype.hasOwnProperty.call(data, arrayIndex)) {
                     data = arrayInfo.getData(data)
                 } else if (create) {
                     if (arrayInfo.append) {
