@@ -108,6 +108,16 @@ describe('JsonDB', () => {
             expect(await db.getData("@")).toBe(object)
         })
 
+        test('should store and read keys named like Object.prototype members', async () => {
+            await db.push("@race@constructor", "Ferrari")
+            await db.push("@race@toString", "Red Bull")
+            await db.push("@car", { valueOf: "McLaren" })
+            expect(await db.getData("@race@constructor")).toBe("Ferrari")
+            expect(await db.getData("@race@toString")).toBe("Red Bull")
+            expect(await db.getData("@car@valueOf")).toBe("McLaren")
+            expect(await db.getData("@race")).toEqual({ constructor: "Ferrari", toString: "Red Bull" })
+        })
+
         test('should store the data with typing', async () => {
             expect.assertions(1);
             const object = { Hello: "test", World: 0 } as Test;
