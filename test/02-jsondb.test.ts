@@ -438,6 +438,7 @@ describe('JsonDB', () => {
         })
 
         test('should throw an error when deleting non-present index', async () => {
+            await db.push('/arraytest/myarray', ['test'])
             try {
                 await (async function (args) {
                     await db.delete(args)
@@ -535,6 +536,7 @@ describe('JsonDB', () => {
         })
 
         test('should throw an error when deleting a append command', async () => {
+            await db.push('/arraytest/appendArray', [1])
             try {
                 await (async function (args) {
                     await db.delete(args)
@@ -670,6 +672,14 @@ describe('JsonDB', () => {
             await db.push('/test', ['data'])
             await db.delete('/test')
             expect(await db.exists('/test')).toBeFalsy()
+        })
+
+        test('should not create missing parents when deleting a path that does not exist', async () => {
+            await db.push('/', { users: [{ id: 1 }, { id: 2 }] })
+            await db.delete('/missing/deep/key')
+            await db.delete('/users[5]/name')
+            await db.delete('/users[1]/missing/key')
+            expect(await db.getData('/')).toEqual({ users: [{ id: 1 }, { id: 2 }] })
         })
 
         test('should delete the data and save the file if saveOnPush is set', async () => {

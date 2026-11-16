@@ -364,10 +364,17 @@ export class JsonDB {
      */
     public async delete(dataPath: string): Promise<void> {
         await writeLockAsync(async () => {
-            const dbData = await this.getParentData(dataPath, true)
-            // if (!dbData) {
-            //   return
-            // }
+            let dbData: DBParentData
+            try {
+                dbData = await this.getParentData(dataPath, false)
+            } catch (e) {
+                // A parent on the path doesn't exist, so there is nothing to delete.
+                // Don't create it (that used to add empty objects and null array items).
+                if (e instanceof DataError && (e.id === 5 || e.id === 10)) {
+                    return
+                }
+                throw e
+            }
             dbData.delete()
 
             if (this.config.saveOnPush) {
