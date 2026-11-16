@@ -61,7 +61,7 @@ export class JsonDB {
              * Find the wanted Data or create it.
              */
             function findData(isArray: boolean = false) {
-                if (Object.prototype.hasOwnProperty.call(data, property)) {
+                if (data != null && Object.prototype.hasOwnProperty.call(data, property)) {
                     data = data[property]
                 } else if (create) {
                     setOwnProperty(data, property, isArray ? [] : {})
@@ -89,7 +89,10 @@ export class JsonDB {
                     )
                 }
                 const arrayIndex = arrayInfo.getIndex(data, true)
-                if (!arrayInfo.append && Object.prototype.hasOwnProperty.call(data, arrayIndex)) {
+                const exists =
+                    Object.prototype.hasOwnProperty.call(data, arrayIndex) &&
+                    (create || arrayInfo.hasInnerArrays(data))
+                if (!arrayInfo.append && exists) {
                     data = arrayInfo.getData(data)
                 } else if (create) {
                     if (arrayInfo.append) {
@@ -380,6 +383,10 @@ export class JsonDB {
                     return
                 }
                 throw e
+            }
+            // A missing last index of a nested array resolves to undefined: nothing to delete.
+            if (dbData.data === undefined || dbData.data === null) {
+                return
             }
             dbData.delete()
 

@@ -682,6 +682,16 @@ describe('JsonDB', () => {
             expect(await db.getData('/')).toEqual({ users: [{ id: 1 }, { id: 2 }] })
         })
 
+        test('should leave data unchanged when deleting below a missing nested array index', async () => {
+            await db.push('/', { matrix: [[]] }, true)
+            const save = jest.spyOn(db, 'save')
+            await db.delete('/matrix[0][5]/name')
+            await db.delete('/matrix[0][5][0]/name')
+            expect(save).not.toHaveBeenCalled()
+            save.mockRestore()
+            expect(await db.getData('/')).toEqual({ matrix: [[]] })
+        })
+
         test('should reject a delete through an append segment in the middle of the path', async () => {
             await db.push('/', { users: [{ id: 1 }, { id: 2 }] }, true)
             await expect(db.delete('/users[]/id')).rejects.toMatchObject({ id: 10 })
