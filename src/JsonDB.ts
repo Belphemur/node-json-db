@@ -171,7 +171,8 @@ export class JsonDB {
             if (!(e instanceof DataError)) {
                 throw e;
             }
-            if (e.id != 5) {
+            // 5: a key is missing, 10: an array index is missing
+            if (e.id != 5 && e.id != 10) {
                 throw e;
             }
             return defaultValue as T;
