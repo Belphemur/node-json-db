@@ -380,6 +380,15 @@ describe('JsonDB', () => {
             }
         })
 
+        test('should throw an Error when using a fractional or negative array index', async () => {
+            // such an index would be stored as a plain property of the array,
+            // which JSON.stringify drops, so the value was lost on the next save
+            for (const index of ['1.5', '-2']) {
+                await expect(db.push(`/arraytest/myarray[${index}]`, "works", true)).rejects.toMatchObject({ id: 200 })
+                await expect(db.getData(`/arraytest/myarray[${index}]`)).rejects.toBeInstanceOf(DataError)
+            }
+        })
+
         test('should add an object at index 1', async () => {
             const obj = { property: "perfect" }
             await db.push('/arraytest/myarray[1]', obj, true)

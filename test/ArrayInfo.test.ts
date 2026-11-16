@@ -89,6 +89,21 @@ describe('ArrayInfo', () => {
         validateArrayIndex('10')
       }).not.toThrow()
     })
+    test('should throw error when array index is not a whole number', () => {
+      expect(() => {
+        validateArrayIndex('1.5')
+      }).toThrow('Only numerical values accepted for array index')
+    })
+    test('should throw error when array index is negative but not -1', () => {
+      expect(() => {
+        validateArrayIndex('-2')
+      }).toThrow('Only -1 is accepted as a negative array index')
+    })
+    test('should succeed when array index is -1', () => {
+      expect(() => {
+        validateArrayIndex('-1')
+      }).not.toThrow()
+    })
   })
   describe('getArrayIndicies()', () => {
     test('should succeed when valid array indexes are passed in', () => {
