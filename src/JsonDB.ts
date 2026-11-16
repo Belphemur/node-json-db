@@ -459,12 +459,17 @@ export class JsonDB {
             normalPath.push(`/${pathKey}`)
 
             const pathValue = pathObject[pathKey]
+            let pathIndex: number
             try {
-                const pathIndex = await this.getIndex(normalPath.join(""), pathValue, propertyName)
-                normalPath.push(`[${pathIndex}]`)
+                pathIndex = await this.getIndex(normalPath.join(""), pathValue, propertyName)
             } catch (error) {
                 throw new DataError(`DataPath: ${normalPath.join("")}/${pathValue} not found.`, 13, error)
             }
+            // getIndex returns -1 when nothing matches, and [-1] means "last item" in a DataPath
+            if (pathIndex === -1) {
+                throw new DataError(`DataPath: ${normalPath.join("")}/${pathValue} not found.`, 13)
+            }
+            normalPath.push(`[${pathIndex}]`)
         }
     
         return normalPath.join("")
