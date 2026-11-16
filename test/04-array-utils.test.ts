@@ -306,6 +306,7 @@ describe('Array Utils', () => {
                 'DataPath: /recipes[0]/nested/zzz not found.'
             )
             await expect(db.fromPath('/recipes/999')).rejects.toMatchObject({ id: 13 })
+            await expect(db.fromPath('/recipes/1/nested/zzz')).rejects.toMatchObject({ id: 13 })
             expect(await db.fromPath('/recipes/1/nested/b')).toEqual('/recipes[0]/nested[1]')
         })
     })
