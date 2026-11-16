@@ -526,6 +526,12 @@ describe('JsonDB', () => {
             expect(json.deleteTest.array[1]).toBe(undefined)
         })
 
+        test('should still throw when a parent on the delete path is not an array', async () => {
+            await db.push('/deleteNotArray/value', 'x')
+            await expect(db.delete('/deleteNotArray[0]/value')).rejects.toMatchObject({ id: 11 })
+            expect(await db.getData('/deleteNotArray')).toEqual({ value: 'x' })
+        })
+
         test('should append a value to the existing array', async () => {
             await db.push('/arraytest/appendArray', [0], true)
             await db.push('/arraytest/appendArray[]', 1, true)
