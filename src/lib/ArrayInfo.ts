@@ -142,6 +142,26 @@ export class ArrayInfo {
     return Object.prototype.hasOwnProperty.call(dataForProperty, index)
   }
 
+  /**
+   * Check that the inner arrays of a nested index (all but the last index) exist,
+   * so getData() can't fail with a TypeError on a missing inner array.
+   * @param data the array for this property
+   */
+  public hasInnerArrays(data: KeyValue): boolean {
+    let tempData: any = data instanceof Array ? data : data[this.property] ?? data
+    for (const raw of this.indicies.slice(0, -1)) {
+      let index = +raw
+      if (index === -1) {
+        index = tempData.length - 1
+      }
+      tempData = tempData[index]
+      if (tempData === null || typeof tempData !== 'object') {
+        return false
+      }
+    }
+    return true
+  }
+
   private getArrayDataAndIndexFromProperty(data: KeyValue): any {
     let indexToPull = 0
     let tempData = data instanceof Array ? data : data[this.property] ?? data

@@ -61,7 +61,7 @@ export class JsonDB {
              * Find the wanted Data or create it.
              */
             function findData(isArray: boolean = false) {
-                if (Object.prototype.hasOwnProperty.call(data, property)) {
+                if (data != null && Object.prototype.hasOwnProperty.call(data, property)) {
                     data = data[property]
                 } else if (create) {
                     setOwnProperty(data, property, isArray ? [] : {})
@@ -89,7 +89,10 @@ export class JsonDB {
                     )
                 }
                 const arrayIndex = arrayInfo.getIndex(data, true)
-                if (!arrayInfo.append && Object.prototype.hasOwnProperty.call(data, arrayIndex)) {
+                const exists =
+                    Object.prototype.hasOwnProperty.call(data, arrayIndex) &&
+                    (create || arrayInfo.hasInnerArrays(data))
+                if (!arrayInfo.append && exists) {
                     data = arrayInfo.getData(data)
                 } else if (create) {
                     if (arrayInfo.append) {
@@ -364,10 +367,27 @@ export class JsonDB {
      */
     public async delete(dataPath: string): Promise<void> {
         await writeLockAsync(async () => {
-            const dbData = await this.getParentData(dataPath, true)
-            // if (!dbData) {
-            //   return
-            // }
+            let dbData: DBParentData
+            try {
+                dbData = await this.getParentData(dataPath, false)
+            } catch (e) {
+                // A parent on the path doesn't exist, so there is nothing to delete.
+                // Don't create it (that used to add empty objects and null array items).
+                if (e instanceof DataError && (e.id === 5 || e.id === 10)) {
+                    // An append segment ('[]') higher up the path points at an item that
+                    // can't exist yet; reject it like a trailing append segment.
+                    const parents = this.processDataPath(dataPath).slice(0, -1)
+                    if (parents.some((part) => ArrayInfo.processArray(part)?.append)) {
+                        throw new DataError("Can't delete an appended data", 10)
+                    }
+                    return
+                }
+                throw e
+            }
+            // A missing last index of a nested array resolves to undefined: nothing to delete.
+            if (dbData.data === undefined || dbData.data === null) {
+                return
+            }
             dbData.delete()
 
             if (this.config.saveOnPush) {
