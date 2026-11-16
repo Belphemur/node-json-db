@@ -371,6 +371,12 @@ export class JsonDB {
                 // A parent on the path doesn't exist, so there is nothing to delete.
                 // Don't create it (that used to add empty objects and null array items).
                 if (e instanceof DataError && (e.id === 5 || e.id === 10)) {
+                    // An append segment ('[]') higher up the path points at an item that
+                    // can't exist yet; reject it like a trailing append segment.
+                    const parents = this.processDataPath(dataPath).slice(0, -1)
+                    if (parents.some((part) => ArrayInfo.processArray(part)?.append)) {
+                        throw new DataError("Can't delete an appended data", 10)
+                    }
                     return
                 }
                 throw e

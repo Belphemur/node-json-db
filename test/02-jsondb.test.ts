@@ -682,6 +682,13 @@ describe('JsonDB', () => {
             expect(await db.getData('/')).toEqual({ users: [{ id: 1 }, { id: 2 }] })
         })
 
+        test('should reject a delete through an append segment in the middle of the path', async () => {
+            await db.push('/', { users: [{ id: 1 }, { id: 2 }] }, true)
+            await expect(db.delete('/users[]/id')).rejects.toMatchObject({ id: 10 })
+            await expect(db.delete('/users[]')).rejects.toMatchObject({ id: 10 })
+            expect(await db.getData('/')).toEqual({ users: [{ id: 1 }, { id: 2 }] })
+        })
+
         test('should delete the data and save the file if saveOnPush is set', async () => {
             const object = { test: { readable: "test" } }
             await db.push("/", object)
