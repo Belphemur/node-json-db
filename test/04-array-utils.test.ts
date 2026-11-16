@@ -293,6 +293,21 @@ describe('Array Utils', () => {
 
             expect(normalPath).toEqual('/recipes[1]/nested[1]')
         })
+        test('should throw when an id is not in the array instead of pointing to the last item', async () => {
+            await db.push('/recipes', [
+                { id: '1', name: 'Gratin', nested: [{ id: 'a' }, { id: 'b' }] },
+                { id: '2', name: 'Cheesecake' },
+            ], true)
+
+            await expect(db.fromPath('/recipes/999')).rejects.toThrow(
+                'DataPath: /recipes/999 not found.'
+            )
+            await expect(db.fromPath('/recipes/1/nested/zzz')).rejects.toThrow(
+                'DataPath: /recipes[0]/nested/zzz not found.'
+            )
+            await expect(db.fromPath('/recipes/999')).rejects.toMatchObject({ id: 13 })
+            expect(await db.fromPath('/recipes/1/nested/b')).toEqual('/recipes[0]/nested[1]')
+        })
     })
     describe('Cleanup', () => {
         test('should remove the test files', async () => {
