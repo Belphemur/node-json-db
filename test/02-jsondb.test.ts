@@ -197,6 +197,14 @@ describe('JsonDB', () => {
             expect(result).toBe("defaultValue")
         })
 
+        test('should get default value when the array index is not found', async () => {
+            expect.assertions(3);
+            await db.push("@lol@list", [{ name: "a" }])
+            expect(await db.getObjectDefault<string>("@lol@list[5]", "defaultValue")).toBe("defaultValue")
+            expect(await db.getObjectDefault<string>("@lol@list[5]@name", "defaultValue")).toBe("defaultValue")
+            expect(await db.getObjectDefault<string>("@lol@list[0]@name", "defaultValue")).toBe("a")
+        })
+
         test('should get exception when not the right data type', async () => {
             expect.assertions(1);
             const object = { Hello: "test", World: 0 } as Test;
@@ -380,6 +388,15 @@ describe('JsonDB', () => {
             }
         })
 
+        test('should throw an Error when using a fractional or negative array index', async () => {
+            // such an index would be stored as a plain property of the array,
+            // which JSON.stringify drops, so the value was lost on the next save
+            for (const index of ['1.5', '-2']) {
+                await expect(db.push(`/arraytest/myarray[${index}]`, "works", true)).rejects.toMatchObject({ id: 200 })
+                await expect(db.getData(`/arraytest/myarray[${index}]`)).rejects.toBeInstanceOf(DataError)
+            }
+        })
+
         test('should add an object at index 1', async () => {
             const obj = { property: "perfect" }
             await db.push('/arraytest/myarray[1]', obj, true)
@@ -438,6 +455,7 @@ describe('JsonDB', () => {
         })
 
         test('should throw an error when deleting non-present index', async () => {
+            await db.push('/arraytest/myarray', ['test'])
             try {
                 await (async function (args) {
                     await db.delete(args)
@@ -525,6 +543,12 @@ describe('JsonDB', () => {
             expect(json.deleteTest.array[1]).toBe(undefined)
         })
 
+        test('should still throw when a parent on the delete path is not an array', async () => {
+            await db.push('/deleteNotArray/value', 'x')
+            await expect(db.delete('/deleteNotArray[0]/value')).rejects.toMatchObject({ id: 11 })
+            expect(await db.getData('/deleteNotArray')).toEqual({ value: 'x' })
+        })
+
         test('should append a value to the existing array', async () => {
             await db.push('/arraytest/appendArray', [0], true)
             await db.push('/arraytest/appendArray[]', 1, true)
@@ -535,6 +559,7 @@ describe('JsonDB', () => {
         })
 
         test('should throw an error when deleting a append command', async () => {
+            await db.push('/arraytest/appendArray', [1])
             try {
                 await (async function (args) {
                     await db.delete(args)
@@ -670,6 +695,31 @@ describe('JsonDB', () => {
             await db.push('/test', ['data'])
             await db.delete('/test')
             expect(await db.exists('/test')).toBeFalsy()
+        })
+
+        test('should not create missing parents when deleting a path that does not exist', async () => {
+            await db.push('/', { users: [{ id: 1 }, { id: 2 }] })
+            await db.delete('/missing/deep/key')
+            await db.delete('/users[5]/name')
+            await db.delete('/users[1]/missing/key')
+            expect(await db.getData('/')).toEqual({ users: [{ id: 1 }, { id: 2 }] })
+        })
+
+        test('should leave data unchanged when deleting below a missing nested array index', async () => {
+            await db.push('/', { matrix: [[]] }, true)
+            const save = jest.spyOn(db, 'save')
+            await db.delete('/matrix[0][5]/name')
+            await db.delete('/matrix[0][5][0]/name')
+            expect(save).not.toHaveBeenCalled()
+            save.mockRestore()
+            expect(await db.getData('/')).toEqual({ matrix: [[]] })
+        })
+
+        test('should reject a delete through an append segment in the middle of the path', async () => {
+            await db.push('/', { users: [{ id: 1 }, { id: 2 }] }, true)
+            await expect(db.delete('/users[]/id')).rejects.toMatchObject({ id: 10 })
+            await expect(db.delete('/users[]')).rejects.toMatchObject({ id: 10 })
+            expect(await db.getData('/')).toEqual({ users: [{ id: 1 }, { id: 2 }] })
         })
 
         test('should delete the data and save the file if saveOnPush is set', async () => {
