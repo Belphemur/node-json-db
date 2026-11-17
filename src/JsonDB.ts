@@ -464,23 +464,15 @@ export class JsonDB {
 
         const [,...pathToQuery] = path.split("/")
 
-        const pathObject = pathToQuery.reduce((prev, curr, indexPath) => {
-            const isKey = indexPath % 2 === 0
-            if (isKey) {
-                prev[`${curr}`] = ''
-            } else {
-                const keys = Object.keys(prev)
-                prev[`${keys[keys.length - 1]}`] = `${curr}`
-            }
-            return prev
-        }, {} as {[key: string]:string})
-    
-        let normalPath: string[] = []
-    
-        for await (const pathKey of Object.keys(pathObject)) {
+        // Walk the segments in order, two at a time (key, then value).
+        // A key can come back deeper in the path (/comments/1/replies/2/replies/3).
+        const normalPath: string[] = []
+
+        for (let i = 0; i < pathToQuery.length; i += 2) {
+            const pathKey = pathToQuery[i]
+            const pathValue = pathToQuery[i + 1] ?? ''
             normalPath.push(`/${pathKey}`)
 
-            const pathValue = pathObject[pathKey]
             let pathIndex: number
             try {
                 pathIndex = await this.getIndex(normalPath.join(""), pathValue, propertyName)
@@ -493,7 +485,7 @@ export class JsonDB {
             }
             normalPath.push(`[${pathIndex}]`)
         }
-    
+
         return normalPath.join("")
     }
 }
