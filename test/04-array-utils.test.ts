@@ -320,6 +320,27 @@ describe('Array Utils', () => {
             expect(await reloaded.getIndex('/recipes', '2')).toBe(-1)
             expect(await reloaded.fromPath('/recipes/3/nested/b')).toEqual('/recipes[2]/nested[1]')
         })
+        test('should keep every level when a key comes back deeper in the path', async () => {
+            await db.push('/comments', [
+                {
+                    id: '1',
+                    replies: [
+                        { id: '7', replies: [] },
+                        { id: '2', replies: [{ id: '3', text: 'deep' }] },
+                    ],
+                },
+            ], true)
+
+            const normalPath = await db.fromPath('/comments/1/replies/2/replies/3')
+
+            expect(normalPath).toEqual('/comments[0]/replies[1]/replies[0]')
+            expect(await db.getData(normalPath)).toEqual({ id: '3', text: 'deep' })
+        })
+        test('should keep the order of integer-like keys', async () => {
+            await db.push('/years', [{ id: 'a', '2024': [{ id: 'x' }, { id: 'b' }] }], true)
+
+            expect(await db.fromPath('/years/a/2024/b')).toEqual('/years[0]/2024[1]')
+        })
     })
     describe('Cleanup', () => {
         test('should remove the test files', async () => {
