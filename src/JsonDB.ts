@@ -230,7 +230,8 @@ export class JsonDB {
         const data = await this.getArrayData(dataPath)
         return data
             .map(function (element: any) {
-                return element[propertyName]
+                // Items can be null: a hole in an array is saved as null
+                return element?.[propertyName]
             })
             .indexOf(searchValue)
     }

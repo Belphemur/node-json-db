@@ -309,6 +309,17 @@ describe('Array Utils', () => {
             await expect(db.fromPath('/recipes/1/nested/zzz')).rejects.toMatchObject({ id: 13 })
             expect(await db.fromPath('/recipes/1/nested/b')).toEqual('/recipes[0]/nested[1]')
         })
+        test('should skip null items, like the holes a reload turns them into', async () => {
+            await db.push('/recipes', [{ id: '1' }], true)
+            // Leaves a hole at [1], which is saved and loaded back as null
+            await db.push('/recipes[2]', { id: '3', nested: [null, { id: 'b' }] }, true)
+            const reloaded = new JsonDB(new Config('test/recipe', true, true))
+
+            expect(await reloaded.getData('/recipes[1]')).toBeNull()
+            expect(await reloaded.getIndex('/recipes', '3')).toBe(2)
+            expect(await reloaded.getIndex('/recipes', '2')).toBe(-1)
+            expect(await reloaded.fromPath('/recipes/3/nested/b')).toEqual('/recipes[2]/nested[1]')
+        })
     })
     describe('Cleanup', () => {
         test('should remove the test files', async () => {
