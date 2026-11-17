@@ -478,12 +478,15 @@ export class JsonDB {
             let pathIndex: number
             try {
                 const items = await this.getArrayData(normalPath.join(""))
-                // A router path is text, so a number id (id: 1) matches the segment "1".
-                pathIndex = items.findIndex((element: any) => {
-                    const id = element?.[propertyName]
-                    return id === pathValue ||
-                        ((typeof id === 'number' || typeof id === 'bigint') && String(id) === pathValue)
-                })
+                // An exact (string) id wins. Else, as a router path is text,
+                // a number id (id: 1) matches the segment "1".
+                pathIndex = items.findIndex((element: any) => element?.[propertyName] === pathValue)
+                if (pathIndex === -1) {
+                    pathIndex = items.findIndex((element: any) => {
+                        const id = element?.[propertyName]
+                        return (typeof id === 'number' || typeof id === 'bigint') && String(id) === pathValue
+                    })
+                }
             } catch (error) {
                 throw new DataError(`DataPath: ${normalPath.join("")}${separator}${pathValue} not found.`, 13, error)
             }

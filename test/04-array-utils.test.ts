@@ -353,6 +353,11 @@ describe('Array Utils', () => {
             expect(await db.getData(normalPath)).toEqual({ id: 11, title: 'second' })
             await expect(db.fromPath('/users/3')).rejects.toMatchObject({ id: 13 })
         })
+        test('should prefer an exact string id over a number id with the same text', async () => {
+            await db.push('/users', [{ id: 2, name: 'number' }, { id: '2', name: 'string' }], true)
+
+            expect(await db.fromPath('/users/2')).toEqual('/users[1]')
+        })
         test('should return a DataPath with the configured separator', async () => {
             const dotDb = new JsonDB(new Config('test/recipe-dot', false, false, '.'))
             await dotDb.push('.recipes', [
