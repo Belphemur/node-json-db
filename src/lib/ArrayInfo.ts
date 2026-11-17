@@ -187,7 +187,11 @@ export class ArrayInfo {
 }
 
 export function isInt(value: any) {
-  return !isNaN(value) && Number(value) == value && !isNaN(parseInt(value, 10))
+  return (
+    !isNaN(value) &&
+    Number.isInteger(Number(value)) &&
+    !isNaN(parseInt(value, 10))
+  )
 }
 
 export function validateArrayIndicies(arrayIndicies: string[]) {
@@ -209,6 +213,11 @@ export function validateArrayIndex(index: string) {
   }
   if (!isInt(index)) {
     throw new DataError('Only numerical values accepted for array index', 200)
+  }
+  // -1 means the last item; any other negative index would be stored as a
+  // plain property of the array and dropped when the database is saved
+  if (Number(index) < -1) {
+    throw new DataError('Only -1 is accepted as a negative array index', 200)
   }
 }
 
