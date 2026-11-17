@@ -197,6 +197,14 @@ describe('JsonDB', () => {
             expect(result).toBe("defaultValue")
         })
 
+        test('should get default value when the array index is not found', async () => {
+            expect.assertions(3);
+            await db.push("@lol@list", [{ name: "a" }])
+            expect(await db.getObjectDefault<string>("@lol@list[5]", "defaultValue")).toBe("defaultValue")
+            expect(await db.getObjectDefault<string>("@lol@list[5]@name", "defaultValue")).toBe("defaultValue")
+            expect(await db.getObjectDefault<string>("@lol@list[0]@name", "defaultValue")).toBe("a")
+        })
+
         test('should get exception when not the right data type', async () => {
             expect.assertions(1);
             const object = { Hello: "test", World: 0 } as Test;
