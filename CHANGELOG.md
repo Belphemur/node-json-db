@@ -1,3 +1,21 @@
+## [2.6.2](https://github.com/Belphemur/node-json-db/compare/v2.6.1...v2.6.2) (2026-11-17)
+
+
+### Bug Fixes
+
+* delete() no longer creates missing parents ([#1202](https://github.com/Belphemur/node-json-db/issues/1202)) ([98b30d5](https://github.com/Belphemur/node-json-db/commit/98b30d5067a03492ff750f48f03d125cfcd8a10a)), closes [#1201](https://github.com/Belphemur/node-json-db/issues/1201)
+* fromPath throws when an id is not found instead of returning [-1] ([#1200](https://github.com/Belphemur/node-json-db/issues/1200)) ([8514b20](https://github.com/Belphemur/node-json-db/commit/8514b204595793c153260d7f9d4f4ad662d2973e)), closes [#1199](https://github.com/Belphemur/node-json-db/issues/1199)
+* getObjectDefault returns the default when an array index is missing ([#1204](https://github.com/Belphemur/node-json-db/issues/1204)) ([8d62475](https://github.com/Belphemur/node-json-db/commit/8d624751887ac4629865ed7f0bac8b409de47d2d)), closes [#1203](https://github.com/Belphemur/node-json-db/issues/1203)
+* reject fractional and negative (other than -1) array indexes ([#1206](https://github.com/Belphemur/node-json-db/issues/1206)) ([d39edfb](https://github.com/Belphemur/node-json-db/commit/d39edfbc03af097f3fe3c0269e0230e21e24b1ac))
+
+## [2.6.1](https://github.com/Belphemur/node-json-db/compare/v2.6.0...v2.6.1) (2026-11-14)
+
+
+### Bug Fixes
+
+* **deps:** remove duplicated @commitlint/config-conventional keys from pnpm-lock.yaml ([25e76ee](https://github.com/Belphemur/node-json-db/commit/25e76eeda3ff6578303e0c3e2def0d7edff1c61f))
+* keys named like Object.prototype members no longer crash push/getData and corrupt the DB ([#1198](https://github.com/Belphemur/node-json-db/issues/1198)) ([bb4f94a](https://github.com/Belphemur/node-json-db/commit/bb4f94a49bdc343b25fc85503c3991d361428fa2))
+
 # [2.6.0](https://github.com/Belphemur/node-json-db/compare/v2.5.0...v2.6.0) (2026-03-10)
 
 
