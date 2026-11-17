@@ -1,4 +1,5 @@
 import {JsonDB} from '../src/JsonDB.js'
+import {Config} from '../src/lib/JsonDBConfig.js'
 
 describe('JsonDB', () => {
     let db: JsonDB
@@ -97,6 +98,10 @@ describe('JsonDB', () => {
     })
 
     describe('fromPath()', () => {
+        beforeEach(() => {
+            // fromPath() reads the separator from the config
+            db = new JsonDB(new Config('test/frompath', false, false, '/'))
+        })
         test('should throw path error when not found item',() => {
             db.getData = jest.fn(async () => ({
                 a: [
