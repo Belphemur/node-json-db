@@ -463,6 +463,8 @@ export class JsonDB {
     public async fromPath(path: string, propertyName:string = 'id' ): Promise<string> {
 
         const [,...pathToQuery] = path.split("/")
+        // The router path always uses "/", the returned DataPath uses the configured separator.
+        const separator = this.config.separator
 
         // Walk the segments in order, two at a time (key, then value).
         // A key can come back deeper in the path (/comments/1/replies/2/replies/3).
@@ -471,17 +473,26 @@ export class JsonDB {
         for (let i = 0; i < pathToQuery.length; i += 2) {
             const pathKey = pathToQuery[i]
             const pathValue = pathToQuery[i + 1] ?? ''
-            normalPath.push(`/${pathKey}`)
+            normalPath.push(`${separator}${pathKey}`)
 
             let pathIndex: number
             try {
-                pathIndex = await this.getIndex(normalPath.join(""), pathValue, propertyName)
+                const items = await this.getArrayData(normalPath.join(""))
+                // An exact (string) id wins. Else, as a router path is text,
+                // a number id (id: 1) matches the segment "1".
+                pathIndex = items.findIndex((element: any) => element?.[propertyName] === pathValue)
+                if (pathIndex === -1) {
+                    pathIndex = items.findIndex((element: any) => {
+                        const id = element?.[propertyName]
+                        return (typeof id === 'number' || typeof id === 'bigint') && String(id) === pathValue
+                    })
+                }
             } catch (error) {
-                throw new DataError(`DataPath: ${normalPath.join("")}/${pathValue} not found.`, 13, error)
+                throw new DataError(`DataPath: ${normalPath.join("")}${separator}${pathValue} not found.`, 13, error)
             }
-            // getIndex returns -1 when nothing matches, and [-1] means "last item" in a DataPath
+            // findIndex returns -1 when nothing matches, and [-1] means "last item" in a DataPath
             if (pathIndex === -1) {
-                throw new DataError(`DataPath: ${normalPath.join("")}/${pathValue} not found.`, 13)
+                throw new DataError(`DataPath: ${normalPath.join("")}${separator}${pathValue} not found.`, 13)
             }
             normalPath.push(`[${pathIndex}]`)
         }

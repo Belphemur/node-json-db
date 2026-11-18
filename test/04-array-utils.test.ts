@@ -341,10 +341,42 @@ describe('Array Utils', () => {
 
             expect(await db.fromPath('/years/a/2024/b')).toEqual('/years[0]/2024[1]')
         })
+        test('should match number ids against the text of the path', async () => {
+            await db.push('/users', [
+                { id: 1, name: 'a' },
+                { id: 2, name: 'b', posts: [{ id: 10 }, { id: 11, title: 'second' }] },
+            ], true)
+
+            expect(await db.fromPath('/users/2')).toEqual('/users[1]')
+            const normalPath = await db.fromPath('/users/2/posts/11')
+            expect(normalPath).toEqual('/users[1]/posts[1]')
+            expect(await db.getData(normalPath)).toEqual({ id: 11, title: 'second' })
+            await expect(db.fromPath('/users/3')).rejects.toMatchObject({ id: 13 })
+        })
+        test('should prefer an exact string id over a number id with the same text', async () => {
+            await db.push('/users', [{ id: 2, name: 'number' }, { id: '2', name: 'string' }], true)
+
+            expect(await db.fromPath('/users/2')).toEqual('/users[1]')
+        })
+        test('should return a DataPath with the configured separator', async () => {
+            const dotDb = new JsonDB(new Config('test/recipe-dot', false, false, '.'))
+            await dotDb.push('.recipes', [
+                { id: 'a' },
+                { id: 'b', nested: [{ id: 'x' }, { id: 'y', name: 'deep' }] },
+            ], true)
+
+            const normalPath = await dotDb.fromPath('/recipes/b/nested/y')
+            expect(normalPath).toEqual('.recipes[1].nested[1]')
+            expect(await dotDb.getData(normalPath)).toEqual({ id: 'y', name: 'deep' })
+            await expect(dotDb.fromPath('/recipes/b/nested/z')).rejects.toThrow(
+                'DataPath: .recipes[1].nested.z not found.'
+            )
+        })
     })
     describe('Cleanup', () => {
         test('should remove the test files', async () => {
             fs.unlinkSync('test/recipe.json')
+            fs.unlinkSync('test/recipe-dot.json')
         })
     })
 })
