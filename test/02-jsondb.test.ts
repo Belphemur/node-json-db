@@ -305,6 +305,49 @@ describe('JsonDB', () => {
             expect(data['a']).toBe(replacement['a'])
         })
 
+        test('should keep Date, Map, Set and RegExp values when merging', async () => {
+            await db.push('@typed', {
+                d: new Date('2020-01-01T00:00:00Z'),
+                m: new Map([['a', 1]]),
+                s: new Set([1]),
+                r: /a/g,
+            })
+            await db.push('@typed', {
+                d: new Date('2021-01-01T00:00:00Z'),
+                m: new Map([['b', 2]]),
+                s: new Set([2]),
+                r: /b/,
+            }, false)
+            const data = await db.getData('@typed')
+            expect(data.d).toEqual(new Date('2021-01-01T00:00:00Z'))
+            expect(data.m).toEqual(new Map([['b', 2]]))
+            expect(data.s).toEqual(new Set([2]))
+            expect(data.r).toEqual(/b/)
+        })
+
+        test('should replace a stored Date when merging a Date at the dataPath', async () => {
+            await db.push('@when', new Date('2020-01-01T00:00:00Z'))
+            await db.push('@when', new Date('2021-01-01T00:00:00Z'), false)
+            expect(await db.getData('@when')).toEqual(new Date('2021-01-01T00:00:00Z'))
+        })
+
+        test('should keep a stored object when merging null or undefined into it', async () => {
+            await db.push('@nullmerge', { o: { b: 1 }, u: { c: 2 }, n: null })
+            await db.push('@nullmerge', { o: null, u: undefined, n: { d: 3 } }, false)
+            const data = await db.getData('@nullmerge')
+            expect(data.o).toEqual({ b: 1 })
+            expect(data.u).toEqual({ c: 2 })
+            expect(data.n).toEqual({ d: 3 })
+        })
+
+        test('should replace an object with a string or an array when merging', async () => {
+            await db.push('@replace', { o: { b: 1 }, p: { x: 1 } })
+            await db.push('@replace', { o: 'text', p: [1, 2] }, false)
+            const data = await db.getData('@replace')
+            expect(data.o).toBe('text')
+            expect(data.p).toEqual([1, 2])
+        })
+
         test('should throw an Error when merging Array with Object', async () =>
             {
                 try {

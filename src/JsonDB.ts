@@ -1,4 +1,4 @@
-import {KeyValue, merge, removeTrailingChar, setOwnProperty} from '#/lib/Utils.js'
+import {isPlainObject, KeyValue, merge, removeTrailingChar, setOwnProperty} from '#/lib/Utils.js'
 import {DatabaseError, DataError} from '#/lib/Errors.js'
 import {DBParentData} from '#/lib/DBParentData.js'
 import {ArrayInfo} from '#/lib/ArrayInfo.js'
@@ -348,10 +348,15 @@ export class JsonDB {
                     }
                     toSet = storedData.concat(data)
                 } else if (data === Object(data)) {
-                    if (Array.isArray(dbData.getData())) {
+                    const storedData = dbData.getData()
+                    if (Array.isArray(storedData)) {
                         throw new DataError("Can't merge an Array with an Object", 4)
                     }
-                    toSet = merge(dbData.getData(), data)
+                    // Only plain objects are merged key by key. A Date, Map,
+                    // Set, RegExp or class instance replaces the stored value.
+                    if (isPlainObject(data)) {
+                        toSet = merge(isPlainObject(storedData) ? storedData : {}, data)
+                    }
                 }
             }
             dbData.setData(toSet)
