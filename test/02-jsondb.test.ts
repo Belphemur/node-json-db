@@ -331,6 +331,15 @@ describe('JsonDB', () => {
             expect(await db.getData('@when')).toEqual(new Date('2021-01-01T00:00:00Z'))
         })
 
+        test('should keep a stored object when merging null or undefined into it', async () => {
+            await db.push('@nullmerge', { o: { b: 1 }, u: { c: 2 }, n: null })
+            await db.push('@nullmerge', { o: null, u: undefined, n: { d: 3 } }, false)
+            const data = await db.getData('@nullmerge')
+            expect(data.o).toEqual({ b: 1 })
+            expect(data.u).toEqual({ c: 2 })
+            expect(data.n).toEqual({ d: 3 })
+        })
+
         test('should replace an object with a string or an array when merging', async () => {
             await db.push('@replace', { o: { b: 1 }, p: { x: 1 } })
             await db.push('@replace', { o: 'text', p: [1, 2] }, false)

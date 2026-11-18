@@ -19,26 +19,34 @@ export const merge = (...arrays: KeyValue[]): KeyValue => {
     const destination = {} as KeyValue
     arrays.forEach(function (source) {
         for (const prop of Object.keys(Object(source))) {
+            // Read each value once, so a getter can't give the checks and the
+            // stored value two different results.
+            const value = source[prop]
             // Only own keys count: `__proto__` is inherited by every object.
             const exists = Object.prototype.hasOwnProperty.call(destination, prop)
+            const stored = exists ? destination[prop] : undefined
 
-            if (exists && destination[prop] === null) {
-                setOwnProperty(destination, prop, source[prop])
+            if (exists && stored === null) {
+                setOwnProperty(destination, prop, value)
             }
-            else if (exists && Array.isArray(destination[prop])) {
+            else if (exists && Array.isArray(stored)) {
 
                 // Concat Arrays
-                setOwnProperty(destination, prop, destination[prop].concat(source[prop]))
+                setOwnProperty(destination, prop, stored.concat(value))
 
-            } else if (exists && isPlainObject(destination[prop]) && isPlainObject(source[prop])) {
+            } else if (exists && isPlainObject(stored) && (value === null || value === undefined)) {
+
+                // A null or undefined value doesn't wipe a stored object
+
+            } else if (exists && isPlainObject(stored) && isPlainObject(value)) {
 
                 // Merge Objects
-                setOwnProperty(destination, prop, merge(destination[prop], source[prop]))
+                setOwnProperty(destination, prop, merge(stored, value))
 
             } else {
 
                 // Set new values
-                setOwnProperty(destination, prop, source[prop])
+                setOwnProperty(destination, prop, value)
 
             }
         }
