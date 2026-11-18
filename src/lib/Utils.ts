@@ -2,6 +2,19 @@ export interface KeyValue {
     [key: string]: any
 }
 
+/**
+ * True for an object made by `{}`, `Object.create(null)` or `JSON.parse`.
+ * A Date, Map, Set, RegExp or class instance is not plain: copying its own
+ * keys into `{}` would drop its value.
+ */
+export const isPlainObject = (value: any): value is KeyValue => {
+    if (value === null || typeof value !== 'object') {
+        return false
+    }
+    const proto = Object.getPrototypeOf(value)
+    return proto === Object.prototype || proto === null
+}
+
 export const merge = (...arrays: KeyValue[]): KeyValue => {
     const destination = {} as KeyValue
     arrays.forEach(function (source) {
@@ -17,7 +30,7 @@ export const merge = (...arrays: KeyValue[]): KeyValue => {
                 // Concat Arrays
                 setOwnProperty(destination, prop, destination[prop].concat(source[prop]))
 
-            } else if (exists && typeof destination[prop] === "object") {
+            } else if (exists && isPlainObject(destination[prop]) && isPlainObject(source[prop])) {
 
                 // Merge Objects
                 setOwnProperty(destination, prop, merge(destination[prop], source[prop]))
