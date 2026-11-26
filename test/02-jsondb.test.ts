@@ -369,6 +369,18 @@ describe('JsonDB', () => {
             }
         })
 
+        test('should throw an Error when the dataPath does not start with the separator', async () => {
+            await db.push("@users", [{ id: 1 }])
+            await db.push("@settings", { theme: "dark" })
+
+            await expect(db.getData("settings")).rejects.toThrow(DataError)
+            await expect(db.exists("settings")).resolves.toBe(false)
+            await expect(db.push("users@2", { id: 2 })).rejects.toThrow(DataError)
+            await expect(db.delete("settings")).rejects.toThrow(DataError)
+
+            expect(await db.getData("@")).toEqual({ users: [{ id: 1 }], settings: { theme: "dark" } })
+        })
+
         test('should delete the data', async () => {
             await db.push("@test@test", { test: ['Perfect'], okay: "test" })
             await db.delete("@test@test")

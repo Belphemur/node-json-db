@@ -40,6 +40,11 @@ export class JsonDB {
         if (dataPath === undefined || !dataPath.trim()) {
             throw new DataError("The Data Path can't be empty", 6)
         }
+        // The first segment is always dropped below, so a path without the root
+        // separator would point at the wrong data (or at the root itself).
+        if (!dataPath.startsWith(this.config.separator)) {
+            throw new DataError(`The Data Path must start with the separator: ${this.config.separator}`, 6)
+        }
         if (dataPath == this.config.separator) {
             return []
         }
